@@ -18,7 +18,8 @@
     "myclabs/php-enum": "^1.6.2",
     "ozerich/yii2-api": "^2.3.0",
     "ozerich/yii2-admin": "^2.0.0",
-    "ozerich/yii2-filestorage-db": "^1.0"
+    "ozerich/yii2-filestorage-db": "^1.0",
+    "ozerich/yii2-tools": "^1.0"
   },
   "minimum-stability": "stable",
   "autoload": {
