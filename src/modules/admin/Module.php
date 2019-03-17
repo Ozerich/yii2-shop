@@ -4,11 +4,11 @@ namespace ozerich\shop\modules\admin;
 
 class Module extends \ozerich\admin\Module
 {
-    public $userIdentityClass = 'app\modules\admin\models\AdminUser';
+    public $userIdentityClass = 'ozerich\shop\modules\admin\models\AdminUser';
 
-    public $shortName = 'BM';
+    public $shortName = 'YS';
 
-    public $fullName = 'Belmebel';
+    public $fullName = 'Yii2 Shop';
 
     public $menu = [
         [
