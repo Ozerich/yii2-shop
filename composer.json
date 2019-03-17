@@ -1,7 +1,7 @@
 {
   "name": "ozerich/yii2-shop",
   "description": "Backend for shop",
-  "type": "library",
+  "type": "yii2-extension",
   "license": "proprietary",
   "authors": [
     {
@@ -26,5 +26,8 @@
     "psr-4": {
       "ozerich\\shop\\": "src/"
     }
+  },
+  "extra": {
+    "bootstrap": "ozerich\\shop\\Bootstrap"
   }
 }
