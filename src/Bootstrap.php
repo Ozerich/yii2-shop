@@ -36,7 +36,7 @@ class Bootstrap implements BootstrapInterface
 
         $mediaConfig = [
             'class' => 'ozerich\filestorage\FileStorage',
-            'modelClass' => 'ozerich\shops\models\Image',
+            'modelClass' => 'ozerich\shop\models\Image',
             'scenarios' => [
                 'default' => [
                     'storage' => [

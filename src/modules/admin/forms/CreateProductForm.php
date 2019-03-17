@@ -16,6 +16,7 @@ class CreateProductForm extends Model
     {
         return [
             [['name', 'category_id'], 'required'],
+            [['image_id'], 'integer'],
             [['name'], 'string', 'max' => 150]
         ];
     }
