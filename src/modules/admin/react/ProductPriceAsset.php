@@ -6,7 +6,7 @@ use yii\web\AssetBundle;
 
 class ProductPriceAsset extends AssetBundle
 {
-    public $sourcePath = '@app/modules/admin/react/product-price/build';
+    public $sourcePath = '@vendor/ozerich/yii2-shop/src/modules/admin/react/product-price/build';
 
     public $js = [
         'build.js?v=2',
