@@ -41,7 +41,7 @@ class Bootstrap implements BootstrapInterface
                 'default' => [
                     'storage' => [
                         'type' => 'file',
-                        'uploadDirPath' => __DIR__ . '/../../web/uploads/default',
+                        'uploadDirPath' => __DIR__ . '/../../../../web/uploads/default',
                         'uploadDirUrl' => '/uploads/default',
                     ],
                     'validator' => [
@@ -53,7 +53,7 @@ class Bootstrap implements BootstrapInterface
                 'field' => [
                     'storage' => [
                         'type' => 'file',
-                        'uploadDirPath' => __DIR__ . '/../../web/uploads/fields',
+                        'uploadDirPath' => __DIR__ . '/../../../../web/uploads/fields',
                         'uploadDirUrl' => '/uploads/fields',
                     ],
                     'validator' => [
@@ -65,7 +65,7 @@ class Bootstrap implements BootstrapInterface
                 'product' => [
                     'storage' => [
                         'type' => 'file',
-                        'uploadDirPath' => __DIR__ . '/../../web/uploads/products',
+                        'uploadDirPath' => __DIR__ . '/../../../../web/uploads/products',
                         'uploadDirUrl' => '/uploads/products',
                     ],
                     'validator' => [
@@ -89,7 +89,7 @@ class Bootstrap implements BootstrapInterface
                 'category' => [
                     'storage' => [
                         'type' => 'file',
-                        'uploadDirPath' => __DIR__ . '/../../web/uploads/categories',
+                        'uploadDirPath' => __DIR__ . '/../../../../web/uploads/categories',
                         'uploadDirUrl' => '/uploads/categories',
                     ],
                     'validator' => [
