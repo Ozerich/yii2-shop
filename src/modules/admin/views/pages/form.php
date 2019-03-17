@@ -3,7 +3,7 @@
  * @var \yii\web\View $this
  * @var boolean $isCreate
  * @var \yii\widgets\ActiveForm $form
- * @var \app\models\Page $formModel
+ * @var ozerich\shop\models\Page $formModel
  */
 $this->title = $model->isNewRecord ? 'Создать категорию' : 'Редактировать категорию';
 ?>
@@ -40,7 +40,7 @@ $this->title = $model->isNewRecord ? 'Создать категорию' : 'Ре
   </div>
 
   <div class="col-xs-12">
-      <?= $form->field($formModel, 'meta_image_id')->widget(\app\modules\admin\widgets\ImageWidget::class, [
+      <?= $form->field($formModel, 'meta_image_id')->widget(ozerich\shop\modules\admin\widgets\ImageWidget::class, [
           'scenario' => 'category'
       ]); ?>
   </div>

@@ -1,7 +1,7 @@
 <?
 /**
- * @var \app\models\Product $model
- * @var \app\structures\ProductField[] $fields
+ * @var ozerich\shop\models\Product $model
+ * @var ozerich\shop\structures\ProductField[] $fields
  */
 ?>
 
@@ -13,16 +13,16 @@
             <label class="control-label" for="updateproductform-url_alias">
                 <?= $field->getField()->name ?> <?= $field->getField()->group ? ' (' . $field->getField()->group->name . ')' : '' ?>
             </label><br />
-              <? if ($field->getField()->type == \app\constants\FieldType::STRING): ?>
+              <? if ($field->getField()->type == ozerich\shop\constants\FieldType::STRING): ?>
                 <input type="text" name="fields[<?= $field->getField()->id ?>]" class="form-control"
                        value="<?= $field->getValue() ?>">
-              <? elseif ($field->getField()->type == \app\constants\FieldType::INTEGER): ?>
+              <? elseif ($field->getField()->type == ozerich\shop\constants\FieldType::INTEGER): ?>
                 <input type="number" name="fields[<?= $field->getField()->id ?>]" class="form-control"
                        value="<?= $field->getValue() ?>">
-              <? elseif ($field->getField()->type == \app\constants\FieldType::BOOLEAN): ?>
+              <? elseif ($field->getField()->type == ozerich\shop\constants\FieldType::BOOLEAN): ?>
                 <input type="checkbox"
                        name="fields[<?= $field->getField()->id ?>]" <?= $field->getValue() ? 'checked' : '' ?>/>
-              <? elseif ($field->getField()->type == \app\constants\FieldType::SELECT):
+              <? elseif ($field->getField()->type == ozerich\shop\constants\FieldType::SELECT):
                   $values = $field->getField()->values; ?>
                 <select class="form-control" name="fields[<?= $field->getField()->id ?>]">
                     <? foreach ($values as $value): ?>

@@ -3,7 +3,7 @@
  * @var \yii\web\View $this
  * @var boolean $isCreate
  * @var \yii\widgets\ActiveForm $form
- * @var \app\models\Field $formModel
+ * @var ozerich\shop\models\Field $formModel
  */
 $this->title = $model->isNewRecord ? 'Создать поле' : 'Редактировать поле';
 
@@ -24,18 +24,18 @@ $formModel->values = $formModel->values ? implode("\n", $formModel->values) : ''
 
   <div class="col-xs-12">
       <?= $form->field($formModel, 'group_id')->dropDownList(
-          \yii\helpers\ArrayHelper::map(\app\models\FieldGroup::find()->all(), 'id', 'name'), [
+          \yii\helpers\ArrayHelper::map(ozerich\shop\models\FieldGroup::find()->all(), 'id', 'name'), [
               'prompt' => 'Без группы'
           ]
       ); ?>
   </div>
 
   <div class="col-xs-12">
-      <?= $form->field($formModel, 'type')->dropDownList(\app\constants\FieldType::getList()); ?>
+      <?= $form->field($formModel, 'type')->dropDownList(ozerich\shop\constants\FieldType::getList()); ?>
   </div>
 
   <div class="col-xs-12">
-      <?= $form->field($formModel, 'image_id')->widget(\app\modules\admin\widgets\ImageWidget::class, [
+      <?= $form->field($formModel, 'image_id')->widget(ozerich\shop\modules\admin\widgets\ImageWidget::class, [
           'scenario' => 'field'
       ]); ?>
   </div>

@@ -1,10 +1,10 @@
 <? /**
  * @var \yii\web\View $this
  *
- * @var \app\structures\ProductField[] $fields
- * @var \app\models\Product $model
- * @var \app\modules\admin\forms\UpdateProductForm $formModel
- * @var \app\modules\admin\forms\ProductMediaForm $mediaForm
+ * @var ozerich\shop\structures\ProductField[] $fields
+ * @var ozerich\shop\models\Product $model
+ * @var ozerich\shop\modules\admin\forms\UpdateProductForm $formModel
+ * @var ozerich\shop\modules\admin\forms\ProductMediaForm $mediaForm
  */
 
 $this->title = 'Редактировать товар'

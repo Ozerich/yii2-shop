@@ -23,14 +23,14 @@ $this->title = 'Поля';
         'type' => [
             'header' => 'Тип',
             'attribute' => 'type',
-            'value' => function (\app\models\Field $item) {
-                return \app\constants\FieldType::label($item->type);
+            'value' => function (ozerich\shop\models\Field $item) {
+                return ozerich\shop\constants\FieldType::label($item->type);
             }
         ],
         'values' => [
             'header' => 'Значения',
             'attribute' => 'values',
-            'value' => function (\app\models\Field $item) {
+            'value' => function (ozerich\shop\models\Field $item) {
                 return implode(", ", $item->values);
             }
         ],

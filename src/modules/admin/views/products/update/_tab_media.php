@@ -1,6 +1,6 @@
 <?
-/** @var \app\models\Product $model */
-/** @var \app\modules\admin\forms\ProductMediaForm $formModel */
+/** @var ozerich\shop\models\Product $model */
+/** @var ozerich\shop\modules\admin\forms\ProductMediaForm $formModel */
 ?>
 
 <?php $form = \yii\widgets\ActiveForm::begin([
@@ -10,7 +10,7 @@
 
 <div class="row">
   <div class="col-xs-12">
-      <?= $form->field($formModel, 'images')->widget(\app\modules\admin\widgets\ImageWidget::class, [
+      <?= $form->field($formModel, 'images')->widget(ozerich\shop\modules\admin\widgets\ImageWidget::class, [
           'scenario' => 'product',
           'multiple' => true
       ]) ?>

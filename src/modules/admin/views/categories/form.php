@@ -3,8 +3,8 @@
  * @var \yii\web\View $this
  * @var boolean $isCreate
  * @var \yii\widgets\ActiveForm $form
- * @var \app\modules\admin\forms\CategoryForm $formModel
- * @var \app\models\Category $model
+ * @var ozerich\shop\modules\admin\forms\CategoryForm $formModel
+ * @var ozerich\shop\models\Category $model
  */
 $this->title = $model->isNewRecord ? 'Создать категорию' : 'Редактировать категорию';
 ?>
@@ -22,7 +22,7 @@ $this->title = $model->isNewRecord ? 'Создать категорию' : 'Ре
 
   <div class="col-xs-12">
       <?= $form->field($formModel, 'parent_id')->dropDownList(
-          \yii\helpers\ArrayHelper::map(\app\models\Category::findRoot()->all(), 'id', 'name'),
+          \yii\helpers\ArrayHelper::map(ozerich\shop\models\Category::findRoot()->all(), 'id', 'name'),
           ['prompt' => 'Без родительской категории']
       ); ?>
   </div>
@@ -35,14 +35,14 @@ $this->title = $model->isNewRecord ? 'Создать категорию' : 'Ре
   </div>
 
   <div class="col-xs-12">
-      <?= $form->field($formModel, 'image_id')->widget(\app\modules\admin\widgets\ImageWidget::class, [
+      <?= $form->field($formModel, 'image_id')->widget(ozerich\shop\modules\admin\widgets\ImageWidget::class, [
           'scenario' => 'category'
       ]); ?>
   </div>
 
   <div class="col-xs-12">
       <?= $form->field($formModel, 'field_ids')->checkboxList(
-          \yii\helpers\ArrayHelper::map(\app\models\Field::find()->all(), 'id', 'name')
+          \yii\helpers\ArrayHelper::map(ozerich\shop\models\Field::find()->all(), 'id', 'name')
       ) ?>
   </div>
 

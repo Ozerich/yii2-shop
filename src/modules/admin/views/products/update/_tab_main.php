@@ -12,7 +12,7 @@
 
     <div class="col-xs-12">
         <?= $form->field($formModel, 'category_id')->dropDownList(
-            \yii\helpers\ArrayHelper::map(\app\models\Category::getTree(), 'id', 'name')
+            \yii\helpers\ArrayHelper::map(ozerich\shop\models\Category::getTree(), 'id', 'name')
         ); ?>
     </div>
 
@@ -21,7 +21,7 @@
     </div>
 
     <div class="col-xs-12">
-        <?= $form->field($formModel, 'image_id')->widget(\app\modules\admin\widgets\ImageWidget::class, [
+        <?= $form->field($formModel, 'image_id')->widget(ozerich\shop\modules\admin\widgets\ImageWidget::class, [
             'scenario' => 'product'
         ]); ?>
     </div>

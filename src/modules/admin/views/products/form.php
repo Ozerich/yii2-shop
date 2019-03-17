@@ -3,9 +3,9 @@
  * @var \yii\web\View $this
  * @var boolean $isCreate
  * @var \yii\widgets\ActiveForm $form
- * @var \app\models\Product $model
- * @var \app\modules\admin\forms\CreateProductForm $formModel
- * @var \app\structures\ProductField[] $fields
+ * @var ozerich\shop\models\Product $model
+ * @var ozerich\shop\modules\admin\forms\CreateProductForm $formModel
+ * @var ozerich\shop\structures\ProductField[] $fields
  */
 $this->title = 'Создать товар';
 ?>
@@ -28,13 +28,13 @@ $this->title = 'Создать товар';
 <? if ($model->isNewRecord): ?>
   <div class="col-xs-12">
       <?= $form->field($formModel, 'category_id')->dropDownList(
-          \yii\helpers\ArrayHelper::map(\app\models\Category::getTree(), 'id', 'name')
+          \yii\helpers\ArrayHelper::map(ozerich\shop\models\Category::getTree(), 'id', 'name')
       ); ?>
   </div>
 <? endif; ?>
 
   <div class="col-xs-12">
-      <?= $form->field($formModel, 'image_id')->widget(\app\modules\admin\widgets\ImageWidget::class, [
+      <?= $form->field($formModel, 'image_id')->widget(ozerich\shop\modules\admin\widgets\ImageWidget::class, [
           'scenario' => 'product'
       ]); ?>
   </div>

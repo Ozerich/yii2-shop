@@ -20,7 +20,7 @@ $this->title = 'Страницы';
         'url' => [
             'attribute' => 'url',
             'format' => 'raw',
-            'value' => function (\app\models\Page $model) {
+            'value' => function (ozerich\shop\models\Page $model) {
                 return \yii\helpers\Html::a($model->url, $model->getUrl(true), ['target' => '_blank']);
             }
         ],

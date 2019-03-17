@@ -21,15 +21,15 @@ $this->title = 'Товары';
             'header' => 'Название',
             'attribute' => 'name',
             'format' => 'raw',
-            'value' => function (\app\models\Product $product) {
+            'value' => function (ozerich\shop\models\Product $product) {
                 return \yii\helpers\Html::a($product->name, '/admin/products/update/' . $product->id, ['target' => '_blank']);
             }
         ],
         'category_id' => [
             'header' => 'Категория',
             'attribute' => 'category_id',
-            'filter' => \app\modules\admin\filters\FilterProduct::getCategoryFilterArray(),
-            'value' => function (\app\models\Product $product) {
+            'filter' => ozerich\shop\modules\admin\filters\FilterProduct::getCategoryFilterArray(),
+            'value' => function (ozerich\shop\models\Product $product) {
                 return $product->category ? $product->category->name : '';
             }
         ],
@@ -37,14 +37,14 @@ $this->title = 'Товары';
             'header' => 'Картинка',
             'attribute' => 'image_id',
             'format' => 'raw',
-            'value' => function (\app\models\Product $product) {
+            'value' => function (ozerich\shop\models\Product $product) {
                 return $product->image ? '<img src="' . $product->image->getUrl() . '">' : null;
             }
         ],
         [
             'header' => 'Ссылка',
             'format' => 'raw',
-            'value' => function (\app\models\Product $product) {
+            'value' => function (ozerich\shop\models\Product $product) {
                 return \yii\helpers\Html::a($product->getUrl(), $product->getUrl(true), ['target' => '_blank']);
             },
             'attribute' => 'url_alias'
