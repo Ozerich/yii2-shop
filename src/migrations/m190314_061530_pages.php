@@ -1,5 +1,7 @@
 <?php
 
+namespace ozerich\shop\migrations;
+
 use yii\db\Migration;
 
 /**

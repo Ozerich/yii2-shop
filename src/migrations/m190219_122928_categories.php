@@ -1,6 +1,9 @@
 <?php
 
+namespace ozerich\shop\migrations;
+
 use yii\db\Migration;
+
 
 /**
  * Class m190219_122928_categories
