@@ -1,0 +1,29 @@
+{
+  "name": "ozerich/yii2-shop",
+  "description": "Backend for shop",
+  "type": "library",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Vital Ozierski",
+      "email": "vital@ozerich.com",
+      "homepage": "https://ozerich.me",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=7.0.0",
+    "yiisoft/yii2": "^2.0",
+    "fxp/composer-asset-plugin": "^1.4",
+    "myclabs/php-enum": "^1.6.2",
+    "ozerich/yii2-api": "^2.3.0",
+    "ozerich/yii2-admin": "^2.0.0",
+    "ozerich/yii2-filestorage-db": "^1.0"
+  },
+  "minimum-stability": "stable",
+  "autoload": {
+    "psr-4": {
+      "ozerich\\shop\\": "src/"
+    }
+  }
+}
