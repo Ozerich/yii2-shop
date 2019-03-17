@@ -13,7 +13,7 @@ class ProductDTO extends Product implements DTO
             'id' => $this->id,
             'name' => $this->name,
             'price' => $this->price,
-            'image' => $this->image ? $this->image->getUrl() : null,
+            'image' => $this->image ? $this->image->getUrl('preview') : null,
             'url_alias' => $this->url_alias
         ];
     }

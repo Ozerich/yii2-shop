@@ -41,7 +41,7 @@ class Bootstrap implements BootstrapInterface
                 'default' => [
                     'storage' => [
                         'type' => 'file',
-                        'uploadDirPath' => __DIR__ . '/../../../../web/uploads/default',
+                        'uploadDirPath' => __DIR__ . '/../../web/uploads/default',
                         'uploadDirUrl' => '/uploads/default',
                     ],
                     'validator' => [
@@ -53,7 +53,7 @@ class Bootstrap implements BootstrapInterface
                 'field' => [
                     'storage' => [
                         'type' => 'file',
-                        'uploadDirPath' => __DIR__ . '/../../../../web/uploads/fields',
+                        'uploadDirPath' => __DIR__ . '/../../web/uploads/fields',
                         'uploadDirUrl' => '/uploads/fields',
                     ],
                     'validator' => [
@@ -65,26 +65,45 @@ class Bootstrap implements BootstrapInterface
                 'product' => [
                     'storage' => [
                         'type' => 'file',
-                        'uploadDirPath' => __DIR__ . '/../../../../web/uploads/products',
+                        'uploadDirPath' => __DIR__ . '/../../web/uploads/products',
                         'uploadDirUrl' => '/uploads/products',
                     ],
                     'validator' => [
                         'maxSize' => 16 * 1024 * 1024,
                         'checkExtensionByMimeType' => true,
                         'extensions' => ['jpg', 'jpeg', 'bmp', 'gif', 'png']
-                    ]
+                    ],
+                    'thumbnails' => [
+                        [
+                            'alias' => 'preview',
+                            'width' => 205,
+                            'height' => 100
+                        ],
+                        [
+                            'alias' => 'gallery-preview',
+                            'width' => 110,
+                            'height' => 110
+                        ],
+                    ],
                 ],
                 'category' => [
                     'storage' => [
                         'type' => 'file',
-                        'uploadDirPath' => __DIR__ . '/../../../../web/uploads/categories',
+                        'uploadDirPath' => __DIR__ . '/../../web/uploads/categories',
                         'uploadDirUrl' => '/uploads/categories',
                     ],
                     'validator' => [
                         'maxSize' => 16 * 1024 * 1024,
                         'checkExtensionByMimeType' => true,
                         'extensions' => ['jpg', 'jpeg', 'bmp', 'gif', 'png']
-                    ]
+                    ],
+                    'thumbnails' => [
+                        [
+                            'alias' => 'preview',
+                            'width' => 338,
+                            'height' => 190
+                        ],
+                    ],
                 ],
             ]
         ];

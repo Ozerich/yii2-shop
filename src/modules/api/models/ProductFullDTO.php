@@ -2,10 +2,10 @@
 
 namespace ozerich\shop\modules\api\models;
 
+use ozerich\api\interfaces\DTO;
 use ozerich\shop\models\Image;
 use ozerich\shop\models\Product;
 use ozerich\shop\traits\ServicesTrait;
-use ozerich\api\interfaces\DTO;
 
 class ProductFullDTO extends Product implements DTO
 {
@@ -34,7 +34,7 @@ class ProductFullDTO extends Product implements DTO
                 $groups[$param->field->group_id]['fields'][] = [
                     'label' => $param->field->name,
                     'image' => $param->field->image ? $param->field->image->getUrl() : null,
-                    'value' =>  $this->productFieldsService()->getFieldPlainValue($param)
+                    'value' => $this->productFieldsService()->getFieldPlainValue($param)
                 ];
             } else {
                 $no_groups[] = $param;
@@ -77,7 +77,10 @@ class ProductFullDTO extends Product implements DTO
             'text' => $this->text,
             'params' => $this->getParamsJSON(),
             'images' => array_map(function (Image $image) {
-                return $image->getUrl();
+                return [
+                    'small' => $image->getUrl('gallery-preview'),
+                    'big' => $image->getUrl()
+                ];
             }, $this->images)
         ];
     }

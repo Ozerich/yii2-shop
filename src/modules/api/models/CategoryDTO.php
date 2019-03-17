@@ -13,7 +13,7 @@ class CategoryDTO extends Category implements DTO
             'id' => $this->id,
             'name' => $this->name,
             'url_alias' => $this->url_alias,
-            'image' => $this->image ? $this->image->getUrl() : null
+            'image' => $this->image ? $this->image->getUrl('preview') : null
         ];
     }
 }
