@@ -2,9 +2,9 @@
 
 namespace ozerich\shop\modules\api\controllers;
 
-use app\modules\api\requests\order\SubmitRequest;
 use ozerich\api\controllers\Controller;
 use ozerich\api\filters\AccessControl;
+use ozerich\shop\modules\api\requests\order\SubmitRequest;
 
 class OrderController extends Controller
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\api\requests\order;
+namespace ozerich\shop\modules\api\requests\order;
 
 use ozerich\api\request\RequestModel;
 
