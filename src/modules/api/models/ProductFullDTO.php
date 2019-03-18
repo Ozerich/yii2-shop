@@ -70,8 +70,10 @@ class ProductFullDTO extends Product implements DTO
     {
         return [
             'id' => $this->id,
+            'url_alias' => $this->url_alias,
             'name' => $this->name,
             'price' => $this->price,
+            'is_prices_extended' => $this->is_prices_extended,
             'image' => $this->image ? $this->image->getUrl() : null,
             'video' => $this->video,
             'text' => $this->text,
