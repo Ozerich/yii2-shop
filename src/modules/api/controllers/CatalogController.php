@@ -2,15 +2,15 @@
 
 namespace ozerich\shop\modules\api\controllers;
 
+use ozerich\api\controllers\Controller;
+use ozerich\api\filters\AccessControl;
+use ozerich\api\response\CollectionResponse;
+use ozerich\api\response\ModelResponse;
 use ozerich\shop\models\Category;
 use ozerich\shop\models\Product;
 use ozerich\shop\modules\api\models\CategoryDTO;
 use ozerich\shop\modules\api\models\CategoryFullDTO;
 use ozerich\shop\modules\api\models\ProductDTO;
-use ozerich\api\controllers\Controller;
-use ozerich\api\filters\AccessControl;
-use ozerich\api\response\CollectionResponse;
-use ozerich\api\response\ModelResponse;
 use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
 
@@ -45,7 +45,7 @@ class CatalogController extends Controller
     {
         $root = null;
         if ($id !== null) {
-            $root = Category::findRoot()->andWhere('id=:id', [':id' => $id])->one();
+            $root = Category::find()->andWhere('id=:id', [':id' => $id])->one();
         }
 
         $dataProvider = new ActiveDataProvider([

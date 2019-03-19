@@ -19,18 +19,22 @@ $this->title = 'Товарные категории';
         'name' => [
             'header' => 'Название',
             'attribute' => 'name',
-            'value' => function (ozerich\shop\models\Category $category) {
-                return $category->parent_id == null ? $category->name : '-------- ' . $category->name;
+            'value' => function ($category) {
+                return $category['plain_label'];
             }
         ],
         'url_alias',
         'items' => [
             'header' => 'Товары',
             'format' => 'raw',
-            'value' => function (ozerich\shop\models\Category $category) {
-                return '<a href="/admin/products?FilterProduct[category_id]=' . $category->id . '" class="">Товары ('.$category->getProductsCount().')</a>';
+            'value' => function ($category) {
+                return '<a href="/admin/products?FilterProduct[category_id]=' . $category['model']->id . '" class="">Товары (' . $category['model']->getProductsCount() . ')</a>';
             }
         ],
     ],
-    'actions' => ['edit' => 'update', 'delete' => 'delete']
+    'actions' => ['edit' => 'update', 'delete' => 'delete'],
+
+    'idGetter' => function ($category) {
+        return $category['model']['id'];
+    }
 ]); ?>

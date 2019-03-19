@@ -4,10 +4,13 @@ namespace ozerich\shop\modules\admin\forms;
 
 use ozerich\shop\models\Category;
 use ozerich\shop\models\CategoryField;
+use ozerich\shop\traits\ServicesTrait;
 use yii\base\Model;
 
 class CategoryFormConvertor extends Model
 {
+    use ServicesTrait;
+
     public function loadFormFromModel(Category $category)
     {
         $form = new CategoryForm();
@@ -35,6 +38,8 @@ class CategoryFormConvertor extends Model
         $model->image_id = $form->image_id;
 
         $model->save();
+
+        $this->categoriesService()->updateCategoryLevel($model);
 
         CategoryField::deleteAll(['category_id' => $model->id]);
 

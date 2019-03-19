@@ -28,7 +28,7 @@ $this->title = 'Товары';
         'category_id' => [
             'header' => 'Категория',
             'attribute' => 'category_id',
-            'filter' => ozerich\shop\modules\admin\filters\FilterProduct::getCategoryFilterArray(),
+            'filter' => (new \ozerich\shop\services\categories\CategoriesService())->getTreeAsPlainArray(),
             'value' => function (ozerich\shop\models\Product $product) {
                 return $product->category ? $product->category->name : '';
             }

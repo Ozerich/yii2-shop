@@ -10,10 +10,7 @@ $this->title = $model->isNewRecord ? 'Создать категорию' : 'Ре
 ?>
 
 <?php $form = \yii\widgets\ActiveForm::begin([
-    'enableClientValidation' => false,
-    'options' => [
-        'enctype' => 'multipart/form-data'
-    ]
+    'enableClientValidation' => false
 ]); ?>
 
 <?php ozerich\admin\widgets\FormPage::begin([
@@ -21,11 +18,11 @@ $this->title = $model->isNewRecord ? 'Создать категорию' : 'Ре
 ]); ?>
 
   <div class="col-xs-12">
-      <?= $form->field($formModel, 'parent_id')->dropDownList(
-          \yii\helpers\ArrayHelper::map(ozerich\shop\models\Category::findRoot()->all(), 'id', 'name'),
-          ['prompt' => 'Без родительской категории']
-      ); ?>
+      <?= $form->field($formModel, 'parent_id')->widget(\ozerich\shop\modules\admin\widgets\CategoryWidget::class, [
+          'allowEmptyValue' => true
+      ]) ?>
   </div>
+
   <div class="col-xs-12">
       <?= $form->field($formModel, 'name')->textInput(); ?>
   </div>

@@ -9,15 +9,18 @@ use ozerich\admin\actions\CreateOrUpdateAction;
 use ozerich\admin\actions\DeleteAction;
 use ozerich\admin\actions\ListAction;
 use ozerich\admin\controllers\base\AdminController;
+use ozerich\shop\traits\ServicesTrait;
 
 class CategoriesController extends AdminController
 {
+    use ServicesTrait;
+
     public function actions()
     {
         return [
             'index' => [
                 'class' => ListAction::class,
-                'models' => Category::getTree(),
+                'models' => $this->categoriesService()->getTreeAsArray(),
                 'pageSize' => -1,
                 'view' => 'index'
             ],

@@ -4,7 +4,6 @@ namespace ozerich\shop;
 
 use yii\base\BootstrapInterface;
 
-
 class Bootstrap implements BootstrapInterface
 {
     private function bootstrapConsole(\yii\console\Application $app)

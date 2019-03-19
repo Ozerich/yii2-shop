@@ -7,6 +7,7 @@ namespace ozerich\shop\models;
  *
  * @property int $id
  * @property int $parent_id
+ * @property int $level
  * @property string $url_alias
  * @property string $name
  * @property string $image_id
