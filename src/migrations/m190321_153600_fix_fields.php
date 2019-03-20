@@ -46,7 +46,7 @@ class m190321_153600_fix_fields extends Migration
                 }
 
                 if (!isset($migrate_field_map[$field_id][$category_id])) {
-                    $migrate_field_map[$field_id[$category_id]] = null;
+                    $migrate_field_map[$field_id][$category_id] = null;
                 }
 
                 $field = $fields_map[$field_id];
