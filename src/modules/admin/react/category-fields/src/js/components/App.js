@@ -19,7 +19,7 @@ class App extends Component {
   }
 
   render() {
-    const { loaded } = this.props;
+    const { loaded, groupFormVisible } = this.props;
 
     if (!loaded) {
       return 'Загрузка...';
@@ -34,9 +34,10 @@ class App extends Component {
   }
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   return {
-    loaded: state.common.loaded
+    loaded: state.common.loaded,
+    groupFormVisible: state.groupForm.opened
   }
 }
 

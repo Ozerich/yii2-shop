@@ -1,6 +1,6 @@
 <?php
 
-namespace ozerich\shop\modules\admin\api\requests;
+namespace ozerich\shop\modules\admin\api\requests\prices;
 
 use ozerich\api\request\RequestModel;
 

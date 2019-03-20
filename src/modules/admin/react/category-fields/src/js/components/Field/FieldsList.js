@@ -29,26 +29,26 @@ class FieldsList extends Component {
     }
 
     return (
-        <>
-        <div className="list-row list-row--header">
-          <div className="field-list__name">
-            Название параметра
+        <div className="list-body">
+          <div className="list-row list-row--header">
+            <div className="field-list__name">
+              Название параметра
+            </div>
+            <div className="field-list__group">
+              Группа
+            </div>
+            <div className="field-list__type">
+              Тип поля
+            </div>
+            <div className="field-list__actions">
+              Действия
+            </div>
           </div>
-          <div className="field-list__group">
-            Группа
-          </div>
-          <div className="field-list__type">
-            Тип поля
-          </div>
-          <div className="field-list__actions">
-            Действия
-          </div>
+
+          {entities.map(model => <FieldsListRow key={model.id} model={model} />)}
+
+          <CreateButtonRow label="Создать параметр" />
         </div>
-
-        {entities.map(model => <FieldsListRow key={model.id} model={model} />)}
-
-        <CreateButtonRow label="Создать параметр" />
-        </>
     );
   }
 }

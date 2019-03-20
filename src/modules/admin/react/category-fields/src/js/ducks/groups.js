@@ -8,6 +8,7 @@ const _FAILURE = '_FAILURE';
 
 // Actions
 const LOAD = 'groups/LOAD';
+const DELETE = 'groups/DELETE';
 
 const initialState = {
   loading: false,
@@ -16,10 +17,12 @@ const initialState = {
   entities: []
 };
 
-
 // Reducer
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
+
+    case DELETE + _SUCCESS:
+      return Object.assign({}, state, { entities: state.entities.filter(item => item.id !== action.payload.id) });
 
     case LOAD + _START:
       return Object.assign({}, state, { loading: true, loaded: false });
@@ -59,6 +62,28 @@ export function loadAll(categoryId) {
           type: LOAD + _FAILURE,
           error
         });
+      });
+    });
+  }
+}
+
+export function deleteGroup(groupId) {
+  return dispatch => {
+    dispatch({
+      type: DELETE + _START
+    });
+
+    service.deleteGroup(groupId).then(data => {
+      dispatch({
+        type: DELETE + _SUCCESS,
+        payload: {
+          id: groupId
+        }
+      });
+    }).catch(error => {
+      dispatch({
+        type: DELETE + _FAILURE,
+        error
       });
     });
   }

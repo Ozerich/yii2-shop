@@ -10,8 +10,8 @@ class CreateButtonRow extends Component {
     );
   }
 
-  onClick(){
-    if(this.props.onClick){
+  onClick() {
+    if (this.props.onClick) {
       this.props.onClick();
     }
   }
