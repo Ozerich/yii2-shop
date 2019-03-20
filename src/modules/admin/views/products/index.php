@@ -27,10 +27,12 @@ $this->title = 'Товары';
         ],
         'category_id' => [
             'header' => 'Категория',
-            'attribute' => 'category_id',
+            'format' => 'raw',
             'filter' => (new \ozerich\shop\services\categories\CategoriesService())->getTreeAsPlainArray(),
             'value' => function (ozerich\shop\models\Product $product) {
-                return $product->category ? $product->category->name : '';
+                return implode('<br/>', array_map(function (\ozerich\shop\models\Category $category) {
+                    return $category->getFullName();
+                }, $product->categories));
             }
         ],
         'image' => [

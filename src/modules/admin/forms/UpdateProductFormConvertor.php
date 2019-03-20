@@ -2,7 +2,9 @@
 
 namespace ozerich\shop\modules\admin\forms;
 
+use ozerich\shop\models\Category;
 use ozerich\shop\models\Product;
+use ozerich\shop\models\ProductCategory;
 use yii\base\Model;
 
 class UpdateProductFormConvertor extends Model
@@ -16,8 +18,11 @@ class UpdateProductFormConvertor extends Model
         $form->text = $product->text;
         $form->price = $product->price;
         $form->url_alias = $product->url_alias;
-        $form->category_id = $product->category_id;
         $form->is_prices_extended = $product->is_prices_extended;
+
+        $form->category_id = array_map(function (Category $category) {
+            return $category->id;
+        }, $product->categories);
 
         return $form;
     }
@@ -29,8 +34,16 @@ class UpdateProductFormConvertor extends Model
         $model->text = $form->text;
         $model->price = $form->price;
         $model->url_alias = $form->url_alias;
-        $model->category_id = $form->category_id;
         $model->is_prices_extended = $form->is_prices_extended;
+
+        ProductCategory::deleteAll(['product_id' => $model->id]);
+
+        foreach ($form->category_id as $cat_id) {
+            $productCategoryModel = new ProductCategory();
+            $productCategoryModel->category_id = $cat_id;
+            $productCategoryModel->product_id = $model->id;
+            $productCategoryModel->save();
+        }
 
         return $model->save();
     }

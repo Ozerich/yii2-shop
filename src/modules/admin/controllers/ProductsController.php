@@ -2,6 +2,10 @@
 
 namespace ozerich\shop\modules\admin\controllers;
 
+use ozerich\admin\actions\CreateOrUpdateAction;
+use ozerich\admin\actions\DeleteAction;
+use ozerich\admin\actions\ListAction;
+use ozerich\admin\controllers\base\AdminController;
 use ozerich\shop\constants\FieldType;
 use ozerich\shop\models\Product;
 use ozerich\shop\modules\admin\filters\FilterProduct;
@@ -12,10 +16,6 @@ use ozerich\shop\modules\admin\forms\ProductMediaFormConvertor;
 use ozerich\shop\modules\admin\forms\UpdateProductForm;
 use ozerich\shop\modules\admin\forms\UpdateProductFormConvertor;
 use ozerich\shop\traits\ServicesTrait;
-use ozerich\admin\actions\CreateOrUpdateAction;
-use ozerich\admin\actions\DeleteAction;
-use ozerich\admin\actions\ListAction;
-use ozerich\admin\controllers\base\AdminController;
 use yii\web\NotFoundHttpException;
 
 class ProductsController extends AdminController
@@ -55,7 +55,11 @@ class ProductsController extends AdminController
                 'redirectUrl' => '/admin/products',
                 'viewParams' => function ($params) {
                     $model = Product::findOne($params['id']);
-                    $fields = $this->productFieldsService()->getFieldsForProduct($model);
+
+                    $fields = [];
+                    foreach ($model->categories as $category) {
+                        $fields[$category->id] = $this->productFieldsService()->getFieldsForProduct($model, $category);
+                    }
 
                     $convertor = new ProductMediaFormConvertor();
 

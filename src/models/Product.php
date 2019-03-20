@@ -8,7 +8,6 @@ use yii\helpers\Url;
  * This is the model class for table "products".
  *
  * @property int $id
- * @property int $category_id
  * @property string $url_alias
  * @property string $name
  * @property int $image_id
@@ -18,13 +17,14 @@ use yii\helpers\Url;
  * @property boolean $popular
  * @property boolean $is_prices_extended
  *
- * @property Category $category
  * @property Image $image
  * @property Image[] $images
  * @property ProductImage $productImages
  * @property ProductPrice $prices
  * @property ProductFieldValue[] $productFieldValues
  * @property ProductPriceParam[] $productPriceParams
+ * @property ProductCategory[] $productCategories
+ * @property Category[] $categories
  */
 class Product extends \yii\db\ActiveRecord
 {
@@ -42,8 +42,8 @@ class Product extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['category_id', 'url_alias', 'name'], 'required'],
-            [['category_id', 'image_id', 'price', 'popular', 'is_prices_extended'], 'integer'],
+            [['url_alias', 'name'], 'required'],
+            [['image_id', 'price', 'popular', 'is_prices_extended'], 'integer'],
             [['text'], 'safe'],
             [['url_alias', 'name'], 'string', 'max' => 255],
         ];
@@ -56,7 +56,6 @@ class Product extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'category_id' => 'Категория',
             'url_alias' => 'URL алиас',
             'name' => 'Название',
             'image_id' => 'Картинка',
@@ -65,14 +64,6 @@ class Product extends \yii\db\ActiveRecord
             'popular' => 'Популярный товар',
             'is_prices_extended' => 'Расширенный режим цен'
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCategory()
-    {
-        return $this->hasOne(Category::className(), ['id' => 'category_id']);
     }
 
     /**
@@ -105,6 +96,22 @@ class Product extends \yii\db\ActiveRecord
     public function getProductPriceParams()
     {
         return $this->hasMany(ProductPriceParam::className(), ['product_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProductCategories()
+    {
+        return $this->hasMany(ProductCategory::className(), ['product_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCategories()
+    {
+        return $this->hasMany(Category::class, ['id' => 'category_id'])->via('productCategories');
     }
 
     /**

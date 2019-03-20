@@ -16,6 +16,11 @@ class CategoryWidget extends InputWidget
     public $allowEmptyValue = false;
 
     /**
+     * @var bool
+     */
+    public $multiple = false;
+
+    /**
      * @var boolean
      */
     public $placeholder = false;
@@ -30,6 +35,15 @@ class CategoryWidget extends InputWidget
             $result['prompt'] = 'Выберите категорию';
         }
 
+        if ($this->multiple) {
+            $result['multiple'] = true;
+            $result['style'] = 'height: 300px';
+
+            if (isset($result['prompt'])) {
+                unset($result['prompt']);
+            }
+        }
+
         return $result;
     }
 
@@ -41,7 +55,11 @@ class CategoryWidget extends InputWidget
             $result[''] = 'Без категории';
         }
 
-        return array_merge($result, $this->categoriesService()->getTreeAsPlainArray());
+        foreach($this->categoriesService()->getTreeAsPlainArray() as $id => $item){
+            $result[$id] = $item;
+        }
+
+        return $result;
     }
 
     public function run()

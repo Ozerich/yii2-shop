@@ -3,6 +3,7 @@
 namespace ozerich\shop\services\products;
 
 use ozerich\shop\constants\FieldType;
+use ozerich\shop\models\Category;
 use ozerich\shop\models\Field;
 use ozerich\shop\models\Product;
 use ozerich\shop\models\ProductFieldValue;
@@ -12,14 +13,20 @@ class ProductFieldsService
 {
     /**
      * @param Product $product
+     * @param Category|null $category
      * @return ProductField[]
      */
-    public function getFieldsForProduct(Product $product)
+    public function getFieldsForProduct(Product $product, ?Category $category = null)
     {
-        $category = $product->category;
+        $category_ids = $category === null ? array_map(function (Category $category) {
+            return $category->id;
+        }, $product->categories) : [$category->id];
 
-        $fields = Field::find()->andWhere('category_id=:category_id', [':category_id' => $category->id])->all();
+        if(empty($category_ids)){
+            return [];
+        }
 
+        $fields = Field::find()->andWhere('category_id IN (' . implode(',', $category_ids) . ')')->all();
 
         $result = [];
 

@@ -140,6 +140,19 @@ class Category extends \yii\db\ActiveRecord
         return $result;
     }
 
+    public function getFullName()
+    {
+        $items = [$this->name];
+        $parent = $this->parent;
+
+        while ($parent) {
+            $items[] = $parent->name;
+            $parent = $parent->parent;
+        }
+
+        return implode(' ----> ', array_reverse($items));
+    }
+
     public function getProductsCount()
     {
         return Product::find()->andWhere('category_id=:category_id', [':category_id' => $this->id])->count();

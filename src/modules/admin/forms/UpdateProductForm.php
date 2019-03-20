@@ -17,18 +17,26 @@ class UpdateProductForm extends Product
     public $url_alias;
 
     public $category_id;
+
     public $is_prices_extended;
 
     public function rules()
     {
         return [
-            [['name', 'image_id'], 'required'],
+            [['name'], 'required'],
             ['price', 'integer'],
             ['is_prices_extended', 'integer'],
             [['category_id'], 'required'],
             [['text'], 'string'],
             [['url_alias'], 'string', 'max' => 100]
         ];
+    }
+
+    public function attributeLabels()
+    {
+        return array_merge(parent::attributeLabels(), [
+            'category_id' => 'Категории'
+        ]);
     }
 
 }

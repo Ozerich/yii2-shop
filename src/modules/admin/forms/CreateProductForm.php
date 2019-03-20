@@ -25,7 +25,7 @@ class CreateProductForm extends Model
     {
         return [
             'name' => 'Название',
-            'category_id' => 'Категория',
+            'category_id' => 'Категории',
             'image_id' => 'Картинка'
         ];
     }
