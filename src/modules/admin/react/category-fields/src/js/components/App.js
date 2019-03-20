@@ -19,12 +19,6 @@ class App extends Component {
   }
 
   render() {
-    const { loaded, groupFormVisible } = this.props;
-
-    if (!loaded) {
-      return 'Загрузка...';
-    }
-
     return (
         <>
         <GroupsList />
@@ -34,11 +28,5 @@ class App extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    loaded: state.common.loaded,
-    groupFormVisible: state.groupForm.opened
-  }
-}
 
-export default connect(mapStateToProps, { init, loadGroups, loadFields })(App);
+export default connect(null, { init, loadGroups, loadFields })(App);

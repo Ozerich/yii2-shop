@@ -5,6 +5,7 @@ const service = new FieldService;
 const _START = '_START';
 const _SUCCESS = '_SUCCESS';
 const _FAILURE = '_FAILURE';
+const DELETE = 'groups/DELETE';
 
 // Actions
 const LOAD = 'fields/LOAD';
@@ -20,6 +21,9 @@ const initialState = {
 // Reducer
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
+
+    case DELETE + _SUCCESS:
+      return Object.assign({}, state, { entities: state.entities.filter(item => item.id !== action.payload.id) });
 
     case LOAD + _START:
       return Object.assign({}, state, { loading: true, loaded: false });
@@ -55,6 +59,29 @@ export function loadAll(categoryId) {
     }).catch(error => {
       dispatch({
         type: LOAD + _FAILURE,
+        error
+      });
+    });
+  }
+}
+
+
+export function deleteField(groupId) {
+  return dispatch => {
+    dispatch({
+      type: DELETE + _START
+    });
+
+    service.deleteField(groupId).then(data => {
+      dispatch({
+        type: DELETE + _SUCCESS,
+        payload: {
+          id: groupId
+        }
+      });
+    }).catch(error => {
+      dispatch({
+        type: DELETE + _FAILURE,
         error
       });
     });

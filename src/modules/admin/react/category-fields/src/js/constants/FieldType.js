@@ -17,3 +17,12 @@ export function label(type) {
       return 'Неизвестный';
   }
 }
+
+export function values() {
+  return {
+    STRING: label(STRING),
+    INTEGER: label(INTEGER),
+    BOOLEAN: label(BOOLEAN),
+    SELECT: label(SELECT)
+  };
+}

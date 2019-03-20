@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import {label} from "../../constants/FieldType";
+import { label } from "../../constants/FieldType";
+import { showForm } from "../../ducks/field-form";
+import { deleteField } from "../../ducks/fields";
 
 class FieldsListRow extends Component {
   render() {
@@ -19,11 +21,24 @@ class FieldsListRow extends Component {
             {label(model.type)}
           </div>
           <div className="field-list__actions">
-            <button className="field-list__action btn btn-mini btn-primary">Редактировать</button>
-            <button className="field-list__action btn btn-mini btn-danger">Удалить</button>
+            <button className="field-list__action btn btn-mini btn-primary" onClick={this.onEditClick.bind(this)}>
+              Редактировать
+            </button>
+            <button className="field-list__action btn btn-mini btn-danger" onClick={this.onRemoveClick.bind(this)}>
+              Удалить
+            </button>
           </div>
         </div>
     );
+  }
+
+
+  onEditClick() {
+    this.props.showForm(this.props.model.id);
+  }
+
+  onRemoveClick() {
+    this.props.deleteField(this.props.model.id);
   }
 }
 
@@ -37,4 +52,4 @@ function mapStateToProps(state, ownProps) {
   }
 }
 
-export default connect(mapStateToProps)(FieldsListRow);
+export default connect(mapStateToProps, { showForm, deleteField })(FieldsListRow);
