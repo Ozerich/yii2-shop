@@ -3,7 +3,6 @@
 namespace ozerich\shop\modules\admin\forms;
 
 use ozerich\shop\models\Category;
-use ozerich\shop\models\CategoryField;
 use ozerich\shop\traits\ServicesTrait;
 use yii\base\Model;
 

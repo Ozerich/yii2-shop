@@ -3,7 +3,6 @@
 namespace ozerich\shop\services\products;
 
 use ozerich\shop\constants\FieldType;
-use ozerich\shop\models\CategoryField;
 use ozerich\shop\models\Field;
 use ozerich\shop\models\Product;
 use ozerich\shop\models\ProductFieldValue;
@@ -19,18 +18,16 @@ class ProductFieldsService
     {
         $category = $product->category;
 
-        /** @var CategoryField[] $categoryFields */
-        $categoryFields = CategoryField::find()
-            ->andWhere('category_id=:category_id', [':category_id' => $category->id])
-            ->all();
+        $fields = Field::find()->andWhere('category_id=:category_id', [':category_id' => $category->id])->all();
+
 
         $result = [];
 
-        foreach ($categoryFields as $categoryField) {
+        foreach ($fields as $field) {
             $item = new ProductField();
-            $item->setField($categoryField->field);
+            $item->setField($field);
             $item->setValue(ProductFieldValue::find()->select('value')
-                ->andWhere('field_id=:field_id', [':field_id' => $categoryField->field->id])
+                ->andWhere('field_id=:field_id', [':field_id' => $field->id])
                 ->andWhere('product_id=:product_id', [':product_id' => $product->id])
                 ->scalar());
 
