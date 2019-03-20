@@ -11,11 +11,14 @@ use ozerich\shop\models\Product;
 use ozerich\shop\modules\api\models\CategoryDTO;
 use ozerich\shop\modules\api\models\CategoryFullDTO;
 use ozerich\shop\modules\api\models\ProductDTO;
+use ozerich\shop\traits\ServicesTrait;
 use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
 
 class CatalogController extends Controller
 {
+    use ServicesTrait;
+
     public function behaviors()
     {
         $behaviors = parent::behaviors();
@@ -83,7 +86,7 @@ class CatalogController extends Controller
     public function actionProducts($id)
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Product::find()->andWhere('category_id=:category_id', [':category_id' => $id]),
+            'query' =>  $this->productGetService()->getSearchByCategoryQuery($id),
             'pagination' => [
                 'pageSize' => 10000
             ],

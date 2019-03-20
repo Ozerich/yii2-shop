@@ -1,8 +1,14 @@
 <? /**
  * @var \yii\data\ActiveDataProvider $dataProvider
+ * @var \ozerich\shop\modules\admin\filters\FilterProduct $filterModel
  * @var \yii\web\View $this
  */
 $this->title = 'Товары';
+
+$categoryFilter = ['' => 'Все категории'];
+foreach ((new \ozerich\shop\services\categories\CategoriesService())->getTreeAsPlainArray() as $id => $item) {
+    $categoryFilter[$id] = $item;
+}
 ?>
 
 <?php echo ozerich\admin\widgets\ListPage::widget([
@@ -28,7 +34,7 @@ $this->title = 'Товары';
         'category_id' => [
             'header' => 'Категория',
             'format' => 'raw',
-            'filter' => (new \ozerich\shop\services\categories\CategoriesService())->getTreeAsPlainArray(),
+            'filter' => \yii\helpers\Html::dropDownList('FilterProduct[category_id]', $filterModel->category_id, $categoryFilter, ['class' => 'form-control']),
             'value' => function (ozerich\shop\models\Product $product) {
                 return implode('<br/>', array_map(function (\ozerich\shop\models\Category $category) {
                     return $category->getFullName();

@@ -2,6 +2,8 @@
 
 namespace ozerich\shop\models;
 
+use ozerich\shop\traits\ServicesTrait;
+
 /**
  * This is the model class for table "categories".
  *
@@ -21,6 +23,8 @@ namespace ozerich\shop\models;
  */
 class Category extends \yii\db\ActiveRecord
 {
+    use ServicesTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -140,6 +144,9 @@ class Category extends \yii\db\ActiveRecord
         return $result;
     }
 
+    /**
+     * @return string
+     */
     public function getFullName()
     {
         $items = [$this->name];
@@ -153,8 +160,11 @@ class Category extends \yii\db\ActiveRecord
         return implode(' ----> ', array_reverse($items));
     }
 
+    /**
+     * @return int
+     */
     public function getProductsCount()
     {
-        return Product::find()->andWhere('category_id=:category_id', [':category_id' => $this->id])->count();
+        return (int)$this->productGetService()->getSearchByCategoryQuery($this->id)->count();
     }
 }

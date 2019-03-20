@@ -5,12 +5,15 @@ namespace ozerich\shop\traits;
 use ozerich\shop\services\categories\CategoriesService;
 use ozerich\shop\services\products\ProductFieldsService;
 use ozerich\shop\services\products\ProductMediaService;
+use ozerich\shop\services\products\ProductGetService;
 
 trait ServicesTrait
 {
     private $productFieldsService = null;
 
     private $productMediaService = null;
+
+    private $productGetService = null;
 
     private $categoriesService = null;
 
@@ -24,6 +27,18 @@ trait ServicesTrait
         }
 
         return $this->productFieldsService;
+    }
+
+    /**
+     * @return ProductGetService
+     */
+    public function productGetService()
+    {
+        if ($this->productGetService === null) {
+            $this->productGetService = new ProductGetService();
+        }
+
+        return $this->productGetService;
     }
 
     /**
