@@ -21,8 +21,8 @@ class App extends Component {
   render() {
     return (
         <>
-        <GroupsList />
         <FieldsList />
+        <GroupsList />
         </>
     );
   }

@@ -14,6 +14,9 @@ class FieldDTO extends Field implements DTO
             'name' => $this->name,
             'type' => $this->type,
             'group_id' => $this->group_id,
+            'value_suffix' => $this->value_suffix,
+            'value_prefix' => $this->value_prefix,
+            'values' => $this->values
         ];
     }
 }

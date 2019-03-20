@@ -19,10 +19,10 @@ export function label(type) {
 }
 
 export function values() {
-  return {
-    STRING: label(STRING),
-    INTEGER: label(INTEGER),
-    BOOLEAN: label(BOOLEAN),
-    SELECT: label(SELECT)
-  };
+  return [
+    { id: STRING, label: label(STRING) },
+    { id: INTEGER, label: label(INTEGER) },
+    { id: BOOLEAN, label: label(BOOLEAN) },
+    { id: SELECT, label: label(SELECT) },
+  ];
 }

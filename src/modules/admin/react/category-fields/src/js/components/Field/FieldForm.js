@@ -3,11 +3,12 @@ import { connect } from 'react-redux';
 import { Formik } from 'formik';
 import FormInput from "../Form/FormInput";
 import FormSelect from "../Form/FormSelect";
+import FormArea from "../Form/FormArea";
 import FormActions from "../Form/FormActions";
 
 import { create, hideForm, save } from "../../ducks/field-form";
 
-import { values as fieldTypeValues } from "../../constants/FieldType";
+import { INTEGER, SELECT, values as fieldTypeValues } from "../../constants/FieldType";
 
 class FieldForm extends Component {
   render() {
@@ -20,15 +21,57 @@ class FieldForm extends Component {
                 <form onSubmit={handleSubmit}>
                   <FormInput id="name" name="name" label="Название поля" handleChange={handleChange}
                              value={values.name} />
+                  <FormSelect id="group_id" name="group_id" items={this.getGroups()} label="Группа полей"
+                              handleChange={handleChange}
+                              value={values.group_id} />
                   <FormSelect id="type" name="type" items={fieldTypeValues()} label="Тип поля"
                               handleChange={handleChange}
                               value={values.type} />
+                  {this.renderAdditionalFields(handleChange, values)}
                   <FormActions onCancel={this.onCancel.bind(this)} />
                 </form>
             )}
           </Formik>
         </div>
     );
+  }
+
+  renderAdditionalFields(handleChange, values) {
+    switch (values.type) {
+      case SELECT:
+        return (
+            <>
+            <FormArea id="values" name="values" label="Значения" handleChange={handleChange} value={values.values} />
+            </>
+        );
+      case INTEGER:
+        return (
+            <div className="row">
+              <div className="col-xs-6">
+                <FormInput id="value_prefix" name="value_prefix" label="Префикс значения" handleChange={handleChange}
+                           value={values.value_prefix} />
+              </div>
+              <div className="col-xs-6">
+                <FormInput id="value_suffix" name="value_suffix" label="Суффикс значения" handleChange={handleChange}
+                           value={values.value_suffix} />
+              </div>
+            </div>
+        );
+      default:
+        return null;
+    }
+  }
+
+  getGroups() {
+    const { groups } = this.props;
+
+    const result = [{ id: null, label: 'Без группы' }];
+
+    groups.forEach(group => {
+      result.push({ id: +group.id, label: group.name });
+    });
+
+    return result;
   }
 
   onCancel() {
@@ -38,9 +81,14 @@ class FieldForm extends Component {
   onSubmit(values) {
     const { create, save, modelId } = this.props;
 
+
     const model = {
       name: values.name,
-      type: values.type
+      type: values.type,
+      group_id: values.group_id ? parseInt(values.group_id) : null,
+      value_prefix: values.value_prefix,
+      value_suffix: values.value_suffix,
+      values: Array.isArray(values.values) ? values.values : values.values.split("\n")
     };
 
     modelId ? save(modelId, model) : create(model);
@@ -54,6 +102,7 @@ function mapStateToProps(state) {
 
   return {
     modelId: state.fieldForm.modelId,
+    groups: state.groups.entities,
     model: model
   };
 }

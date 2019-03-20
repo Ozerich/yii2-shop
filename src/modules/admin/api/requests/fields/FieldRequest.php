@@ -12,11 +12,19 @@ class FieldRequest extends RequestModel
 
     public $group_id;
 
+    public $value_suffix;
+
+    public $value_prefix;
+
+    public $values;
+
     public function rules()
     {
         return [
             [['name', 'type'], 'required'],
-            ['group_id', 'integer']
+            ['group_id', 'integer'],
+            [['value_suffix', 'value_prefix'], 'string'],
+            ['values', 'safe']
         ];
     }
 }

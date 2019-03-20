@@ -4,6 +4,7 @@ namespace ozerich\shop\modules\admin\controllers;
 
 use ozerich\api\controllers\Controller;
 use ozerich\api\filters\AccessControl;
+use ozerich\api\request\InvalidRequestException;
 use ozerich\api\response\CollectionResponse;
 use ozerich\api\response\ModelResponse;
 use ozerich\shop\models\Category;
@@ -97,6 +98,9 @@ class FieldsController extends Controller
         $model = new Field();
         $model->name = $request->name;
         $model->type = $request->type;
+        $model->value_suffix = $request->value_suffix;
+        $model->value_prefix = $request->value_prefix;
+        $model->values = $request->values;
         $model->group_id = $request->group_id;
         $model->category_id = $category->id;
         $model->save();
@@ -117,8 +121,14 @@ class FieldsController extends Controller
 
         $model->name = $request->name;
         $model->type = $request->type;
+        $model->value_suffix = $request->value_suffix;
+        $model->value_prefix = $request->value_prefix;
+        $model->values = $request->values;
         $model->group_id = $request->group_id;
-        $model->save();
+
+        if (!$model->save()) {
+            throw new NotFoundHttpException(print_r($model->getErrors(), true));
+        }
 
         return new ModelResponse($model, FieldDTO::class);
     }
