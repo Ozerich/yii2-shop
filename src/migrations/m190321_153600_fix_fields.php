@@ -37,8 +37,18 @@ class m190321_153600_fix_fields extends Migration
             $map[$category_field['category_id']][] = $category_field['field_id'];
         }
 
+        $migrate_field_map = [];
+
         foreach ($map as $category_id => $field_ids) {
             foreach ($field_ids as $field_id) {
+                if (!isset($migrate_field_map[$field_id])) {
+                    $migrate_field_map[$field_id] = [];
+                }
+
+                if (!isset($migrate_field_map[$field_id][$category_id])) {
+                    $migrate_field_map[$field_id[$category_id]] = null;
+                }
+
                 $field = $fields_map[$field_id];
 
                 $field_group_id = null;
@@ -70,8 +80,45 @@ class m190321_153600_fix_fields extends Migration
                 $new_item['group_id'] = $field_group_id;
 
                 $this->insert('{{%fields}}', $new_item);
+
+                $field_new_id = $this->db->createCommand('SELECT id from fields WHERE category_id = :category_id AND name=:name ORDER by id desc LIMIT 0, 1', [
+                    ':category_id' => $category_id,
+                    ':name' => $new_item['name']
+                ])->queryScalar();
+
+                $migrate_field_map[$field_id][$category_id] = $field_new_id;
             }
         }
+
+        $products_map = [];
+        $products = $this->db->createCommand('SELECT id, category_id FROM products')->queryAll();
+        foreach ($products as $product) {
+            $products_map[$product['id']] = $product['category_id'];
+        }
+
+        $new_items = [];
+        $values = $this->db->createCommand('SELECT * FROM product_field_values')->queryAll();
+        foreach ($values as $value) {
+            $category_id = $products_map[$value['product_id']];
+            $new_field_id = $migrate_field_map[$value['field_id']][$category_id];
+            if (!$new_field_id) {
+                continue;
+            }
+            $new_items[] = [
+                'product_id' => $value['product_id'],
+                'field_id' => $new_field_id,
+                'value' => $value['value']
+            ];
+        }
+
+        $this->truncateTable('{{%product_field_values}}');
+        foreach ($new_items as $item) {
+            $this->insert('{{%product_field_values}}', $item);
+        }
+
+
+        $this->db->createCommand('DELETE FROM field_groups WHERE category_id is null');
+        $this->db->createCommand('DELETE FROM fields WHERE category_id is null');
 
         $this->dropForeignKey('category_fields_category', '{{%category_fields}}');
         $this->dropForeignKey('category_fields_field', '{{%category_fields}}');
