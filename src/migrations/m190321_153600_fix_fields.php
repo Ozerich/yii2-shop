@@ -117,8 +117,8 @@ class m190321_153600_fix_fields extends Migration
         }
 
 
-        $this->db->createCommand('DELETE FROM field_groups WHERE category_id is null');
-        $this->db->createCommand('DELETE FROM fields WHERE category_id is null');
+        $this->db->createCommand('DELETE FROM field_groups WHERE category_id is null')->execute();
+        $this->db->createCommand('DELETE FROM fields WHERE category_id is null')->execute();
 
         $this->dropForeignKey('category_fields_category', '{{%category_fields}}');
         $this->dropForeignKey('category_fields_field', '{{%category_fields}}');
