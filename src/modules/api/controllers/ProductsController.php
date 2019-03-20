@@ -36,8 +36,8 @@ class ProductsController extends Controller
     public function actionIndex($id)
     {
         /** @var Product $product */
-        $product = Product::find()
-            ->andWhere('products.id=:id', [':id' => $id])
+        $product = Product::find()->andWhere('products.id=:id', [':id' => $id])
+            ->joinWith('productCategories')
             ->joinWith('productFieldValues')
             ->joinWith('images')
             ->one();
