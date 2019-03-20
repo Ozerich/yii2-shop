@@ -13,11 +13,13 @@ use ozerich\shop\constants\FieldType;
  * @property string[] $values
  * @property integer $group_id
  * @property integer $image_id
+ * @property integer $category_id
  * @property string $value_suffix
  * @property string $value_prefix
  *
  * @property FieldGroup $group
  * @property Image $image
+ * @property Category $category
  */
 class Field extends \yii\db\ActiveRecord
 {
@@ -62,6 +64,11 @@ class Field extends \yii\db\ActiveRecord
     public function getGroup()
     {
         return $this->hasOne(FieldGroup::class, ['id' => 'group_id']);
+    }
+
+    public function getCategory()
+    {
+        return $this->hasOne(Category::class, ['id' => 'category_id']);
     }
 
     public function getImage()
