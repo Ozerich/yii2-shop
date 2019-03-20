@@ -3,25 +3,25 @@ const INIT = 'common/INIT';
 
 const initialState = {
   loaded: false,
-  productId: false
+  categoryId: false
 };
 
 // Reducer
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
     case INIT:
-      return Object.assign({}, state, { productId: action.payload.productId, loaded: true });
+      return Object.assign({}, state, { categoryId: action.payload.categoryId, loaded: true });
     default:
       return state;
   }
 }
 
 // Action Creators
-export function init(productId) {
+export function init(categoryId) {
   return {
     type: INIT,
     payload: {
-      productId
+      categoryId
     }
   };
 }

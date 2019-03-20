@@ -46,20 +46,20 @@ class m190321_153600_fix_fields extends Migration
                     $found = $this->db->createCommand('SELECT * FROM field_groups WHERE id = ' . $field['group_id'])->queryOne();
 
                     $found_by_category = $this->db->createCommand('SELECT id FROM field_groups WHERE name=:name AND category_id=:category_id', [
-                        ':name' => $field['name'],
-                        ':category_id' => $field['category_id'],
+                        ':name' => $found['name'],
+                        ':category_id' => $category_id,
                     ])->queryOne();
 
                     if (!$found_by_category) {
                         unset($found['id']);
                         $found['category_id'] = $category_id;
                         $this->insert('{{%field_groups}}', $found);
-                    }
 
-                    $found_by_category = $this->db->createCommand('SELECT id FROM field_groups WHERE name=:name AND category_id=:category_id', [
-                        ':name' => $field['name'],
-                        ':category_id' => $field['category_id'],
-                    ])->queryOne();
+                        $found_by_category = $this->db->createCommand('SELECT id FROM field_groups WHERE name=:name AND category_id=:category_id', [
+                            ':name' => $found['name'],
+                            ':category_id' => $category_id,
+                        ])->queryOne();
+                    }
 
                     $field_group_id = $found_by_category['id'];
                 }

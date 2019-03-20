@@ -1,111 +1,83 @@
-.section {
-  &:last-child {
-    border-bottom: 0 none;
-    margin-bottom: 0;
+.field-list {
+
+  &__name {
+    flex: 1;
   }
 
-  &-header {
-    border-bottom: 1px solid #aaa;
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
+  &__type, &__group {
+    flex-basis: 200px;
+    width: 200px;
+    max-width: 200px;
   }
-
-  &-title {
-    font-weight: bold;
-    font-size: 24px;
-  }
-
-  &-content {
-    padding: 10px 5px;
-  }
-}
-
-.param-form {
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 20px;
 
   &__actions {
+    flex-basis: 250px;
+    width: 250px;
+    max-width: 250px;
     display: flex;
-    justify-content: space-between;
   }
-}
 
-.param {
-  margin: 10px auto 20px;
-  border-bottom: 1px dashed #aaa;
-  &:last-child {
-    margin-bottom: 10px;
-    border-bottom: 0;
-  }
-  padding: 0 20px 10px;
-  &-title {
-    display: flex;
-    justify-content: space-between;
-
-    &__value {
-      font-style: italic;
-      font-size: 18px;
+  &__action {
+    margin-right: 5px;
+    &:last-child {
+      margin-right: 0;
     }
 
-    &__actions {
-      .param-edit {
-        margin-right: 10px;
-        display: inline-block;
+    line-height: 16px;
+    font-size: 12px;
+    font-weight: normal;
+    color: #fff;
+    border: 0 none;
+
+    &--edit {
+      background: #86a4c7;
+      &:hover {
+        background: darken(#86a4c7, 10%);
       }
     }
 
-    margin-bottom: 10px;
-  }
-
-  table {
-    width: 100%;
-    td, th {
-      border: 1px solid #eee;
-      text-align: center;
-      padding: 5px;
+    &--delete {
+      background: #dd777b;
+      &:hover {
+        background: darken(#dd777b, 10%);
+      }
     }
-  }
-
-  &-cell {
-    &__delete {
-      width: 80px;
-    }
-  }
-
-  &-delete {
-    background: transparent;
-    border: 0 none;
-    color: red;
-  }
-
-  &-footer {
-    text-align: center;
-    padding-top: 10px;
   }
 }
 
-.prices-table {
-  width: 100%;
-  border-collapse: collapse;
+.list {
+  margin: 0 0 20px;
 
-  caption {
-    text-align: center;
+  &-title {
+    padding: 0 10px;
+    font-size: 20px;
     font-weight: bold;
-    color: #000;
-    font-size: 24px;
+    background: #eee;
+    line-height: 45px;
+    display: block;
+    margin: 0 -10px;
   }
 
-  td, th {
-    border: 1px solid #eee;
-    text-align: center;
-    padding: 5px;
-  }
+  &-row {
+    display: flex;
+    padding: 10px 0;
+    align-items: center;
 
-  input {
-    width: 80px;
-    text-align: center;
-    display: inline-block;
+    border-bottom: 1px dashed #eee;
+
+    &--header {
+      font-weight: bold;
+      font-size: 14px;
+    }
+  }
+}
+
+.create-button-row {
+  margin: 20px 0;
+  text-align: center;
+
+  .btn {
+    line-height: 16px;
+    font-size: 12px;
   }
 }

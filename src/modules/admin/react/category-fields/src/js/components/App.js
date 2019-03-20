@@ -2,12 +2,20 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { init } from "../ducks/common";
+import { loadAll as loadFields } from "../ducks/fields";
+import { loadAll as loadGroups } from "../ducks/groups";
+
+import FieldsList from '../components/Field/FieldsList';
+import GroupsList from '../components/Group/GroupsList';
 
 class App extends Component {
-  componentWillMount() {
-    const { init, productId } = this.props;
+  async componentWillMount() {
+    const { init, categoryId, loadGroups, loadFields } = this.props;
 
-    init(productId);
+    init(categoryId);
+
+    await loadGroups(categoryId);
+    loadFields(categoryId);
   }
 
   render() {
@@ -19,7 +27,8 @@ class App extends Component {
 
     return (
         <>
-        <h1>Hello</h1>
+        <GroupsList />
+        <FieldsList />
         </>
     );
   }
@@ -31,4 +40,4 @@ function mapStateToProps(state, ownProps) {
   }
 }
 
-export default connect(mapStateToProps, { init })(App);
+export default connect(mapStateToProps, { init, loadGroups, loadFields })(App);

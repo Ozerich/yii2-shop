@@ -2,65 +2,70 @@
 
 namespace ozerich\shop\modules\admin\controllers;
 
-use ozerich\shop\models\Field;
-use ozerich\shop\models\FieldGroup;
-use ozerich\admin\actions\CreateOrUpdateAction;
-use ozerich\admin\actions\DeleteAction;
-use ozerich\admin\actions\ListAction;
-use ozerich\admin\controllers\base\AdminController;
+use ozerich\api\controllers\Controller;
+use ozerich\api\filters\AccessControl;
+use ozerich\api\response\CollectionResponse;
+use ozerich\shop\models\Category;
+use ozerich\shop\modules\admin\api\models\FieldDTO;
+use ozerich\shop\modules\admin\api\models\FieldGroupDTO;
+use yii\data\ActiveDataProvider;
+use yii\web\NotFoundHttpException;
 
-class FieldsController extends AdminController
+class FieldsController extends Controller
 {
-    public function actions()
+    public function getAllowedOrigins()
     {
-        return [
-            'index' => [
-                'class' => ListAction::class,
-                'query' => Field::find(),
-                'view' => 'index'
-            ],
-            'create' => [
-                'class' => CreateOrUpdateAction::class,
-                'modelClass' => Field::class,
-                'isCreate' => true,
-                'view' => 'form',
-                'redirectUrl' => '/admin/fields'
-            ],
-            'update' => [
-                'class' => CreateOrUpdateAction::class,
-                'modelClass' => Field::class,
-                'isCreate' => false,
-                'view' => 'form',
-                'redirectUrl' => '/admin/fields'
-            ],
-            'delete' => [
-                'class' => DeleteAction::class,
-                'modelClass' => Field::class
-            ],
+        return '*';
+    }
 
-            'groups' => [
-                'class' => ListAction::class,
-                'query' => FieldGroup::find(),
-                'view' => 'groups/index'
-            ],
-            'create-group' => [
-                'class' => CreateOrUpdateAction::class,
-                'modelClass' => FieldGroup::class,
-                'isCreate' => true,
-                'view' => 'groups/form',
-                'redirectUrl' => '/admin/fields/groups'
-            ],
-            'update-group' => [
-                'class' => CreateOrUpdateAction::class,
-                'modelClass' => FieldGroup::class,
-                'isCreate' => false,
-                'view' => 'groups/form',
-                'redirectUrl' => '/admin/fields/groups'
-            ],
-            'delete-group' => [
-                'class' => DeleteAction::class,
-                'modelClass' => FieldGroup::class
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+
+        $behaviors['access'] = [
+            'class' => AccessControl::class,
+            'rules' => [
+                [
+                    'action' => 'groups',
+                    'verbs' => ['GET']
+                ],
+                [
+                    'action' => 'index',
+                    'verbs' => ['GET']
+                ]
             ]
         ];
+
+        return $behaviors;
+    }
+
+    public function actionIndex($id)
+    {
+        /** @var Category $category */
+        $category = Category::findOne($id);
+        if (!$category) {
+            throw new NotFoundHttpException('Категории не найдено');
+        }
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $category->getFields()
+        ]);
+
+        return new CollectionResponse($dataProvider, FieldDTO::class);
+    }
+
+    public function actionGroups($id)
+    {
+        /** @var Category $category */
+        $category = Category::findOne($id);
+        if (!$category) {
+            throw new NotFoundHttpException('Категории не найдено');
+        }
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $category->getFieldGroups()
+        ]);
+
+        return new CollectionResponse($dataProvider, FieldGroupDTO::class);
     }
 }

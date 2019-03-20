@@ -16,6 +16,8 @@ namespace ozerich\shop\models;
  * @property Image $image
  * @property Category $parent
  * @property Category[] $categories
+ * @property Field[] $fields
+ * @property FieldGroup[] $fieldGroups
  */
 class Category extends \yii\db\ActiveRecord
 {
@@ -79,6 +81,22 @@ class Category extends \yii\db\ActiveRecord
     public function getCategories()
     {
         return $this->hasMany(Category::className(), ['parent_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFields()
+    {
+        return $this->hasMany(Field::className(), ['category_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFieldGroups()
+    {
+        return $this->hasMany(FieldGroup::className(), ['category_id' => 'id']);
     }
 
     /**

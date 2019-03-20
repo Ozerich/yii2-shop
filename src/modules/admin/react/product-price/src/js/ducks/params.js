@@ -1,7 +1,6 @@
 import ParamsService from '../services/params';
 import ParamItemsService from '../services/param-items';
 
-
 const _START = '_START';
 const _SUCCESS = '_SUCCESS';
 const _FAILURE = '_FAILURE';
