@@ -38,7 +38,7 @@ class CategoryWidget extends InputWidget
         $result = [];
 
         if ($this->allowEmptyValue) {
-            $result[] = 'Без категории';
+            $result[''] = 'Без категории';
         }
 
         return array_merge($result, $this->categoriesService()->getTreeAsPlainArray());

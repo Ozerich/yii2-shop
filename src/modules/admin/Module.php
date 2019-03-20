@@ -24,24 +24,6 @@ class Module extends \ozerich\admin\Module
             'icon' => 'book'
         ],
         [
-            'id' => 'fields',
-            'link' => '/fields',
-            'label' => 'Поля',
-            'icon' => 'book',
-            'submenu' => [
-                [
-                    'id' => 'fields',
-                    'link' => '/fields',
-                    'label' => 'Поля',
-                ],
-                [
-                    'id' => 'fields',
-                    'link' => '/fields/groups',
-                    'label' => 'Группы полей',
-                ],
-            ]
-        ],
-        [
             'id' => 'pages',
             'link' => '/pages',
             'label' => 'Страницы',

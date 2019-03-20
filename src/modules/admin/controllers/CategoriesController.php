@@ -27,26 +27,16 @@ class CategoriesController extends AdminController
             'create' => [
                 'class' => CreateOrUpdateAction::class,
                 'modelClass' => Category::class,
-                'formClass' => CategoryForm::class,
-                'formConvertor' => CategoryFormConvertor::class,
                 'isCreate' => true,
-                'view' => 'form',
-                'redirectUrl' => '/admin/categories',
-                'files' => [
-                    'image_id' => 'category'
-                ]
+                'view' => 'create',
+                'redirectUrl' => '/admin/categories'
             ],
             'update' => [
                 'class' => CreateOrUpdateAction::class,
                 'modelClass' => Category::class,
-                'formClass' => CategoryForm::class,
-                'formConvertor' => CategoryFormConvertor::class,
                 'isCreate' => false,
-                'view' => 'form',
-                'redirectUrl' => '/admin/categories',
-                'files' => [
-                    'image_id' => 'category'
-                ]
+                'view' => 'update',
+                'redirectUrl' => '/admin/categories'
             ],
             'delete' => [
                 'class' => DeleteAction::class,

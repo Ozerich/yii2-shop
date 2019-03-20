@@ -38,12 +38,6 @@ $this->title = $model->isNewRecord ? 'Создать категорию' : 'Ре
   </div>
 
   <div class="col-xs-12">
-      <?= $form->field($formModel, 'field_ids')->checkboxList(
-          \yii\helpers\ArrayHelper::map(ozerich\shop\models\Field::find()->all(), 'id', 'name')
-      ) ?>
-  </div>
-
-  <div class="col-xs-12">
       <?= $form->field($formModel, 'text')->widget(\ozerich\admin\widgets\TinyMce::class); ?>
   </div>
 

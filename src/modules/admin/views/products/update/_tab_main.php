@@ -1,8 +1,5 @@
 <?php $form = \yii\widgets\ActiveForm::begin([
-    'enableClientValidation' => false,
-    'options' => [
-        'enctype' => 'multipart/form-data'
-    ]
+    'enableClientValidation' => false
 ]); ?>
 
   <div class="row">

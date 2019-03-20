@@ -21,11 +21,6 @@ class CategoryFormConvertor extends Model
         $form->image_id = $category->image_id;
         $form->text = $category->text;
 
-        $form->field_ids = CategoryField::find()
-            ->andWhere('category_id=:category_id', [':category_id' => $category->id])
-            ->select('field_id')
-            ->column();
-
         return $form;
     }
 
@@ -40,19 +35,6 @@ class CategoryFormConvertor extends Model
         $model->save();
 
         $this->categoriesService()->updateCategoryLevel($model);
-
-        CategoryField::deleteAll(['category_id' => $model->id]);
-
-        if ($form->field_ids) {
-            foreach ($form->field_ids as $field) {
-                $fieldModel = new CategoryField();
-
-                $fieldModel->field_id = $field;
-                $fieldModel->category_id = $model->id;
-
-                $fieldModel->save();
-            }
-        }
 
         return true;
     }

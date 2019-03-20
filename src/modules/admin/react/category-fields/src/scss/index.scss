@@ -1,0 +1,111 @@
+.section {
+  &:last-child {
+    border-bottom: 0 none;
+    margin-bottom: 0;
+  }
+
+  &-header {
+    border-bottom: 1px solid #aaa;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &-title {
+    font-weight: bold;
+    font-size: 24px;
+  }
+
+  &-content {
+    padding: 10px 5px;
+  }
+}
+
+.param-form {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+
+  &__actions {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.param {
+  margin: 10px auto 20px;
+  border-bottom: 1px dashed #aaa;
+  &:last-child {
+    margin-bottom: 10px;
+    border-bottom: 0;
+  }
+  padding: 0 20px 10px;
+  &-title {
+    display: flex;
+    justify-content: space-between;
+
+    &__value {
+      font-style: italic;
+      font-size: 18px;
+    }
+
+    &__actions {
+      .param-edit {
+        margin-right: 10px;
+        display: inline-block;
+      }
+    }
+
+    margin-bottom: 10px;
+  }
+
+  table {
+    width: 100%;
+    td, th {
+      border: 1px solid #eee;
+      text-align: center;
+      padding: 5px;
+    }
+  }
+
+  &-cell {
+    &__delete {
+      width: 80px;
+    }
+  }
+
+  &-delete {
+    background: transparent;
+    border: 0 none;
+    color: red;
+  }
+
+  &-footer {
+    text-align: center;
+    padding-top: 10px;
+  }
+}
+
+.prices-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  caption {
+    text-align: center;
+    font-weight: bold;
+    color: #000;
+    font-size: 24px;
+  }
+
+  td, th {
+    border: 1px solid #eee;
+    text-align: center;
+    padding: 5px;
+  }
+
+  input {
+    width: 80px;
+    text-align: center;
+    display: inline-block;
+  }
+}
