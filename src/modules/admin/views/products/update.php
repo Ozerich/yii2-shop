@@ -4,7 +4,7 @@
  * @var ozerich\shop\structures\ProductField[] $fields
  * @var ozerich\shop\models\Product $model
  * @var ozerich\shop\modules\admin\forms\UpdateProductForm $formModel
- * @var ozerich\shop\modules\admin\forms\ProductSeoForm $seoModelForm
+ * @var ozerich\shop\modules\admin\forms\ProductSeoForm $seoFormModel
  * @var ozerich\shop\modules\admin\forms\ProductMediaForm $mediaForm
  */
 
