@@ -13,6 +13,8 @@ use ozerich\shop\modules\admin\forms\CreateProductForm;
 use ozerich\shop\modules\admin\forms\CreateProductFormConvertor;
 use ozerich\shop\modules\admin\forms\ProductMediaForm;
 use ozerich\shop\modules\admin\forms\ProductMediaFormConvertor;
+use ozerich\shop\modules\admin\forms\ProductSeoForm;
+use ozerich\shop\modules\admin\forms\ProductSeoFormConvertor;
 use ozerich\shop\modules\admin\forms\UpdateProductForm;
 use ozerich\shop\modules\admin\forms\UpdateProductFormConvertor;
 use ozerich\shop\traits\ServicesTrait;
@@ -61,14 +63,24 @@ class ProductsController extends AdminController
                         $fields[$category->id] = $this->productFieldsService()->getFieldsForProduct($model, $category);
                     }
 
-                    $convertor = new ProductMediaFormConvertor();
-
                     return [
                         'fields' => $fields,
-                        'mediaForm' => $convertor->loadFormFromModel($model)
+                        'mediaForm' => (new ProductMediaFormConvertor())->loadFormFromModel($model),
+                        'seoFormModel' => (new ProductSeoFormConvertor())->loadFormFromModel($model)
                     ];
                 },
             ],
+
+            'save-seo' => [
+                'class' => CreateOrUpdateAction::class,
+                'modelClass' => Product::class,
+                'formClass' => ProductSeoForm::class,
+                'formConvertor' => ProductSeoFormConvertor::class,
+                'isCreate' => false,
+                'redirectUrl' => '/admin/products',
+                'view' => null
+            ],
+
             'delete' => [
                 'class' => DeleteAction::class,
                 'modelClass' => Product::class

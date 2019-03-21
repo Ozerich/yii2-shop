@@ -2,13 +2,13 @@
 
 namespace ozerich\shop\modules\admin\controllers;
 
-use ozerich\shop\models\Category;
-use ozerich\shop\modules\admin\forms\CategoryForm;
-use ozerich\shop\modules\admin\forms\CategoryFormConvertor;
 use ozerich\admin\actions\CreateOrUpdateAction;
 use ozerich\admin\actions\DeleteAction;
 use ozerich\admin\actions\ListAction;
 use ozerich\admin\controllers\base\AdminController;
+use ozerich\shop\models\Category;
+use ozerich\shop\modules\admin\forms\CategorySeoForm;
+use ozerich\shop\modules\admin\forms\CategorySeoFormConvertor;
 use ozerich\shop\traits\ServicesTrait;
 
 class CategoriesController extends AdminController
@@ -36,7 +36,21 @@ class CategoriesController extends AdminController
                 'modelClass' => Category::class,
                 'isCreate' => false,
                 'view' => 'update',
-                'redirectUrl' => '/admin/categories'
+                'redirectUrl' => '/admin/categories',
+                'viewParams' => function ($params) {
+                    return [
+                        'seoFormModel' => (new CategorySeoFormConvertor())->loadFormFromModel(Category::findOne($params['id']))
+                    ];
+                }
+            ],
+            'save-seo' => [
+                'class' => CreateOrUpdateAction::class,
+                'modelClass' => Category::class,
+                'formClass' => CategorySeoForm::class,
+                'formConvertor' => CategorySeoFormConvertor::class,
+                'isCreate' => false,
+                'redirectUrl' => '/admin/categories',
+                'view' => null
             ],
             'delete' => [
                 'class' => DeleteAction::class,

@@ -84,12 +84,18 @@ class ProductFullDTO extends Product implements DTO
             'video' => $this->video,
             'text' => $this->text,
             'params' => $this->getParamsJSON(),
+
             'images' => array_map(function (Image $image) {
                 return [
                     'small' => $image->getUrl('gallery-preview'),
                     'big' => $image->getUrl()
                 ];
-            }, $this->images)
+            }, $this->images),
+
+            'h1_value' => empty($this->h1_value) ? $this->name : $this->h1_value,
+            'seo_title' => empty($this->seo_title) ? $this->name : $this->seo_title,
+            'seo_description' => $this->seo_description,
+            'seo_image' => $this->image ? $this->image->getUrl() : null,
         ];
     }
 }

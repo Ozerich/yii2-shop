@@ -16,6 +16,9 @@ use yii\helpers\Url;
  * @property string $video
  * @property boolean $popular
  * @property boolean $is_prices_extended
+ * @property string $h1_value
+ * @property string $seo_title
+ * @property string $seo_description
  *
  * @property Image $image
  * @property Image[] $images
@@ -46,6 +49,9 @@ class Product extends \yii\db\ActiveRecord
             [['image_id', 'price', 'popular', 'is_prices_extended'], 'integer'],
             [['text'], 'safe'],
             [['url_alias', 'name'], 'string', 'max' => 255],
+
+            [['h1_value', 'seo_title'], 'string', 'max' => 255],
+            [['seo_description'], 'string']
         ];
     }
 
@@ -62,7 +68,10 @@ class Product extends \yii\db\ActiveRecord
             'price' => 'Цена',
             'text' => 'Текстовое описание',
             'popular' => 'Популярный товар',
-            'is_prices_extended' => 'Расширенный режим цен'
+            'is_prices_extended' => 'Расширенный режим цен',
+            'h1_value' => 'Значение H1',
+            'seo_title' => 'Заголовок страницы',
+            'seo_description' => 'META описание',
         ];
     }
 

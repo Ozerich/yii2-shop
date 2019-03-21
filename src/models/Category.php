@@ -14,6 +14,9 @@ use ozerich\shop\traits\ServicesTrait;
  * @property string $name
  * @property string $image_id
  * @property string $text
+ * @property string $h1_value
+ * @property string $seo_title
+ * @property string $seo_description
  *
  * @property Image $image
  * @property Category $parent
@@ -45,7 +48,10 @@ class Category extends \yii\db\ActiveRecord
             [['text'], 'safe'],
             [['parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['parent_id' => 'id']],
 
-            [['url_alias'], 'filter', 'filter' => 'trim']
+            [['url_alias'], 'filter', 'filter' => 'trim'],
+
+            [['h1_value', 'seo_title'], 'string', 'max' => 255],
+            [['seo_description'], 'string']
         ];
     }
 
@@ -61,7 +67,10 @@ class Category extends \yii\db\ActiveRecord
             'name' => 'Имя',
             'image_id' => 'Картинка',
             'image' => 'Картинка',
-            'text' => 'Текст'
+            'text' => 'Текст',
+            'h1_value' => 'Значение H1',
+            'seo_title' => 'Заголовок страницы',
+            'seo_description' => 'META описание',
         ];
     }
 

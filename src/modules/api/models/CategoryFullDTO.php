@@ -2,8 +2,8 @@
 
 namespace ozerich\shop\modules\api\models;
 
-use ozerich\shop\models\Category;
 use ozerich\api\interfaces\DTO;
+use ozerich\shop\models\Category;
 
 class CategoryFullDTO extends Category implements DTO
 {
@@ -15,9 +15,15 @@ class CategoryFullDTO extends Category implements DTO
             'url_alias' => $this->url_alias,
             'image' => $this->image ? $this->image->getUrl() : null,
             'text' => $this->text,
+
             'children' => array_map(function (Category $category) {
                 return (new CategoryDTO($category))->toJSON();
-            }, $this->categories)
+            }, $this->categories),
+
+            'h1_value' => empty($this->h1_value) ? $this->name : $this->h1_value,
+            'seo_title' => empty($this->seo_title) ? $this->name : $this->seo_title,
+            'seo_description' => $this->seo_description,
+            'seo_image' => $this->image ? $this->image->getUrl() : null,
         ];
     }
 }

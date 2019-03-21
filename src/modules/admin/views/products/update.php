@@ -4,6 +4,7 @@
  * @var ozerich\shop\structures\ProductField[] $fields
  * @var ozerich\shop\models\Product $model
  * @var ozerich\shop\modules\admin\forms\UpdateProductForm $formModel
+ * @var ozerich\shop\modules\admin\forms\ProductSeoForm $seoModelForm
  * @var ozerich\shop\modules\admin\forms\ProductMediaForm $mediaForm
  */
 
@@ -15,6 +16,7 @@ $this->title = 'Редактировать товар'
     <li class="active"><a href="#main" data-toggle="tab">Основные параметры</a></li>
     <li><a href="#params" data-toggle="tab">Характеристики</a></li>
     <li><a href="#media" data-toggle="tab">Медиа</a></li>
+    <li><a href="#seo" data-toggle="tab">SEO параметры</a></li>
       <? if ($model->is_prices_extended): ?>
         <li><a href="#prices" data-toggle="tab">Цены</a></li>
       <? endif; ?>
@@ -35,6 +37,12 @@ $this->title = 'Редактировать товар'
         <?= $this->render('update/_tab_media', [
             'model' => $model,
             'formModel' => $mediaForm
+        ]); ?>
+    </div>
+    <div class="tab-pane" id="seo">
+        <?= $this->render('update/_tab_seo', [
+            'model' => $model,
+            'formModel' => $seoFormModel
         ]); ?>
     </div>
       <? if ($model->is_prices_extended): ?>

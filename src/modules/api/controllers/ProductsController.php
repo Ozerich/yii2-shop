@@ -2,12 +2,12 @@
 
 namespace ozerich\shop\modules\api\controllers;
 
-use ozerich\shop\models\Product;
-use ozerich\shop\modules\api\models\ProductFullDTO;
-use ozerich\shop\modules\api\responses\products\PricesResponse;
 use ozerich\api\controllers\Controller;
 use ozerich\api\filters\AccessControl;
 use ozerich\api\response\ModelResponse;
+use ozerich\shop\models\Product;
+use ozerich\shop\modules\api\models\ProductFullDTO;
+use ozerich\shop\modules\api\responses\products\PricesResponse;
 use yii\web\NotFoundHttpException;
 
 class ProductsController extends Controller

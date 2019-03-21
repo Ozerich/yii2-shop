@@ -2,8 +2,8 @@
 
 namespace ozerich\shop\modules\api\models;
 
-use ozerich\shop\models\Page;
 use ozerich\api\interfaces\DTO;
+use ozerich\shop\models\Page;
 
 class PageDTO extends Page implements DTO
 {
@@ -12,7 +12,11 @@ class PageDTO extends Page implements DTO
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'url' => $this->url
+            'url' => $this->url,
+
+            'seo_title' => empty($this->meta_title) ? $this->meta_title : null,
+            'seo_description' => $this->meta_description,
+            'seo_image' => $this->metaImage ? $this->metaImage->getUrl() : null
         ];
     }
 }
