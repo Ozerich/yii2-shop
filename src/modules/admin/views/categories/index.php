@@ -23,7 +23,15 @@ $this->title = 'Товарные категории';
                 return $category['plain_label'];
             }
         ],
-        'url_alias',
+        [
+            'header' => 'URL алиас',
+            'format' => 'raw',
+            'value' => function ($category) {
+                $link = $category['model']->getUrl(true);
+                $label = $category['model']->getUrl(false);
+                return \yii\helpers\Html::a($label, $link, ['target' => '_blank']);
+            }
+        ],
         'items' => [
             'header' => 'Товары',
             'format' => 'raw',

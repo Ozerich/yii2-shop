@@ -44,6 +44,8 @@ class Category extends \yii\db\ActiveRecord
             [['url_alias', 'name'], 'string', 'max' => 255],
             [['text'], 'safe'],
             [['parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['parent_id' => 'id']],
+
+            [['url_alias'], 'filter', 'filter' => 'trim']
         ];
     }
 
@@ -127,6 +129,15 @@ class Category extends \yii\db\ActiveRecord
         return self::find()->andWhere('url_alias=:alias', [':alias' => $alias]);
     }
 
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ((isset($changedAttributes['parent_id']) && $changedAttributes['parent_id'] !== $this->parent_id) || $insert) {
+            $this->categoriesService()->updateCategoryLevel($this);
+        }
+
+        return parent::afterSave($insert, $changedAttributes);
+    }
+
     /**
      * @return self[]
      */
@@ -158,6 +169,19 @@ class Category extends \yii\db\ActiveRecord
         }
 
         return implode(' ----> ', array_reverse($items));
+    }
+
+    public function getUrl()
+    {
+        $items = [$this->url_alias];
+        $parent = $this->parent;
+
+        while ($parent) {
+            $items[] = $parent->url_alias;
+            $parent = $parent->parent;
+        }
+
+        return '/' . implode('/', array_reverse($items));
     }
 
     /**
