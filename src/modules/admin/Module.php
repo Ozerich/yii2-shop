@@ -10,6 +10,8 @@ class Module extends \ozerich\admin\Module
 
     public $fullName = 'Yii2 Shop';
 
+    public $isBoxedLayout = false;
+
     public $menu = [
         [
             'id' => 'categories',
