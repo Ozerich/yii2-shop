@@ -18,7 +18,7 @@ class AdminUser extends BaseObject implements IAdminUser, IdentityInterface
         '1' => [
             'id' => '1',
             'username' => 'admin',
-            'password' => 'admin',
+            'password' => 'yii2shop-admin',
             'authKey' => 'test101key',
             'accessToken' => '101-token',
         ],

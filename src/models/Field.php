@@ -16,6 +16,7 @@ use ozerich\shop\constants\FieldType;
  * @property integer $category_id
  * @property string $value_suffix
  * @property string $value_prefix
+ * @property boolean $multiple
  *
  * @property FieldGroup $group
  * @property Image $image
