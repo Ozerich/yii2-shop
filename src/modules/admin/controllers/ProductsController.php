@@ -31,7 +31,7 @@ class ProductsController extends AdminController
         return [
             'index' => [
                 'class' => ListAction::class,
-                'query' => Product::find(),
+                'query' => Product::find()->addOrderBy('name ASC'),
                 'view' => 'index',
                 'pageSize' => 10000,
                 'filterModel' => new FilterProduct(),
