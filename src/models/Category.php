@@ -198,6 +198,14 @@ class Category extends \yii\db\ActiveRecord
      */
     public function getProductsCount()
     {
-        return (int)$this->productGetService()->getSearchByCategoryQuery($this->id)->count();
+        $ids = array_merge([$this->id], Category::findByParent($this)->select('id')->column());
+
+        $result = [];
+
+        foreach ($ids as $id) {
+            $result = array_merge($result, $this->productGetService()->getSearchByCategoryQuery($id)->select('id')->column());
+        }
+
+        return count(array_unique($result));
     }
 }

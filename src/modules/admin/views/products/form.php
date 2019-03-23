@@ -11,10 +11,7 @@ $this->title = 'Создать товар';
 ?>
 
 <?php $form = \yii\widgets\ActiveForm::begin([
-    'enableClientValidation' => false,
-    'options' => [
-        'enctype' => 'multipart/form-data'
-    ],
+    'enableClientValidation' => false
 ]); ?>
 
 <?php ozerich\admin\widgets\FormPage::begin([

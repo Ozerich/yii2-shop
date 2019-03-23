@@ -23,6 +23,12 @@
         ]); ?>
     </div>
 
+    <div class="col-xs-12">
+        <?= $form->field($formModel, 'schema_image_id')->widget(ozerich\shop\modules\admin\widgets\ImageWidget::class, [
+            'scenario' => 'product'
+        ]); ?>
+    </div>
+
     <div class="col-xs-3">
         <?= $form->field($formModel, 'price')->textInput(['type' => 'number']); ?>
     </div>

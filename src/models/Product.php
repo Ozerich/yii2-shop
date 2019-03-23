@@ -11,6 +11,7 @@ use yii\helpers\Url;
  * @property string $url_alias
  * @property string $name
  * @property int $image_id
+ * @property int $schema_image_id
  * @property int $price
  * @property string $text
  * @property string $video
@@ -21,6 +22,7 @@ use yii\helpers\Url;
  * @property string $seo_description
  *
  * @property Image $image
+ * @property Image $schemaImage
  * @property Image[] $images
  * @property ProductImage $productImages
  * @property ProductPrice $prices
@@ -65,6 +67,7 @@ class Product extends \yii\db\ActiveRecord
             'url_alias' => 'URL алиас',
             'name' => 'Название',
             'image_id' => 'Картинка',
+            'schema_image_id' => 'Картинка - схема',
             'price' => 'Цена',
             'text' => 'Текстовое описание',
             'popular' => 'Популярный товар',
@@ -81,6 +84,14 @@ class Product extends \yii\db\ActiveRecord
     public function getImage()
     {
         return $this->hasOne(Image::className(), ['id' => 'image_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSchemaImage()
+    {
+        return $this->hasOne(Image::className(), ['id' => 'schema_image_id']);
     }
 
     /**
