@@ -31,7 +31,7 @@ class ProductsController extends AdminController
         return [
             'index' => [
                 'class' => ListAction::class,
-                'query' => Product::find()->addOrderBy('name ASC'),
+                'query' => Product::find()->addOrderBy('popular_weight DESC')->addOrderBy('name ASC'),
                 'view' => 'index',
                 'pageSize' => 10000,
                 'filterModel' => new FilterProduct(),
@@ -131,5 +131,19 @@ class ProductsController extends AdminController
         }
 
         return $this->redirect('/admin/products');
+    }
+
+    public function actionWeight($id)
+    {
+        /** @var Product $model */
+        $model = Product::findOne($id);
+        if (!$model) {
+            throw new NotFoundHttpException();
+        }
+
+        $model->popular_weight = \Yii::$app->request->post('value');
+        $model->save(false, ['popular_weight']);
+
+        return null;
     }
 }

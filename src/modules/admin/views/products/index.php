@@ -9,6 +9,56 @@ $categoryFilter = ['' => 'Все категории'];
 foreach ((new \ozerich\shop\services\categories\CategoriesService())->getTreeAsPlainArray() as $id => $item) {
     $categoryFilter[$id] = $item;
 }
+
+$columns = [
+    'name' => [
+        'header' => 'Название',
+        'attribute' => 'name',
+        'format' => 'raw',
+        'value' => function (ozerich\shop\models\Product $product) {
+            return \yii\helpers\Html::a($product->name, '/admin/products/update/' . $product->id, ['target' => '_blank']);
+        }
+    ],
+    'category_id' => [
+        'header' => 'Категория',
+        'format' => 'raw',
+        'filter' => \yii\helpers\Html::dropDownList('FilterProduct[category_id]', $filterModel->category_id, $categoryFilter, ['class' => 'form-control']),
+        'value' => function (ozerich\shop\models\Product $product) {
+            return implode('<br/>', array_map(function (\ozerich\shop\models\Category $category) {
+                return $category->getFullName();
+            }, $product->categories));
+        }
+    ]
+];
+
+if ($filterModel->category_id) {
+    $columns[] = [
+        'header' => 'Приоритет',
+        'format' => 'raw',
+        'value' => function (\ozerich\shop\models\Product $product) {
+            return '<input type="number" value="' . ($product->popular_weight ? $product->popular_weight : '') . '"  style="width: 70px; text-align: center" class="form-control js-priority-input" data-id="' . $product->id . '">';
+        }
+    ];
+}
+
+$columns = array_merge($columns, [
+    'image' => [
+        'header' => 'Картинка',
+        'attribute' => 'image_id',
+        'format' => 'raw',
+        'value' => function (ozerich\shop\models\Product $product) {
+            return $product->image ? '<img src="' . $product->image->getUrl() . '">' : null;
+        }
+    ],
+    [
+        'header' => 'Ссылка',
+        'format' => 'raw',
+        'value' => function (ozerich\shop\models\Product $product) {
+            return \yii\helpers\Html::a($product->getUrl(), $product->getUrl(true), ['target' => '_blank']);
+        },
+        'attribute' => 'url_alias'
+    ],
+]);
 ?>
 
 <?php echo ozerich\admin\widgets\ListPage::widget([
@@ -22,41 +72,14 @@ foreach ((new \ozerich\shop\services\categories\CategoriesService())->getTreeAsP
             'additionalClass' => 'success'
         ]
     ],
-    'columns' => [
-        'name' => [
-            'header' => 'Название',
-            'attribute' => 'name',
-            'format' => 'raw',
-            'value' => function (ozerich\shop\models\Product $product) {
-                return \yii\helpers\Html::a($product->name, '/admin/products/update/' . $product->id, ['target' => '_blank']);
-            }
-        ],
-        'category_id' => [
-            'header' => 'Категория',
-            'format' => 'raw',
-            'filter' => \yii\helpers\Html::dropDownList('FilterProduct[category_id]', $filterModel->category_id, $categoryFilter, ['class' => 'form-control']),
-            'value' => function (ozerich\shop\models\Product $product) {
-                return implode('<br/>', array_map(function (\ozerich\shop\models\Category $category) {
-                    return $category->getFullName();
-                }, $product->categories));
-            }
-        ],
-        'image' => [
-            'header' => 'Картинка',
-            'attribute' => 'image_id',
-            'format' => 'raw',
-            'value' => function (ozerich\shop\models\Product $product) {
-                return $product->image ? '<img src="' . $product->image->getUrl() . '">' : null;
-            }
-        ],
-        [
-            'header' => 'Ссылка',
-            'format' => 'raw',
-            'value' => function (ozerich\shop\models\Product $product) {
-                return \yii\helpers\Html::a($product->getUrl(), $product->getUrl(true), ['target' => '_blank']);
-            },
-            'attribute' => 'url_alias'
-        ],
-    ],
+    'columns' => $columns,
     'actions' => ['edit' => 'update', 'delete' => 'delete']
 ]); ?>
+
+<script>
+  $('body').on('keyup', '.js-priority-input', function () {
+    $.post('/admin/products/' + $(this).data('id') + '/weight', {
+      value: +$(this).val()
+    });
+  });
+</script>

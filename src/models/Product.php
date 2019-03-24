@@ -20,6 +20,7 @@ use yii\helpers\Url;
  * @property string $h1_value
  * @property string $seo_title
  * @property string $seo_description
+ * @property integer $popular_weight
  *
  * @property Image $image
  * @property Image $schemaImage
