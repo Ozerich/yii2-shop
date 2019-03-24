@@ -125,8 +125,12 @@ class Category extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public static function findByParent(Category $parent)
+    public static function findByParent(?Category $parent)
     {
+        if ($parent === null) {
+            return self::findRoot();
+        }
+
         return self::find()->andWhere('parent_id = :parent_id', [':parent_id' => $parent->id]);
     }
 

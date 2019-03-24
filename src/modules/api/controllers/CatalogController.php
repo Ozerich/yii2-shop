@@ -7,7 +7,6 @@ use ozerich\api\filters\AccessControl;
 use ozerich\api\response\CollectionResponse;
 use ozerich\api\response\ModelResponse;
 use ozerich\shop\models\Category;
-use ozerich\shop\models\Product;
 use ozerich\shop\modules\api\models\CategoryDTO;
 use ozerich\shop\modules\api\models\CategoryFullDTO;
 use ozerich\shop\modules\api\models\ProductDTO;
@@ -58,22 +57,23 @@ class CatalogController extends Controller
         return new CollectionResponse($dataProvider, CategoryDTO::class);
     }
 
-    public function actionCategory($id = null, $alias = null, $subcategory = null)
+    public function actionCategory($id = null, $alias = null)
     {
         /** @var Category $model */
+        $model = null;
+
         if ($id) {
             $model = Category::findOne($id);
         } else if ($alias) {
-            if (!empty($subcategory)) {
-                $parent = Category::findByAlias($alias)->one();
-                if ($parent) {
-                    $model = Category::findByAlias($subcategory)->andWhere('parent_id=:parent_id', [':parent_id' => $parent->id])->one();
-                }
-            } else {
-                $model = Category::findByAlias($alias)->one();
+            $parts = explode('/', $alias);
+
+            $parent = null;
+            foreach ($parts as $part) {
+                $model = Category::findByParent($parent)
+                    ->andWhere('url_alias=:url_alias', [':url_alias' => $part])
+                    ->one();
+               $parent = $model;
             }
-        } else {
-            $model = null;
         }
 
         if (!$model) {
@@ -86,7 +86,7 @@ class CatalogController extends Controller
     public function actionProducts($id)
     {
         $dataProvider = new ActiveDataProvider([
-            'query' =>  $this->productGetService()->getSearchByCategoryQuery($id),
+            'query' => $this->productGetService()->getSearchByCategoryQuery($id),
             'pagination' => [
                 'pageSize' => 10000
             ],
