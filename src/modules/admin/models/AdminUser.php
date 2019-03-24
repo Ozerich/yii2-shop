@@ -26,7 +26,7 @@ class AdminUser extends BaseObject implements IAdminUser, IdentityInterface
 
     public function checkAdminLogin($login, $password)
     {
-        if ($login == 'admin' && $password == 'admin') {
+        if ($login == 'admin' && $password == 'yii2shop-admin') {
             return new self(self::$users['1']);
         }
 
