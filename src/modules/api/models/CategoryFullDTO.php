@@ -31,6 +31,7 @@ class CategoryFullDTO extends Category implements DTO
             'parents' => array_reverse(array_map(function (Category $parent) {
                 return [
                     'id' => $parent->id,
+                    'url' => $parent->getUrl(),
                     'name' => $parent->name
                 ];
             }, $parents)),
