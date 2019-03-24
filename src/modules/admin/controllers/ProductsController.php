@@ -146,4 +146,22 @@ class ProductsController extends AdminController
 
         return null;
     }
+
+    public function actionPrice($id)
+    {
+        /** @var Product $model */
+        $model = Product::findOne($id);
+        if (!$model) {
+            throw new NotFoundHttpException();
+        }
+
+        if ($model->is_prices_extended) {
+            return;
+        }
+
+        $model->price = (int)\Yii::$app->request->post('value');
+        $model->save(false, ['price']);
+
+        return null;
+    }
 }

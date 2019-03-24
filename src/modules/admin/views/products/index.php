@@ -28,6 +28,13 @@ $columns = [
                 return $category->getFullName();
             }, $product->categories));
         }
+    ],
+    'price' => [
+        'header' => 'Цена',
+        'format' => 'raw',
+        'value' => function (ozerich\shop\models\Product $product) {
+            return $this->render('/products/columns/price', ['model' => $product]);
+        }
     ]
 ];
 
@@ -79,6 +86,10 @@ $columns = array_merge($columns, [
 <script>
   $('body').on('keyup', '.js-priority-input', function () {
     $.post('/admin/products/' + $(this).data('id') + '/weight', {
+      value: +$(this).val()
+    });
+  }).on('keyup', '.js-price-input', function () {
+    $.post('/admin/products/' + $(this).data('id') + '/price', {
       value: +$(this).val()
     });
   });
