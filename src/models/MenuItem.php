@@ -33,7 +33,7 @@ class MenuItem extends \yii\db\ActiveRecord
     {
         return [
             [['id', 'menu_id', 'priority', 'parent_id'], 'integer'],
-            [['menu_id', 'title', 'url'], 'required'],
+            [['menu_id', 'title'], 'required'],
             [['title', 'url'], 'string', 'max' => 255],
             [['menu_id'], 'exist', 'skipOnError' => true, 'targetClass' => Menu::className(), 'targetAttribute' => ['menu_id' => 'id']],
         ];
