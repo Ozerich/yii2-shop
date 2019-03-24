@@ -3,6 +3,7 @@
 namespace ozerich\shop\modules\api\models;
 
 use ozerich\api\interfaces\DTO;
+use ozerich\shop\models\Category;
 use ozerich\shop\models\Image;
 use ozerich\shop\models\Product;
 use ozerich\shop\models\ProductCategory;
@@ -72,6 +73,37 @@ class ProductFullDTO extends Product implements DTO
         return $result;
     }
 
+    public function getPath()
+    {
+        $categories = $this->categories;
+
+        $max_level = null;
+        $max = null;
+
+        foreach ($categories as $category) {
+            if ($max_level === null || $category->level > $max_level) {
+                $max_level = $category->level;
+                $max = $category;
+            }
+        }
+
+        $parents = [$max];
+        $parent = $max->parent;
+
+        while ($parent) {
+            $parents[] = $parent;
+            $parent = $parent->parent;
+        }
+
+        return array_reverse(array_map(function (Category $category) {
+            return [
+                'id' => $category->id,
+                'url' => $category->getUrl(),
+                'name' => $category->name
+            ];
+        }, $parents));
+    }
+
     public function toJSON()
     {
         return [
@@ -84,6 +116,8 @@ class ProductFullDTO extends Product implements DTO
             'video' => $this->video,
             'text' => $this->text,
             'params' => $this->getParamsJSON(),
+
+            'path' => $this->getPath(),
 
             'images' => array_map(function (Image $image) {
                 return [
