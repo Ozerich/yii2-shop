@@ -194,7 +194,7 @@ class Category extends \yii\db\ActiveRecord
             $parent = $parent->parent;
         }
 
-        return '/' . implode('/', array_reverse($items));
+        return '/catalog/' . implode('/', array_reverse($items));
     }
 
     /**
