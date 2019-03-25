@@ -8,7 +8,7 @@
  * @var ozerich\shop\modules\admin\forms\ProductMediaForm $mediaForm
  */
 
-$this->title = 'Редактировать товар'
+$this->title = 'Редактировать товар - ' . $model->name;
 ?>
 
 <div class="nav-tabs-custom">
