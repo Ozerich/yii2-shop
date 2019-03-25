@@ -15,6 +15,8 @@ class ProductGetService
     {
         return Product::find()
             ->joinWith('productCategories')
-            ->andWhere('product_categories.category_id =:category_id', [':category_id' => $id]);
+            ->andWhere('product_categories.category_id =:category_id', [':category_id' => $id])
+            ->addOrderBy('popular_weight DESC')
+            ->addOrderBy('name ASC');
     }
 }
