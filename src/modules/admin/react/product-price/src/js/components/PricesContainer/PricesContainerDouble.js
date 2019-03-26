@@ -20,8 +20,8 @@ class PricesContainerDouble extends Component {
                   <td>{model.model.name}</td>
                   {firstItems.map(item => {
                     return <td><input type="number"
-                                      value={this.getPriceValue(model.serverId, item.serverId)}
-                                      onChange={e => this.onPriceChange(model.serverId, item.serverId, e)}
+                                      value={this.getPriceValue(item.serverId, model.serverId)}
+                                      onChange={e => this.onPriceChange(item.serverId, model.serverId, e)}
                                       className="form-control" />
                     </td>;
                   })}

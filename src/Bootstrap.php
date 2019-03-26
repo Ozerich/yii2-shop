@@ -2,6 +2,8 @@
 
 namespace ozerich\shop;
 
+use ozerich\shop\components\Google\Spreadsheets\GoogleSpreadsheets;
+use ozerich\shop\components\Google\Spreadsheets\GoogleSpreadsheetsSync;
 use yii\base\BootstrapInterface;
 
 class Bootstrap implements BootstrapInterface
@@ -16,6 +18,17 @@ class Bootstrap implements BootstrapInterface
                     'ozerich\filestorage\migrations',
                 ],
             ];
+
+            $app->setComponents([
+                'spreadsheets' => [
+                    'class' => GoogleSpreadsheets::class,
+                    'credentials_file' => getenv('GOOGLE_SPREADSHEETS_CREDENTIALS_FILE')
+                ],
+                'spreadsheetsSync' => [
+                    'class' => GoogleSpreadsheetsSync::class,
+                    'spreadsheet_id' => getenv('GOOGLE_SPREADSHEET_ID')
+                ],
+            ]);
         }
     }
 

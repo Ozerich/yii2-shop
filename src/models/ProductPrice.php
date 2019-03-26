@@ -47,4 +47,19 @@ class ProductPrice extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Product::className(), ['id' => 'product_id']);
     }
+
+    public static function findByParamIds($first_param_value_id, $second_param_value_id)
+    {
+        $query = self::find();
+
+        if ($first_param_value_id) {
+            $query->andWhere('param_value_id=:param_value_id', [':param_value_id' => $first_param_value_id]);
+        }
+
+        if ($second_param_value_id) {
+            $query->andWhere('param_value_second_id=:param_value_second_id', [':param_value_second_id' => $second_param_value_id]);
+        }
+
+        return $query;
+    }
 }
