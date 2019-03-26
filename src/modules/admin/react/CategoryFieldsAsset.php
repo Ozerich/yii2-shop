@@ -9,7 +9,7 @@ class CategoryFieldsAsset extends AssetBundle
     public $sourcePath = '@vendor/ozerich/yii2-shop/src/modules/admin/react/category-fields/build';
 
     public $js = [
-        'build.js',
+        'build.js?v=2',
     ];
 
     public $css = [

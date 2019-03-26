@@ -81,15 +81,19 @@ class FieldForm extends Component {
   onSubmit(values) {
     const { create, save, modelId } = this.props;
 
+    const modelValues = Array.isArray(values.values) ? values.values : (values.values ? values.values.split("\n") : null);
 
     const model = {
       name: values.name,
       type: values.type,
       group_id: values.group_id ? parseInt(values.group_id) : null,
       value_prefix: values.value_prefix,
-      value_suffix: values.value_suffix,
-      values: Array.isArray(values.values) ? values.values : values.values.split("\n")
+      value_suffix: values.value_suffix
     };
+
+    if (modelValues) {
+      model.values = modelValues;
+    }
 
     modelId ? save(modelId, model) : create(model);
   }
@@ -98,7 +102,11 @@ class FieldForm extends Component {
 function mapStateToProps(state) {
   const modelId = state.fieldForm.modelId;
 
-  const model = state.fields.entities.find(item => item.id === modelId);
+  let model = state.fields.entities.find(item => item.id === modelId);
+
+  if (!model) {
+    model = { type: 'STRING' };
+  }
 
   return {
     modelId: state.fieldForm.modelId,
