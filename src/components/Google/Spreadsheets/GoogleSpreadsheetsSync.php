@@ -139,6 +139,16 @@ class GoogleSpreadsheetsSync extends Component
         $this->spreadsheet()->setSheetData($this->spreadsheet_id, $category->name, $rows);
     }
 
+    private function parsePrice($value)
+    {
+        $value = preg_replace('#\s*#', '', $value);
+        $value = str_replace(',', '.', $value);
+        $value = floatval($value);
+        $value = (int)round($value);
+
+        return $value;
+    }
+
     private function syncProductWithOneParam(Product $product, $param, $value, $price)
     {
         $paramModel = ProductPriceParam::find()->andWhere('product_id=:product_id', [':product_id' => $product->id])
@@ -171,7 +181,7 @@ class GoogleSpreadsheetsSync extends Component
         if (empty($price)) {
             $priceModel->delete();
         } else {
-            $priceModel->value = $price;
+            $priceModel->value = $this->parsePrice($price);
             $priceModel->save();
         }
     }
@@ -196,7 +206,7 @@ class GoogleSpreadsheetsSync extends Component
             }
 
             if ($params_count == 0) {
-                $product->price = $row[2];
+                $product->price = $this->parsePrice($row[2]);
                 $product->save(false, ['price']);
             } else if ($params_count == 1) {
                 $this->syncProductWithOneParam($product, $header[2], $row[2], $row[3]);
@@ -241,8 +251,14 @@ class GoogleSpreadsheetsSync extends Component
                     $price->param_value_second_id = $paramValueSecondModel->id;
                 }
 
-                $price->value = $row[4];
-                $price->save();
+                if (empty($row[4])) {
+                    if (!$price->isNewRecord) {
+                        $price->delete();
+                    }
+                } else {
+                    $price->value = $this->parsePrice($row[4]);
+                    $price->save();
+                }
             }
         }
     }
