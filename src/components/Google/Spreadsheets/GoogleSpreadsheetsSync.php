@@ -210,10 +210,12 @@ class GoogleSpreadsheetsSync extends Component
             }
 
             if ($params_count == 0) {
-                $product->price = $this->parsePrice($row[2]);
+                $priceValue = isset($row[2]) ? $this->parsePrice($row[2]) : null;
+                $product->price = $priceValue;
                 $product->save(false, ['price']);
             } else if ($params_count == 1) {
-                $this->syncProductWithOneParam($product, $header[2], $row[2], $row[3]);
+                $priceValue = isset($row[3]) ? $this->parsePrice($row[3]) : null;
+                $this->syncProductWithOneParam($product, $header[2], $row[2], $priceValue);
             } else if ($params_count == 2) {
                 $paramModel = ProductPriceParam::find()->andWhere('product_id=:product_id', [':product_id' => $product->id])
                     ->andWhere('name=:name', [':name' => $header[3]])
