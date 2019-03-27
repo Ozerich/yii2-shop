@@ -269,14 +269,14 @@ class GoogleSpreadsheetsSync extends Component
                     $price->param_value_second_id = $paramValueSecondModel->id;
                 }
 
-                $price = isset($row[4]) ? $this->parsePrice($row[4]) : null;
+                $priceValue = isset($row[4]) ? $this->parsePrice($row[4]) : null;
 
-                if (empty($price)) {
+                if (empty($priceValue)) {
                     if (!$price->isNewRecord) {
                         $price->delete();
                     }
                 } else {
-                    $price->value = $price;
+                    $price->value = $priceValue;
                     $price->save();
                 }
             }
