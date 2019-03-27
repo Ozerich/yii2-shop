@@ -2,6 +2,7 @@
 
 namespace ozerich\shop\models;
 
+use himiklab\sitemap\behaviors\SitemapBehavior;
 use yii\helpers\Url;
 
 /**
@@ -76,6 +77,23 @@ class Product extends \yii\db\ActiveRecord
             'h1_value' => 'Значение H1',
             'seo_title' => 'Заголовок страницы',
             'seo_description' => 'META описание',
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            'sitemap' => [
+                'class' => SitemapBehavior::class,
+                'dataClosure' => function (self $model) {
+                    return [
+                        'loc' => Url::to($model->getUrl(), true),
+                        'lastmod' => time() - 86400,
+                        'changefreq' => SitemapBehavior::CHANGEFREQ_DAILY,
+                        'priority' => 0.8
+                    ];
+                }
+            ],
         ];
     }
 

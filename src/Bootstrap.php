@@ -4,6 +4,9 @@ namespace ozerich\shop;
 
 use ozerich\shop\components\Google\Spreadsheets\GoogleSpreadsheets;
 use ozerich\shop\components\Google\Spreadsheets\GoogleSpreadsheetsSync;
+use ozerich\shop\models\Category;
+use ozerich\shop\models\Page;
+use ozerich\shop\models\Product;
 use yii\base\BootstrapInterface;
 
 class Bootstrap implements BootstrapInterface
@@ -28,6 +31,9 @@ class Bootstrap implements BootstrapInterface
                     'class' => GoogleSpreadsheetsSync::class,
                     'spreadsheet_id' => getenv('GOOGLE_SPREADSHEET_ID')
                 ],
+                'cache' => [
+                    'class' => 'yii\caching\FileCache',
+                ],
             ]);
         }
     }
@@ -44,6 +50,15 @@ class Bootstrap implements BootstrapInterface
 
         \Yii::$app->setModule('api', [
             'class' => 'ozerich\shop\modules\api\Module'
+        ]);
+
+        \Yii::$app->setModule('sitemap', [
+            'class' => 'himiklab\sitemap\Sitemap',
+            'models' => [
+                Category::class,
+                Product::class,
+                Page::class
+            ]
         ]);
 
         $mediaConfig = [
@@ -123,6 +138,10 @@ class Bootstrap implements BootstrapInterface
         $app->setComponents([
             'media' => $mediaConfig,
 
+            'cache' => [
+                'class' => 'yii\caching\FileCache',
+            ],
+
             'request' => [
                 'class' => 'yii\web\Request',
                 'baseUrl' => '',
@@ -153,6 +172,8 @@ class Bootstrap implements BootstrapInterface
                     '<module>/<controller>/<action>/<id:\d+>' => '<module>/<controller>/<action>',
                     '<controller>/<action>/<id:\d+>' => '<controller>/<action>',
                     '<controller>/<id:\d+>' => '<controller>/view',
+
+                    ['pattern' => 'sitemap', 'route' => 'sitemap/default/index', 'suffix' => '.xml']
                 ]
             ],
         ]);

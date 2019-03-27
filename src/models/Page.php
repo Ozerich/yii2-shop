@@ -2,6 +2,7 @@
 
 namespace ozerich\shop\models;
 
+use himiklab\sitemap\behaviors\SitemapBehavior;
 use yii\helpers\Url;
 
 /**
@@ -54,6 +55,23 @@ class Page extends \yii\db\ActiveRecord
             'meta_title' => 'Заголовок страницы',
             'meta_description' => 'Meta Description',
             'meta_image_id' => 'Meta Картинка',
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            'sitemap' => [
+                'class' => SitemapBehavior::class,
+                'dataClosure' => function (self $model) {
+                    return [
+                        'loc' => $model->getUrl(true),
+                        'lastmod' => time() - 86400,
+                        'changefreq' => SitemapBehavior::CHANGEFREQ_DAILY,
+                        'priority' => 0.5
+                    ];
+                }
+            ],
         ];
     }
 

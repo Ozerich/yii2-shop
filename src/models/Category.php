@@ -2,7 +2,9 @@
 
 namespace ozerich\shop\models;
 
+use himiklab\sitemap\behaviors\SitemapBehavior;
 use ozerich\shop\traits\ServicesTrait;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "categories".
@@ -71,6 +73,23 @@ class Category extends \yii\db\ActiveRecord
             'h1_value' => 'Значение H1',
             'seo_title' => 'Заголовок страницы',
             'seo_description' => 'META описание',
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            'sitemap' => [
+                'class' => SitemapBehavior::class,
+                'dataClosure' => function (self $model) {
+                    return [
+                        'loc' => $model->getUrl(true),
+                        'lastmod' => time() - 86400,
+                        'changefreq' => SitemapBehavior::CHANGEFREQ_DAILY,
+                        'priority' => 0.8
+                    ];
+                }
+            ],
         ];
     }
 
@@ -184,7 +203,7 @@ class Category extends \yii\db\ActiveRecord
         return implode(' ----> ', array_reverse($items));
     }
 
-    public function getUrl()
+    public function getUrl($absolute = false)
     {
         $items = [$this->url_alias];
         $parent = $this->parent;
@@ -194,7 +213,7 @@ class Category extends \yii\db\ActiveRecord
             $parent = $parent->parent;
         }
 
-        return '/catalog/' . implode('/', array_reverse($items));
+        return Url::to('/catalog/' . implode('/', array_reverse($items)), $absolute);
     }
 
     /**
@@ -207,7 +226,7 @@ class Category extends \yii\db\ActiveRecord
         $result = [];
 
         foreach ($ids as $id) {
-            $result = array_merge($result, $this->productGetService()->getSearchByCategoryQuery($id)->select('id')->column());
+            $result = array_merge($result, $this->productGetService()->getSearchByCategoryQuery($id)->select('products.id')->column());
         }
 
         return count(array_unique($result));
