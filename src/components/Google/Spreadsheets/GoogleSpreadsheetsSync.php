@@ -151,6 +151,10 @@ class GoogleSpreadsheetsSync extends Component
 
     private function syncProductWithOneParam(Product $product, $param, $value, $price)
     {
+        if ($value == null) {
+            return;
+        }
+
         $paramModel = ProductPriceParam::find()->andWhere('product_id=:product_id', [':product_id' => $product->id])
             ->andWhere('name=:name', [':name' => $param])
             ->one();
@@ -220,12 +224,26 @@ class GoogleSpreadsheetsSync extends Component
                     ->one();
 
                 if (!$paramModel) {
-                    $this->syncProductWithOneParam($product, $header[2], $row[2], $row[4]);
+                    $this->syncProductWithOneParam(
+                        $product,
+                        $header[2],
+                        isset($row[2]) ? $row[2] : null,
+                        isset($row[4]) ? $row[4] : null
+                    );
                     continue;
                 }
 
                 if (!$secondParamModel) {
-                    $this->syncProductWithOneParam($product, $header[3], $row[3], $row[4]);
+                    $this->syncProductWithOneParam(
+                        $product,
+                        $header[3],
+                        isset($row[3]) ? $row[3] : null,
+                        isset($row[4]) ? $row[4] : null
+                    );
+                    continue;
+                }
+
+                if (!isset($row[3]) || !isset($row[2])) {
                     continue;
                 }
 
@@ -251,12 +269,14 @@ class GoogleSpreadsheetsSync extends Component
                     $price->param_value_second_id = $paramValueSecondModel->id;
                 }
 
-                if (empty($row[4])) {
+                $price = isset($row[4]) ? $this->parsePrice($row[4]) : null;
+
+                if (empty($price)) {
                     if (!$price->isNewRecord) {
                         $price->delete();
                     }
                 } else {
-                    $price->value = $this->parsePrice($row[4]);
+                    $price->value = $price;
                     $price->save();
                 }
             }
