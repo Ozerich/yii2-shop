@@ -1,3 +1,10 @@
+<?
+/**
+ * @var ozerich\shop\models\Product $model
+ * @var ozerich\shop\structures\ProductField[] $fields
+ */
+?>
+
 <?php $form = \yii\widgets\ActiveForm::begin([
     'enableClientValidation' => false
 ]); ?>
@@ -29,9 +36,11 @@
         ]); ?>
     </div>
 
-    <div class="col-xs-3">
-        <?= $form->field($formModel, 'price')->textInput(['type' => 'number']); ?>
-    </div>
+      <? if ($model->is_prices_extended == false): ?>
+        <div class="col-xs-3">
+            <?= $form->field($formModel, 'price')->textInput(['type' => 'number']); ?>
+        </div>
+      <? endif; ?>
 
     <div class="col-xs-3">
       <div style="margin-top: 30px;">

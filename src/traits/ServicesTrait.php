@@ -6,6 +6,7 @@ use ozerich\shop\services\categories\CategoriesService;
 use ozerich\shop\services\products\ProductFieldsService;
 use ozerich\shop\services\products\ProductMediaService;
 use ozerich\shop\services\products\ProductGetService;
+use ozerich\shop\services\products\ProductPricesService;
 
 trait ServicesTrait
 {
@@ -14,6 +15,8 @@ trait ServicesTrait
     private $productMediaService = null;
 
     private $productGetService = null;
+
+    private $productPricesService = null;
 
     private $categoriesService = null;
 
@@ -27,6 +30,18 @@ trait ServicesTrait
         }
 
         return $this->productFieldsService;
+    }
+
+    /**
+     * @return ProductPricesService
+     */
+    public function productPricesService()
+    {
+        if ($this->productPricesService === null) {
+            $this->productPricesService = new ProductPricesService();
+        }
+
+        return $this->productPricesService;
     }
 
     /**

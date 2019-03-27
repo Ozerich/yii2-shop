@@ -7,10 +7,13 @@ use ozerich\shop\models\Product;
 use ozerich\shop\models\ProductPrice;
 use ozerich\shop\models\ProductPriceParam;
 use ozerich\shop\models\ProductPriceParamValue;
+use ozerich\shop\traits\ServicesTrait;
 use yii\base\Component;
 
 class GoogleSpreadsheetsSync extends Component
 {
+    use ServicesTrait;
+
     public $spreadsheet_id;
 
     /**
@@ -282,6 +285,8 @@ class GoogleSpreadsheetsSync extends Component
                     $price->save();
                 }
             }
+
+            $this->productPricesService()->updateProductPrice($product);
         }
     }
 }

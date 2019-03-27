@@ -2,8 +2,8 @@
 
 namespace ozerich\shop\modules\api\models;
 
-use ozerich\shop\models\Product;
 use ozerich\api\interfaces\DTO;
+use ozerich\shop\models\Product;
 
 class ProductDTO extends Product implements DTO
 {
@@ -13,6 +13,7 @@ class ProductDTO extends Product implements DTO
             'id' => $this->id,
             'name' => $this->name,
             'price' => $this->price,
+            'is_prices_extended' => $this->is_prices_extended ? true : false,
             'image' => $this->image ? $this->image->getUrl('preview') : null,
             'url_alias' => $this->url_alias
         ];

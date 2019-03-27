@@ -24,6 +24,7 @@ $this->title = 'Редактировать товар - ' . $model->name;
   <div class="tab-content">
     <div class="active tab-pane" id="main">
         <?= $this->render('update/_tab_main', [
+            'model' => $model,
             'formModel' => $formModel
         ]); ?>
     </div>

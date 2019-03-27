@@ -2,6 +2,11 @@
 
 namespace ozerich\shop\modules\admin\controllers;
 
+use ozerich\api\controllers\Controller;
+use ozerich\api\filters\AccessControl;
+use ozerich\api\request\InvalidRequestException;
+use ozerich\api\response\CollectionResponse;
+use ozerich\api\response\ModelResponse;
 use ozerich\shop\models\Product;
 use ozerich\shop\models\ProductPrice;
 use ozerich\shop\models\ProductPriceParam;
@@ -12,16 +17,14 @@ use ozerich\shop\modules\admin\api\models\ProductPriceParamValueDTO;
 use ozerich\shop\modules\admin\api\requests\prices\ParamItemRequest;
 use ozerich\shop\modules\admin\api\requests\prices\ParamRequest;
 use ozerich\shop\modules\admin\api\requests\prices\SaveRequest;
-use ozerich\api\controllers\Controller;
-use ozerich\api\filters\AccessControl;
-use ozerich\api\request\InvalidRequestException;
-use ozerich\api\response\CollectionResponse;
-use ozerich\api\response\ModelResponse;
+use ozerich\shop\traits\ServicesTrait;
 use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
 
 class PricesController extends Controller
 {
+    use ServicesTrait;
+
     public function getAllowedOrigins()
     {
         return '*';
@@ -214,6 +217,8 @@ class PricesController extends Controller
 
         $model->value = $request->value;
         $model->save();
+
+        $this->productPricesService()->updateProductPrice(Product::findOne($id));
 
         return null;
     }
