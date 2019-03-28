@@ -2,7 +2,7 @@
 
 namespace ozerich\shop\models;
 
-use Yii;
+use ozerich\tools\behaviors\PriorityBehavior;
 
 /**
  * This is the model class for table "{{%product_price_param_values}}".
@@ -25,6 +25,24 @@ class ProductPriceParamValue extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return '{{%product_price_param_values}}';
+    }
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => PriorityBehavior::class,
+                'conditionAttribute' => 'product_price_param_id'
+            ]
+        ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public static function find()
+    {
+        return parent::find()->addOrderBy('priority ASC');
     }
 
     /**

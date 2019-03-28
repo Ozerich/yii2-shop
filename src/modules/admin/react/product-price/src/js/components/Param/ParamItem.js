@@ -33,15 +33,19 @@ class ParamItem extends Component {
 
   render() {
     const { name, description } = this.state;
-    const { canDelete } = this.props;
+    const { canDelete, isFirst, isLast } = this.props;
 
     return (
         <tr>
           <td><input type="text" className="form-control" value={name} onChange={this.onNameChange} /></td>
           <td><textarea className="form-control" value={description} onChange={this.onDescriptionChange} /></td>
-          <td className="param-cell__delete">
-            {canDelete ?
-                <button className="param-delete" onClick={this.onDeleteClick.bind(this)}>Удалить</button> : null}
+          <td className="param-cell__actions">
+            {isFirst ? null :
+                <button className="param-action param-action--up" onClick={this.onUpClick.bind(this)}>Вверх</button>}
+            {isLast ? null :
+                <button className="param-action param-action--down" onClick={this.onDownClick.bind(this)}>Вниз</button>}
+            {canDelete ? <button className="param-action param-action--delete" onClick={this.onDeleteClick.bind(this)}>
+              Удалить</button> : null}
           </td>
         </tr>
     );
@@ -50,6 +54,24 @@ class ParamItem extends Component {
   onDeleteClick() {
     if (this.props.onDelete) {
       this.props.onDelete();
+    }
+  }
+
+  onUpClick() {
+    if (this.props.onDelete) {
+      this.props.onDelete();
+    }
+  }
+
+  onDownClick() {
+    if (this.props.onMove) {
+      this.props.onMove(1);
+    }
+  }
+
+  onUpClick() {
+    if (this.props.onMove) {
+      this.props.onMove(-1);
     }
   }
 }

@@ -17,6 +17,10 @@ export default class ParamItemsService extends BaseService {
     });
   }
 
+  moveItem(itemId, direction) {
+    return this.post('/prices/move-param-item/' + itemId + '?mode=' + (direction === 1 ? 'down' : 'up'));
+  }
+
   create(paramId, name, description) {
     return this.post('/prices/param-item', {
       param_id: paramId,

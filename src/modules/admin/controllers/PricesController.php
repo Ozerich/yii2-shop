@@ -2,6 +2,7 @@
 
 namespace ozerich\shop\modules\admin\controllers;
 
+use ozerich\admin\actions\MoveAction;
 use ozerich\api\controllers\Controller;
 use ozerich\api\filters\AccessControl;
 use ozerich\api\request\InvalidRequestException;
@@ -42,6 +43,10 @@ class PricesController extends Controller
                     'verbs' => ['GET']
                 ],
                 [
+                    'action' => 'move-param-item',
+                    'verbs' => ['POST']
+                ],
+                [
                     'action' => 'params',
                     'verbs' => ['GET']
                 ],
@@ -65,6 +70,17 @@ class PricesController extends Controller
         ];
 
         return $behaviors;
+    }
+
+    public function actions()
+    {
+        return [
+            'move-param-item' => [
+                'class' => MoveAction::class,
+                'modelClass' => ProductPriceParamValue::class,
+                'conditionAttribute' => 'product_price_param_id'
+            ]
+        ];
     }
 
     public function actionIndex($id)

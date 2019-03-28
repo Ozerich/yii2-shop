@@ -68,16 +68,31 @@
     }
   }
 
+  textarea{
+    resize: none;
+  }
+
   &-cell {
-    &__delete {
+    &__actions {
       width: 80px;
+      white-space: nowrap;
     }
   }
 
-  &-delete {
-    background: transparent;
+  &-action {
+    display: inline-block;
+    margin: 0 1px;
     border: 0 none;
-    color: red;
+    background: transparent;
+
+    text-decoration: underline;
+    &:hover{
+      text-decoration: none;
+    }
+
+    &--delete {
+      color: red;
+    }
   }
 
   &-footer {

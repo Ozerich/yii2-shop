@@ -17,6 +17,7 @@ const GET_PARAM_ITEMS = 'params/GET_PARAM_ITEMS';
 const CREATE_PARAM_ITEM = 'params/CREATE_PARAM_ITEM';
 const UPDATE_PARAM_ITEM = 'params/UPDATE_PARAM_ITEM';
 const DELETE_PARAM_ITEM = 'params/DELETE_PARAM_ITEM';
+const MOVE_PARAM_ITEM = 'params/MOVE_PARAM_ITEM';
 
 const GET_PRICES = 'params/GET_PRICES';
 const SAVE_PRICE = 'params/SAVE_PRICE';
@@ -199,6 +200,41 @@ export default function reducer(state = initialState, action = {}) {
         })
       });
 
+    case MOVE_PARAM_ITEM + _START:
+      const { itemId, direction } = action.payload;
+
+      let replaceWithId = null;
+
+      for (let i = 0; i < state.paramItems[action.payload.paramId].length; i++) {
+        if (state.paramItems[action.payload.paramId][i].id === itemId) {
+          if (direction === -1 && i > 0) {
+            replaceWithId = state.paramItems[action.payload.paramId][i - 1].id;
+          } else if (direction === 1 && i < state.paramItems[action.payload.paramId].length - 1) {
+            replaceWithId = state.paramItems[action.payload.paramId][i + 1].id;
+          }
+        }
+      }
+
+      if (!replaceWithId) {
+        return state;
+      }
+
+      const item1 = state.paramItems[action.payload.paramId].find(item => item.id === itemId);
+      const item2 = state.paramItems[action.payload.paramId].find(item => item.id === replaceWithId);
+
+      return Object.assign({}, state, {
+        paramItems: Object.assign({}, state.paramItems, {
+          [action.payload.paramId]: state.paramItems[action.payload.paramId].map(item => {
+            if (item1.id === item.id) {
+              return Object.assign({}, item2);
+            } else if (item2.id === item.id) {
+              return Object.assign({}, item1);
+            }
+            return item;
+          })
+        })
+      });
+
     case GET_PARAM_ITEMS + _START:
       return Object.assign({}, state, {
         params: state.params.map(item => {
@@ -230,7 +266,7 @@ export default function reducer(state = initialState, action = {}) {
         })
       });
 
-    case GET_PARAM_ITEMS + _FAILURE:
+    case GET_PARAM_ITEMS + _FAILURE :
       return Object.assign({}, state, {
         params: state.params.map(item => {
           if (item.id !== action.payload.paramId) {
@@ -245,7 +281,7 @@ export default function reducer(state = initialState, action = {}) {
         pricesLoading: true
       });
 
-    case GET_PRICES + _FAILURE:
+    case GET_PRICES + _FAILURE :
       return Object.assign({}, state, {
         pricesLoading: false
       });
@@ -462,6 +498,37 @@ export function deleteParamItem(paramId, id) {
       payload: { paramId, id }
     });
   }
+}
+
+export function moveParamItem(paramId, itemId, direction) {
+  return dispatch => {
+    dispatch({
+      type: MOVE_PARAM_ITEM + _START,
+      payload: {
+        paramId,
+        itemId,
+        direction
+      }
+    });
+
+    paramItemsService.moveItem(itemId, direction).then(data => {
+      dispatch({
+        type: MOVE_PARAM_ITEM + _SUCCESS,
+        payload: {
+          paramId,
+          itemId,
+          direction
+        }
+      });
+    }).catch(err => {
+      dispatch({
+        type: MOVE_PARAM_ITEM + _FAILURE,
+        payload: {
+          itemId
+        }
+      });
+    });
+  };
 }
 
 export function loadParamItems(paramId) {

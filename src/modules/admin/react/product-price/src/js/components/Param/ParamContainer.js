@@ -6,6 +6,7 @@ import {
   createParamItem,
   deleteParam,
   deleteParamItem,
+  moveParamItem,
   openUpdateForm,
   saveParam,
   updateParamItem
@@ -41,10 +42,14 @@ class ParamContainer extends Component {
             </tr>
             </thead>
             <tbody>
-            {items.map(model => <ParamItem model={model.model} key={model.id}
-                                           canDelete={model.serverId !== null}
-                                           onUpdate={(itemModel) => this.onUpdateParamItem(model.id, itemModel)}
-                                           onDelete={() => this.onDeleteParamItem(model.id)} />)}
+            {items.map((model, ind) => <ParamItem model={model.model}
+                                                  key={model.id}
+                                                  isFirst={ind === 0}
+                                                  isLast={ind === items.length - 1}
+                                                  canDelete={model.serverId !== null}
+                                                  onUpdate={(itemModel) => this.onUpdateParamItem(model.id, itemModel)}
+                                                  onMove={direction => this.onMoveParamItem(model.id, direction)}
+                                                  onDelete={() => this.onDeleteParamItem(model.id)} />)}
             </tbody>
           </table>}
           <div className="param-footer">
@@ -60,10 +65,17 @@ class ParamContainer extends Component {
     updateParamItem(model.id, id, itemModel);
   }
 
+  onMoveParamItem(id, direction) {
+    const { model, moveParamItem } = this.props;
+    moveParamItem(model.id, id, direction);
+  }
+
   onDeleteParamItem(id) {
     const { model, deleteParamItem } = this.props;
 
-    deleteParamItem(model.id, id);
+    if (window.confirm('Вы уверены, что хотите удалить?')) {
+      deleteParamItem(model.id, id);
+    }
   }
 
   onParamItemCreate() {
@@ -118,5 +130,6 @@ export default connect(mapStateToProps, {
   saveParam,
   createParamItem,
   updateParamItem,
-  deleteParamItem
+  deleteParamItem,
+  moveParamItem
 })(ParamContainer);
