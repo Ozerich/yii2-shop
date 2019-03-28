@@ -62,7 +62,7 @@ $this->title = 'Редактировать категорию';
         <? ozerich\shop\modules\admin\react\CategoryFieldsAsset::register($this); ?>
       <div id="react-app-category-fields" data-category-id="<?= $model->id ?>"></div>
     </div>
-    <div class="active tab-pane" id="seo">
+    <div class="tab-pane" id="seo">
         <?php $form = \yii\widgets\ActiveForm::begin([
             'action' => '/admin/categories/' . $model->id . '/save-seo',
             'enableClientValidation' => true
