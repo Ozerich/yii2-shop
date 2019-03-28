@@ -4,10 +4,13 @@ namespace ozerich\shop\modules\api\controllers;
 
 use ozerich\api\controllers\Controller;
 use ozerich\api\filters\AccessControl;
+use ozerich\api\response\CollectionResponse;
 use ozerich\api\response\ModelResponse;
 use ozerich\shop\models\Product;
+use ozerich\shop\modules\api\models\ProductDTO;
 use ozerich\shop\modules\api\models\ProductFullDTO;
 use ozerich\shop\modules\api\responses\products\PricesResponse;
+use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
 
 class ProductsController extends Controller
@@ -25,6 +28,10 @@ class ProductsController extends Controller
                 ],
                 [
                     'action' => 'prices',
+                    'verbs' => 'GET'
+                ],
+                [
+                    'action' => 'home',
                     'verbs' => 'GET'
                 ]
             ]
@@ -50,6 +57,15 @@ class ProductsController extends Controller
         }
 
         return new ModelResponse($product, ProductFullDTO::class);
+    }
+
+    public function actionHome()
+    {
+        $dataProvider = new ActiveDataProvider([
+            'query' => Product::find()->andWhere('popular=1')
+        ]);
+
+        return new CollectionResponse($dataProvider, ProductDTO::class);
     }
 
     public function actionPrices($id)
