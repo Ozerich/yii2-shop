@@ -77,6 +77,10 @@ class GoogleSpreadsheetsSync extends Component
                 $product_price_param_values[$priceParam] = ProductPriceParamValue::find()
                     ->andWhere('product_price_param_id=:param_id', [':param_id' => $productPriceParam->id])
                     ->all();
+
+                usort($product_price_param_values[$priceParam], function (ProductPriceParamValue $a, ProductPriceParamValue $b) {
+                    return (int)$a->name > (int)$b->name ? 1 : -1;
+                });
             }
 
             $product_rows = [];
@@ -212,6 +216,7 @@ class GoogleSpreadsheetsSync extends Component
                 continue;
             }
 
+
             if ($params_count == 0) {
                 $priceValue = isset($row[2]) ? $this->parsePrice($row[2]) : null;
                 $product->price = $priceValue;
@@ -235,54 +240,46 @@ class GoogleSpreadsheetsSync extends Component
                         isset($row[2]) ? $row[2] : null,
                         isset($row[4]) ? $row[4] : null
                     );
-                    continue;
-                }
-
-                if (!$secondParamModel) {
+                } else if (!$secondParamModel) {
                     $this->syncProductWithOneParam(
                         $product,
                         $header[3],
                         isset($row[3]) ? $row[3] : null,
                         isset($row[4]) ? $row[4] : null
                     );
-                    continue;
-                }
+                } else if (isset($row[3]) && isset($row[2])) {
 
-                if (!isset($row[3]) || !isset($row[2])) {
-                    continue;
-                }
+                    $paramValueModel = ProductPriceParamValue::find()
+                        ->andWhere('product_price_param_id=:param_id', [':param_id' => $paramModel->id])
+                        ->andWhere('name=:name', [':name' => $row[3]])
+                        ->one();
 
-                $paramValueModel = ProductPriceParamValue::find()
-                    ->andWhere('product_price_param_id=:param_id', [':param_id' => $paramModel->id])
-                    ->andWhere('name=:name', [':name' => $row[3]])
-                    ->one();
+                    $paramValueSecondModel = ProductPriceParamValue::find()
+                        ->andWhere('product_price_param_id=:param_id', [':param_id' => $secondParamModel->id])
+                        ->andWhere('name=:name', [':name' => $row[2]])
+                        ->one();
 
-                $paramValueSecondModel = ProductPriceParamValue::find()
-                    ->andWhere('product_price_param_id=:param_id', [':param_id' => $secondParamModel->id])
-                    ->andWhere('name=:name', [':name' => $row[2]])
-                    ->one();
 
-                if (!$paramValueModel || !$paramValueSecondModel) {
-                    continue;
-                }
+                    if ($paramValueModel && $paramValueSecondModel) {
+                        $price = ProductPrice::findByParamIds($paramValueModel->id, $paramValueSecondModel->id)->one();
+                        if (!$price) {
+                            $price = new ProductPrice();
+                            $price->product_id = $product->id;
+                            $price->param_value_id = $paramValueModel->id;
+                            $price->param_value_second_id = $paramValueSecondModel->id;
+                        }
 
-                $price = ProductPrice::findByParamIds($paramValueModel->id, $paramValueSecondModel->id)->one();
-                if (!$price) {
-                    $price = new ProductPrice();
-                    $price->product_id = $product->id;
-                    $price->param_value_id = $paramValueModel->id;
-                    $price->param_value_second_id = $paramValueSecondModel->id;
-                }
+                        $priceValue = isset($row[4]) ? $this->parsePrice($row[4]) : null;
 
-                $priceValue = isset($row[4]) ? $this->parsePrice($row[4]) : null;
-
-                if (empty($priceValue)) {
-                    if (!$price->isNewRecord) {
-                        $price->delete();
+                        if (empty($priceValue)) {
+                            if (!$price->isNewRecord) {
+                                $price->delete();
+                            }
+                        } else {
+                            $price->value = $priceValue;
+                            $price->save();
+                        }
                     }
-                } else {
-                    $price->value = $priceValue;
-                    $price->save();
                 }
             }
 
