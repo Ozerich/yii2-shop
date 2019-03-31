@@ -13,6 +13,7 @@ class ProductDTO extends Product implements DTO
             'id' => $this->id,
             'name' => $this->name,
             'price' => $this->price,
+            'popular_weight' => $this->popular_weight,
             'is_prices_extended' => $this->is_prices_extended ? true : false,
             'image' => $this->image ? $this->image->getUrl('preview') : null,
             'url_alias' => $this->url_alias
