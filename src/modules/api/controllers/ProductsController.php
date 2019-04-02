@@ -91,6 +91,11 @@ class ProductsController extends Controller
         }
 
         $response = new PricesResponse();
+
+        if ($model->is_prices_extended == false) {
+            return $response;
+        }
+
         $response->setParams($model->productPriceParams);
         $response->setPrices($model->prices);
 

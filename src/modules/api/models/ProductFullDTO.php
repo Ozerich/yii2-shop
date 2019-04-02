@@ -131,6 +131,10 @@ class ProductFullDTO extends Product implements DTO
             'seo_title' => empty($this->seo_title) ? $this->name : $this->seo_title,
             'seo_description' => $this->seo_description,
             'seo_image' => $this->image ? $this->image->getUrl() : null,
+            
+            'sku' => $this->sku,
+            'sale_disabled' => $this->sale_disabled ? true : false,
+            'sale_disabled_text' => $this->sale_disabled ? $this->sale_disabled_text : null,
         ];
     }
 }

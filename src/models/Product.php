@@ -88,7 +88,7 @@ class Product extends \yii\db\ActiveRecord
             'sku' => 'Артикул',
             'price_hidden' => 'Цена недоступна',
             'price_hidden_text' => 'Текст вместо цены',
-            'sale_disabled' => 'Заказ недоступен',
+            'sale_disabled' => 'Заказ товара недоступен',
             'sale_disabled_text' => 'Причина, по которой недоступен заказ',
         ];
     }

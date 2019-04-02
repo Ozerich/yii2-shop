@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { init } from "../ducks/common";
-import { load } from "../ducks/params";
+import { init, load } from "../ducks/common";
 
-import ParamsSection from '../sections/ParamsSection';
-import PricesSection from '../sections/PricesSection';
+import CommonSection from '../sections/CommonSection';
+import CommonSectionExtended from '../sections/CommonSectionExtended';
+import ExtendedMode from "../sections/ExtendedMode";
 
 class App extends Component {
   componentWillMount() {
@@ -16,7 +16,7 @@ class App extends Component {
   }
 
   render() {
-    const { loaded } = this.props;
+    const { loaded, isExtendedMode } = this.props;
 
     if (!loaded) {
       return 'Загрузка...';
@@ -24,8 +24,8 @@ class App extends Component {
 
     return (
         <>
-        <ParamsSection />
-        <PricesSection />
+        {isExtendedMode ? <CommonSectionExtended/> : <CommonSection />}
+        {isExtendedMode ? <ExtendedMode /> : null}
         </>
     );
   }
@@ -33,7 +33,8 @@ class App extends Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    loaded: state.common.loaded
+    loaded: state.common.loaded,
+    isExtendedMode: state.common.isExtendedMode,
   }
 }
 

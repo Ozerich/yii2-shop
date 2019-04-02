@@ -12,12 +12,15 @@ use ozerich\shop\models\Product;
 use ozerich\shop\models\ProductPrice;
 use ozerich\shop\models\ProductPriceParam;
 use ozerich\shop\models\ProductPriceParamValue;
+use ozerich\shop\modules\admin\api\models\ProductPriceCommonDTO;
 use ozerich\shop\modules\admin\api\models\ProductPriceDTO;
 use ozerich\shop\modules\admin\api\models\ProductPriceParamDTO;
 use ozerich\shop\modules\admin\api\models\ProductPriceParamValueDTO;
+use ozerich\shop\modules\admin\api\requests\prices\CommonRequest;
 use ozerich\shop\modules\admin\api\requests\prices\ParamItemRequest;
 use ozerich\shop\modules\admin\api\requests\prices\ParamRequest;
 use ozerich\shop\modules\admin\api\requests\prices\SaveRequest;
+use ozerich\shop\modules\api\models\ProductDTO;
 use ozerich\shop\traits\ServicesTrait;
 use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
@@ -43,6 +46,10 @@ class PricesController extends Controller
                     'verbs' => ['GET']
                 ],
                 [
+                    'action' => 'load',
+                    'verbs' => ['GET']
+                ],
+                [
                     'action' => 'move-param-item',
                     'verbs' => ['POST']
                 ],
@@ -63,7 +70,15 @@ class PricesController extends Controller
                     'verbs' => ['POST', 'DELETE']
                 ],
                 [
+                    'action' => 'common-save',
+                    'verbs' => ['POST']
+                ],
+                [
                     'action' => 'save',
+                    'verbs' => ['POST']
+                ],
+                [
+                    'action' => 'toggle-extended',
                     'verbs' => ['POST']
                 ],
             ]
@@ -83,13 +98,58 @@ class PricesController extends Controller
         ];
     }
 
-    public function actionIndex($id)
+    /**
+     * @param $id
+     * @return Product
+     * @throws NotFoundHttpException
+     */
+    private function getProduct($id)
     {
         /** @var Product $product */
         $product = Product::findOne($id);
         if (!$product) {
             throw new NotFoundHttpException('Продукта не найдено');
         }
+
+        return $product;
+    }
+
+    public function actionLoad($id)
+    {
+        $product = $this->getProduct($id);
+
+        return new ModelResponse($product, ProductPriceCommonDTO::class);
+    }
+
+
+    public function actionToggleExtended($id, $value)
+    {
+        $product = $this->getProduct($id);
+
+        $product->is_prices_extended = $value == 1;
+        $product->save(false, ['is_prices_extended']);
+
+        return null;
+    }
+
+    public function actionCommonSave($id)
+    {
+        $product = $this->getProduct($id);
+
+        $request = new CommonRequest();
+        $request->load();
+
+        $product->price = $request->disabled ? null : $request->price;
+        $product->price_hidden = $request->disabled;
+        $product->price_hidden_text = $request->disabled ? $request->disabled_text : null;
+
+        $product->save(false, ['price', 'price_hidden', 'price_hidden_text']);
+    }
+
+    public function actionIndex($id)
+    {
+        /** @var Product $product */
+        $product = $this->getProduct($id);
 
         $dataProvider = new ActiveDataProvider([
             'pagination' => [

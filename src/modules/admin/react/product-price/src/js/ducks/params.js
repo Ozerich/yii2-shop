@@ -342,13 +342,13 @@ export function deleteParam(id) {
   }
 }
 
-export function load(productId) {
-  return dispatch => {
+export function load() {
+  return (dispatch, getState) => {
     dispatch({
       type: LOAD + _START
     });
 
-    paramService.allParams(productId).then(data => {
+    paramService.allParams(getState().common.productId).then(data => {
       dispatch({
         type: LOAD + _SUCCESS,
         payload: {
