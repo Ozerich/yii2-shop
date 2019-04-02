@@ -16,7 +16,11 @@ class ProductDTO extends Product implements DTO
             'popular_weight' => $this->popular_weight,
             'is_prices_extended' => $this->is_prices_extended ? true : false,
             'image' => $this->image ? $this->image->getUrl('preview') : null,
-            'url_alias' => $this->url_alias
+            'url_alias' => $this->url_alias,
+
+            'sku' => $this->sku,
+            'sale_disabled' => $this->sale_disabled ? true : false,
+            'sale_disabled_text' => $this->sale_disabled ? $this->sale_disabled_text : null,
         ];
     }
 }

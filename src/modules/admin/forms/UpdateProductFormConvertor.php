@@ -20,6 +20,9 @@ class UpdateProductFormConvertor extends Model
         $form->price = $product->price;
         $form->url_alias = $product->url_alias;
         $form->is_prices_extended = $product->is_prices_extended;
+        $form->sku = $product->sku;
+        $form->sale_disabled = $product->sale_disabled;
+        $form->sale_disabled_text = $product->sale_disabled_text;
 
         $form->category_id = array_map(function (Category $category) {
             return $category->id;
@@ -37,6 +40,9 @@ class UpdateProductFormConvertor extends Model
         $model->price = $form->price;
         $model->url_alias = $form->url_alias;
         $model->is_prices_extended = $form->is_prices_extended;
+        $model->sku = $form->sku;
+        $model->sale_disabled = $form->sale_disabled;
+        $model->sale_disabled_text = $form->sale_disabled_text;
 
         ProductCategory::deleteAll(['product_id' => $model->id]);
 

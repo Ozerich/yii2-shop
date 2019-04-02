@@ -12,12 +12,14 @@ class CreateProductForm extends Model
 
     public $image_id;
 
+    public $sku;
+
     public function rules()
     {
         return [
             [['name', 'category_id'], 'required'],
             [['image_id'], 'integer'],
-            [['name'], 'string', 'max' => 150]
+            [['name', 'sku'], 'string', 'max' => 150]
         ];
     }
 
@@ -26,7 +28,8 @@ class CreateProductForm extends Model
         return [
             'name' => 'Название',
             'category_id' => 'Категории',
-            'image_id' => 'Картинка'
+            'image_id' => 'Картинка',
+            'sku' => 'Артикул'
         ];
     }
 }

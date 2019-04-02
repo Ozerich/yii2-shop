@@ -22,6 +22,11 @@ use yii\helpers\Url;
  * @property string $seo_title
  * @property string $seo_description
  * @property integer $popular_weight
+ * @property string $sku
+ * @property boolean $sale_disabled
+ * @property string $sale_disabled_text
+ * @property boolean $price_hidden
+ * @property string $price_hidden_text
  *
  * @property Image $image
  * @property Image $schemaImage
@@ -55,7 +60,10 @@ class Product extends \yii\db\ActiveRecord
             [['url_alias', 'name'], 'string', 'max' => 255],
 
             [['h1_value', 'seo_title'], 'string', 'max' => 255],
-            [['seo_description'], 'string']
+            [['seo_description'], 'string'],
+
+            [['sku', 'price_hidden_text', 'sale_disabled_text'], 'string'],
+            [['price_hidden', 'sale_disabled'], 'boolean']
         ];
     }
 
@@ -77,6 +85,11 @@ class Product extends \yii\db\ActiveRecord
             'h1_value' => 'Значение H1',
             'seo_title' => 'Заголовок страницы',
             'seo_description' => 'META описание',
+            'sku' => 'Артикул',
+            'price_hidden' => 'Цена недоступна',
+            'price_hidden_text' => 'Текст вместо цены',
+            'sale_disabled' => 'Заказ недоступен',
+            'sale_disabled_text' => 'Причина, по которой недоступен заказ',
         ];
     }
 

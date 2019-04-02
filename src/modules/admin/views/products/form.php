@@ -18,8 +18,12 @@ $this->title = 'Создать товар';
     'isCreate' => true
 ]); ?>
 
-  <div class="col-xs-12">
+  <div class="col-xs-9">
       <?= $form->field($formModel, 'name')->textInput(); ?>
+  </div>
+
+  <div class="col-xs-3">
+      <?= $form->field($formModel, 'sku')->textInput(); ?>
   </div>
 
 <? if ($model->isNewRecord): ?>
