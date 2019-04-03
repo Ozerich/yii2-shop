@@ -110,8 +110,6 @@ class ProductFullDTO extends Product implements DTO
             'id' => $this->id,
             'url_alias' => $this->url_alias,
             'name' => $this->name,
-            'price' => $this->price,
-            'is_prices_extended' => $this->is_prices_extended,
             'image' => $this->image ? $this->image->getUrl() : null,
             'schema' => $this->schemaImage ? $this->schemaImage->getUrl() : null,
             'video' => $this->video,
@@ -131,8 +129,12 @@ class ProductFullDTO extends Product implements DTO
             'seo_title' => empty($this->seo_title) ? $this->name : $this->seo_title,
             'seo_description' => $this->seo_description,
             'seo_image' => $this->image ? $this->image->getUrl() : null,
-            
-            'sku' => $this->sku,
+
+            'price' => $this->price,
+            'is_prices_extended' => $this->is_prices_extended ? true : false,
+            'price_hidden' => $this->price_hidden,
+            'price_hidden_text' => $this->price_hidden_text,
+
             'sale_disabled' => $this->sale_disabled ? true : false,
             'sale_disabled_text' => $this->sale_disabled ? $this->sale_disabled_text : null,
         ];
