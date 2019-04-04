@@ -1,0 +1,136 @@
+.field-list {
+  &__name {
+    flex: 1;
+  }
+
+  &__checkbox {
+    flex-basis: 25px;
+    width: 25px;
+    min-width: 25px;
+    max-width: 25px;
+  }
+
+  &__type, &__group {
+    flex-basis: 200px;
+    width: 200px;
+    max-width: 200px;
+  }
+
+  &__actions {
+    flex-basis: 250px;
+    width: 250px;
+    max-width: 250px;
+    display: flex;
+  }
+
+  &__action {
+    margin-right: 5px;
+    &:last-child {
+      margin-right: 0;
+    }
+
+    line-height: 16px;
+    font-size: 12px;
+    font-weight: normal;
+    color: #fff;
+    border: 0 none;
+
+    &--edit {
+      background: #86a4c7;
+      &:hover {
+        background: darken(#86a4c7, 10%);
+      }
+    }
+
+    &--delete {
+      background: #dd777b;
+      &:hover {
+        background: darken(#dd777b, 10%);
+      }
+    }
+  }
+}
+
+.form {
+  margin: 20px 0;
+  &-actions {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.list {
+  margin: -10px 0 30px;
+
+  label{
+    font-weight: normal;
+    display: block;
+    margin-bottom: auto;
+    cursor: pointer;
+  }
+
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &-title {
+    padding: 0 10px;
+    font-size: 20px;
+    font-weight: bold;
+    background: #eee;
+    line-height: 45px;
+    display: block;
+    margin: 0 -10px;
+  }
+
+  &-row {
+    display: flex;
+    padding: 10px 0;
+    align-items: center;
+
+    border-bottom: 1px dashed #eee;
+
+    &--header {
+      font-weight: bold;
+      font-size: 14px;
+    }
+  }
+}
+
+.create-button-row {
+  margin: 20px 0;
+  text-align: center;
+
+  .btn {
+    line-height: 16px;
+    font-size: 12px;
+  }
+}
+
+.form {
+  position: relative;
+}
+
+.list-body {
+  min-height: 50px;
+  position: relative;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  .fa {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -15px;
+    margin-top: -15px;
+    color: #000;
+    font-size: 30px;
+  }
+}

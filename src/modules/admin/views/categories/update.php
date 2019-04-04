@@ -123,8 +123,8 @@ $this->title = 'Редактировать категорию - '.$model->name;
       <? else: ?>
         <div class="tab-pane" id="conditions">
             <? /** @var \yii\web\View $this */ ?>
-            <? ozerich\shop\modules\admin\react\CategoryFieldsAsset::register($this); ?>
-          <div id="react-app-category-fields" data-category-id="<?= $model->id ?>"></div>
+            <? ozerich\shop\modules\admin\react\CategoryConditionalSettingsAsset::register($this); ?>
+          <div id="react-app-category-conditional-settings" data-category-id="<?=$model->id?>"></div>
         </div>
       <? endif; ?>
 
