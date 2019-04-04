@@ -13,9 +13,7 @@ class ProductGetService
      */
     public function getSearchByCategoryQuery($id)
     {
-        return Product::find()
-            ->joinWith('productCategories')
-            ->andWhere('product_categories.category_id =:category_id', [':category_id' => $id])
+        return Product::find()->andWhere('category_id=:category_id', [':category_id' => $id])
             ->addOrderBy('popular_weight DESC')
             ->addOrderBy('name ASC');
     }
@@ -33,11 +31,10 @@ class ProductGetService
 
         $category = $categories[0];
 
-        $baseQuery = Product::find()->andWhere('id <> :id', [':id' => $product->id])
-            ->joinWith('productCategories')
-            ->andWhere('product_categories.category_id=:category_id', [':category_id' => $category->id]);
+        $baseQuery = Product::find()->andWhere('category_id=:category_id', [':category_id' => $category->id]);
 
         $query = clone $baseQuery;
+
         $items = $query->andWhere('popular_weight >= :weight', [':weight' => $product->popular_weight])
             ->limit(10)
             ->all();

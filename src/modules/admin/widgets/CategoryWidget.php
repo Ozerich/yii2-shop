@@ -2,6 +2,7 @@
 
 namespace ozerich\shop\modules\admin\widgets;
 
+use ozerich\shop\constants\CategoryType;
 use ozerich\shop\traits\ServicesTrait;
 use yii\helpers\Html;
 use yii\widgets\InputWidget;
@@ -16,6 +17,11 @@ class CategoryWidget extends InputWidget
     public $allowEmptyValue = false;
 
     /**
+     * @var boolean
+     */
+    public $onlyCatalog = false;
+
+    /**
      * @var bool
      */
     public $multiple = false;
@@ -24,6 +30,12 @@ class CategoryWidget extends InputWidget
      * @var boolean
      */
     public $placeholder = false;
+
+
+    /**
+     * @var integer
+     */
+    public $exclude = null;
 
     private function getOptions()
     {
@@ -55,8 +67,19 @@ class CategoryWidget extends InputWidget
             $result[''] = 'Без категории';
         }
 
-        foreach($this->categoriesService()->getTreeAsPlainArray() as $id => $item){
-            $result[$id] = $item;
+        $tree = $this->categoriesService()->getTreeAsArray();
+
+        foreach ($tree as $id => $item) {
+            if ($item['model']['id'] == $this->exclude) {
+                continue;
+            }
+
+            if ($item['model']['type'] != CategoryType::CATALOG) {
+                continue;
+            }
+
+            $result[$item['model']['id']] = $item['plain_label'];
+
         }
 
         return $result;

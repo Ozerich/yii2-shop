@@ -24,9 +24,7 @@ $columns = [
         'format' => 'raw',
         'filter' => \yii\helpers\Html::dropDownList('FilterProduct[category_id]', $filterModel->category_id, $categoryFilter, ['class' => 'form-control']),
         'value' => function (ozerich\shop\models\Product $product) {
-            return implode('<br/>', array_map(function (\ozerich\shop\models\Category $category) {
-                return $category->getFullName();
-            }, $product->categories));
+            return $product->category ? $product->category->name : null;
         }
     ],
     'price' => [

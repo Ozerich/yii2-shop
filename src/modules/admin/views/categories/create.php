@@ -18,13 +18,17 @@ $this->title = $model->isNewRecord ? 'Создать категорию' : 'Ре
 ]); ?>
 
   <div class="col-xs-12">
-      <?= $form->field($formModel, 'parent_id')->widget(\ozerich\shop\modules\admin\widgets\CategoryWidget::class, [
-          'allowEmptyValue' => true
-      ]) ?>
+      <?= $form->field($formModel, 'type')->dropDownList(\ozerich\shop\constants\CategoryType::getList()); ?>
   </div>
 
   <div class="col-xs-12">
       <?= $form->field($formModel, 'name')->textInput(); ?>
+  </div>
+
+  <div class="col-xs-12">
+      <?= $form->field($formModel, 'parent_id')->widget(\ozerich\shop\modules\admin\widgets\CategoryWidget::class, [
+          'allowEmptyValue' => true
+      ]) ?>
   </div>
 
   <div class="col-xs-12">

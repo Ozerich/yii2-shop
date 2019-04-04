@@ -19,7 +19,11 @@ $this->title = 'Товарные категории';
         'name' => [
             'header' => 'Название',
             'attribute' => 'name',
+            'format' => 'raw',
             'value' => function ($category) {
+                if ($category['model']['type'] == \ozerich\shop\constants\CategoryType::CONDITIONAL) {
+                    return $category['plain_label'] . '<i> - Условная категория</i>';
+                }
                 return $category['plain_label'];
             }
         ],

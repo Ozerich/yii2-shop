@@ -19,6 +19,7 @@ use yii\helpers\Url;
  * @property string $h1_value
  * @property string $seo_title
  * @property string $seo_description
+ * @property string $type
  *
  * @property Image $image
  * @property Category $parent
@@ -52,7 +53,7 @@ class Category extends \yii\db\ActiveRecord
 
             [['url_alias'], 'filter', 'filter' => 'trim'],
 
-            [['h1_value', 'seo_title'], 'string', 'max' => 255],
+            [['h1_value', 'seo_title', 'type'], 'string', 'max' => 255],
             [['seo_description'], 'string']
         ];
     }
@@ -64,6 +65,7 @@ class Category extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'type' => 'Тип',
             'parent_id' => 'Родительская категория',
             'url_alias' => 'URL алиас',
             'name' => 'Имя',

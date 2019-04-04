@@ -13,8 +13,14 @@ $this->title = 'Редактировать категорию';
 <div class="nav-tabs-custom">
   <ul class="nav nav-tabs">
     <li class="active"><a href="#main" data-toggle="tab">Основные параметры</a></li>
-    <li><a href="#params" data-toggle="tab">Товарные поля</a></li>
     <li><a href="#seo" data-toggle="tab">SEO параметры</a></li>
+
+      <? if ($model->type == \ozerich\shop\constants\CategoryType::CATALOG): ?>
+        <li><a href="#params" data-toggle="tab">Товарные поля</a></li>
+      <? else: ?>
+        <li><a href="#conditions" data-toggle="tab">Условия</a></li>
+      <? endif; ?>
+
   </ul>
   <div class="tab-content">
     <div class="active tab-pane" id="main">
@@ -28,7 +34,25 @@ $this->title = 'Редактировать категорию';
                 'allowEmptyValue' => true
             ]) ?>
         </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-6">
+            <?= $form->field($formModel, 'type')->dropDownList(\ozerich\shop\constants\CategoryType::getList(), ['disabled' => true]); ?>
+        </div>
+        <div class="col-xs-6">
+          <div style="padding-top: 30px">
+              <? if ($formModel->type == \ozerich\shop\constants\CategoryType::CATALOG): ?>
+                <a href="/admin/categories/<?= $formModel->id ?>/change-type">Изменить тип на "Условная
+                  категория"</a>
+              <? else: ?>
+                <a href="/admin/categories/<?= $formModel->id ?>/change-type">Изменить тип на "Каталог"</a>
+              <? endif; ?>
+            <br />
+          </div>
+        </div>
+      </div>
 
+      <div class="row">
         <div class="col-xs-12">
             <?= $form->field($formModel, 'name')->textInput(); ?>
         </div>
@@ -44,7 +68,9 @@ $this->title = 'Редактировать категорию';
         </div>
 
         <div class="col-xs-12">
-            <?= $form->field($formModel, 'text')->widget(\ozerich\admin\widgets\TinyMce::class); ?>
+            <?= $form->field($formModel, 'text')->widget(\ozerich\admin\widgets\TinyMce::class, [
+                'options' => ['rows' => 35]
+            ]); ?>
         </div>
       </div>
 
@@ -55,13 +81,8 @@ $this->title = 'Редактировать категорию';
       </div>
 
         <?php \yii\widgets\ActiveForm::end(); ?>
+    </div>
 
-    </div>
-    <div class="tab-pane" id="params">
-        <? /** @var \yii\web\View $this */ ?>
-        <? ozerich\shop\modules\admin\react\CategoryFieldsAsset::register($this); ?>
-      <div id="react-app-category-fields" data-category-id="<?= $model->id ?>"></div>
-    </div>
     <div class="tab-pane" id="seo">
         <?php $form = \yii\widgets\ActiveForm::begin([
             'action' => '/admin/categories/' . $model->id . '/save-seo',
@@ -91,5 +112,21 @@ $this->title = 'Редактировать категорию';
 
         <?php \yii\widgets\ActiveForm::end(); ?>
     </div>
+
+
+      <? if ($model->type == \ozerich\shop\constants\CategoryType::CATALOG): ?>
+        <div class="tab-pane" id="params">
+            <? /** @var \yii\web\View $this */ ?>
+            <? ozerich\shop\modules\admin\react\CategoryFieldsAsset::register($this); ?>
+          <div id="react-app-category-fields" data-category-id="<?= $model->id ?>"></div>
+        </div>
+      <? else: ?>
+        <div class="tab-pane" id="conditions">
+            <? /** @var \yii\web\View $this */ ?>
+            <? ozerich\shop\modules\admin\react\CategoryFieldsAsset::register($this); ?>
+          <div id="react-app-category-fields" data-category-id="<?= $model->id ?>"></div>
+        </div>
+      <? endif; ?>
+
   </div>
 </div>

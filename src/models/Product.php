@@ -36,7 +36,7 @@ use yii\helpers\Url;
  * @property ProductFieldValue[] $productFieldValues
  * @property ProductPriceParam[] $productPriceParams
  * @property ProductCategory[] $productCategories
- * @property Category[] $categories
+ * @property Category[] $category
  */
 class Product extends \yii\db\ActiveRecord
 {
@@ -121,6 +121,14 @@ class Product extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getCategory()
+    {
+        return $this->hasOne(Category::className(), ['id' => 'category_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getSchemaImage()
     {
         return $this->hasOne(Image::className(), ['id' => 'schema_image_id']);
@@ -153,17 +161,9 @@ class Product extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProductCategories()
-    {
-        return $this->hasMany(ProductCategory::className(), ['product_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getCategories()
     {
-        return $this->hasMany(Category::class, ['id' => 'category_id'])->via('productCategories');
+        return $this->hasMany(Category::class, ['id' => 'category_id']);
     }
 
     /**

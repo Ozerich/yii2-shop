@@ -6,10 +6,17 @@ use ozerich\admin\actions\CreateOrUpdateAction;
 use ozerich\admin\actions\DeleteAction;
 use ozerich\admin\actions\ListAction;
 use ozerich\admin\controllers\base\AdminController;
+use ozerich\shop\constants\CategoryType;
 use ozerich\shop\models\Category;
+use ozerich\shop\models\Product;
+use ozerich\shop\modules\admin\forms\CategoryChangeTypeToCatalogForm;
+use ozerich\shop\modules\admin\forms\CategoryChangeTypeToConditionalForm;
 use ozerich\shop\modules\admin\forms\CategorySeoForm;
 use ozerich\shop\modules\admin\forms\CategorySeoFormConvertor;
 use ozerich\shop\traits\ServicesTrait;
+use yii\web\NotFoundHttpException;
+use yii\web\Response;
+use yii\widgets\ActiveForm;
 
 class CategoriesController extends AdminController
 {
@@ -57,5 +64,51 @@ class CategoriesController extends AdminController
                 'modelClass' => Category::class
             ]
         ];
+    }
+
+    public function actionChangeType($id)
+    {
+        $model = Category::findOne($id);
+        if (!$model) {
+            throw new NotFoundHttpException();
+        }
+
+        if (\Yii::$app->request->isPost) {
+            if ($model->type == CategoryType::CONDITIONAL) {
+                $model->type = CategoryType::CATALOG;
+                $model->save(false, ['type']);
+                return $this->redirect('/admin/categories/update/' . $model->id);
+            } else {
+                $formModel = new CategoryChangeTypeToConditionalForm();
+                if ($formModel->load(\Yii::$app->request->post())) {
+                    if (\Yii::$app->request->isAjax) {
+                        \Yii::$app->response->format = Response::FORMAT_JSON;
+                        return ActiveForm::validate($formModel);
+                    }
+
+                    if ($formModel->validate()) {
+                        Product::updateAll(['category_id' => $formModel->category_id], ['category_id' => $model->id]);
+
+                        $model->type = CategoryType::CONDITIONAL;
+                        $model->save(false, ['type']);
+
+                        return $this->redirect('/admin/categories/update/' . $model->id);
+                    }
+                }
+            }
+        }
+
+        if ($model->type == CategoryType::CATALOG) {
+            $formModel = new CategoryChangeTypeToConditionalForm();
+
+            return $this->render('change-type-to-conditional', [
+                'model' => $model,
+                'formModel' => $formModel
+            ]);
+        } else {
+            return $this->render('change-type-to-catalog', [
+                'model' => $model
+            ]);
+        }
     }
 }

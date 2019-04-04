@@ -2,6 +2,7 @@
 
 namespace ozerich\shop\services\categories;
 
+use ozerich\shop\constants\CategoryType;
 use ozerich\shop\models\Category;
 
 class CategoriesService
@@ -13,6 +14,16 @@ class CategoriesService
         } else {
             $items = Category::findByParent($parent)->all();
         }
+
+        usort($items, function (Category $a, Category $b) {
+            if ($a->type == CategoryType::CONDITIONAL && $b->type == CategoryType::CATALOG) {
+                return 1;
+            }
+            if ($b->type == CategoryType::CONDITIONAL && $a->type == CategoryType::CATALOG) {
+                return -1;
+            }
+            return 0;
+        });
 
         $result = [];
 
