@@ -85,4 +85,21 @@ class CategoriesService
         $category->level = $level;
         $category->save(false, ['level']);
     }
+
+    /**
+     * @param Category $category
+     * @return array
+     */
+    public function getParentIds(Category $category)
+    {
+        $result = [];
+
+        $parent = $category->parent;
+        while ($parent) {
+            $result[] = $parent->id;
+            $parent = $parent->parent;
+        }
+
+        return $result;
+    }
 }

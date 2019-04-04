@@ -7,7 +7,7 @@
  * @var ozerich\shop\models\Category $model
  * @var \ozerich\shop\modules\admin\forms\CategorySeoForm $seoFormModel
  */
-$this->title = 'Редактировать категорию';
+$this->title = 'Редактировать категорию - '.$model->name;
 ?>
 
 <div class="nav-tabs-custom">

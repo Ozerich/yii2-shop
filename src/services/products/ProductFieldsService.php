@@ -18,20 +18,31 @@ class ProductFieldsService
      */
     public function getFieldsForProduct(Product $product, ?Category $category = null)
     {
-        $category_ids = $category === null ? array_map(function (Category $category) {
-            return $category->id;
-        }, $product->categories) : [$category->id];
+        $category = $product->category;
 
-        if(empty($category_ids)){
-            return [];
-        }
+        /** @var Field[] $fields */
+        $fields = Field::find()->joinWith('categoryFields')
+            ->andWhere('fields.category_id <> :main_id', [':main_id' => $category->id])
+            ->andWhere('category_fields.category_id=:category_id', [
+                ':category_id' => $category->id
+            ])
+            ->all();
 
-        $fields = Field::find()->andWhere('category_id IN (' . implode(',', $category_ids) . ')')->all();
+        /** @var Field[] $fields2 */
+        $fields2 = Field::find()->joinWith('categoryFields')
+            ->andWhere('fields.category_id = :main_id', [':main_id' => $category->id])
+            ->andWhere('category_fields.category_id=:category_id', [
+                ':category_id' => $category->id
+            ])
+            ->all();
+
+        $fields = array_merge($fields, $fields2);
 
         $result = [];
 
         foreach ($fields as $field) {
             $item = new ProductField();
+
             $item->setField($field);
             $item->setValue(ProductFieldValue::find()->select('value')
                 ->andWhere('field_id=:field_id', [':field_id' => $field->id])

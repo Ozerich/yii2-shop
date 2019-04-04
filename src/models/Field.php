@@ -21,6 +21,7 @@ use ozerich\shop\constants\FieldType;
  * @property FieldGroup $group
  * @property Image $image
  * @property Category $category
+ * @property CategoryField $categoryFields
  */
 class Field extends \yii\db\ActiveRecord
 {
@@ -74,6 +75,11 @@ class Field extends \yii\db\ActiveRecord
     public function getImage()
     {
         return $this->hasOne(Image::class, ['id' => 'image_id']);
+    }
+
+    public function getCategoryFields()
+    {
+        return $this->hasMany(CategoryField::class, ['field_id' => 'id']);
     }
 
     public function afterFind()

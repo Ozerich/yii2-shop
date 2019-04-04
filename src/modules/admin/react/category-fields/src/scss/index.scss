@@ -1,7 +1,13 @@
 .field-list {
-
   &__name {
     flex: 1;
+  }
+
+  &__checkbox {
+    flex-basis: 25px;
+    width: 25px;
+    min-width: 25px;
+    max-width: 25px;
   }
 
   &__type, &__group {
@@ -54,7 +60,19 @@
 }
 
 .list {
-  margin: 0 0 20px;
+  margin: -10px 0 30px;
+
+  label{
+    font-weight: normal;
+    display: block;
+    margin-bottom: auto;
+    cursor: pointer;
+  }
+
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 
   &-title {
     padding: 0 10px;
