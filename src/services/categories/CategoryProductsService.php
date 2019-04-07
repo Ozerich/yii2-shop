@@ -71,6 +71,9 @@ class CategoryProductsService
     private function checkCondition(Product $product, CategoryCondition $condition)
     {
         if ($condition->type == CategoryConditionType::PRICE) {
+            if ($product->price == 0) {
+                return false;
+            }
             return $this->checkNumberCondition($product->price, $condition->value, $condition->compare);
         }
 
