@@ -23,13 +23,24 @@
                 <input type="checkbox"
                        name="fields[<?= $field->getField()->id ?>]" <?= $field->getValue() ? 'checked' : '' ?>/>
               <? elseif ($field->getField()->type == ozerich\shop\constants\FieldType::SELECT):
-                  $values = $field->getField()->values; ?>
+                  $values = $field->getField()->values;
+                  $my = explode(';', $field->getValue());
+
+                  ?>
+                  <? if ($field->getField()->multiple): ?>
+                  <? foreach ($values as $value): ?>
+                  <label><input type="checkbox"
+                                name="fields[<?= $field->getField()->id ?>][<?= $value ?>]" <?= in_array($value, $my) ? 'checked' : '' ?>> <?= $value ?>
+                  </label><br />
+                  <? endforeach; ?>
+              <? else: ?>
                 <select class="form-control" name="fields[<?= $field->getField()->id ?>]">
                     <? foreach ($values as $value): ?>
                       <option
                           value="<?= $value ?>" <?= $field->getValue() == $value ? 'selected' : '' ?>><?= $value ?></option>
                     <? endforeach; ?>
                 </select>
+              <? endif; ?>
               <? endif; ?>
           </div>
         </div>

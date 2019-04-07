@@ -17,6 +17,8 @@ use ozerich\shop\constants\FieldType;
  * @property string $value_suffix
  * @property string $value_prefix
  * @property boolean $multiple
+ * @property string $yes_label
+ * @property string $no_label
  *
  * @property FieldGroup $group
  * @property Image $image
@@ -41,7 +43,7 @@ class Field extends \yii\db\ActiveRecord
         return [
             [['name', 'type'], 'required'],
             [['image_id', 'group_id'], 'integer'],
-            [['name', 'type', 'value_suffix', 'value_prefix'], 'string', 'max' => 255],
+            [['name', 'type', 'value_suffix', 'value_prefix', 'yes_label', 'no_label'], 'string', 'max' => 255],
             [['values', 'multiple'], 'safe']
         ];
     }

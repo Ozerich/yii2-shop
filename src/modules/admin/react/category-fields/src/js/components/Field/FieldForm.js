@@ -5,10 +5,11 @@ import FormInput from "../Form/FormInput";
 import FormSelect from "../Form/FormSelect";
 import FormArea from "../Form/FormArea";
 import FormActions from "../Form/FormActions";
+import FormCheckbox from "../Form/FormCheckbox";
 
 import { create, hideForm, save } from "../../ducks/field-form";
 
-import { INTEGER, SELECT, values as fieldTypeValues } from "../../constants/FieldType";
+import { INTEGER, SELECT, BOOLEAN, values as fieldTypeValues } from "../../constants/FieldType";
 
 class FieldForm extends Component {
   render() {
@@ -42,7 +43,21 @@ class FieldForm extends Component {
         return (
             <>
             <FormArea id="values" name="values" label="Значения" handleChange={handleChange} value={values.values} />
+            <FormCheckbox id="multiple" name="multiple" label="Множественный выбор" handleChange={handleChange} value={values.multiple} />
             </>
+        );
+      case BOOLEAN:
+        return (
+            <div className="row">
+              <div className="col-xs-6">
+                <FormInput id="yes_label" name="yes_label" label="Текст при положительном значении" handleChange={handleChange}
+                           value={values.yes_label} />
+              </div>
+              <div className="col-xs-6">
+                <FormInput id="no_label" name="no_label" label="Текст при отрицательном значении" handleChange={handleChange}
+                           value={values.no_label} />
+              </div>
+            </div>
         );
       case INTEGER:
         return (
@@ -88,7 +103,10 @@ class FieldForm extends Component {
       type: values.type,
       group_id: values.group_id ? parseInt(values.group_id) : null,
       value_prefix: values.value_prefix,
-      value_suffix: values.value_suffix
+      value_suffix: values.value_suffix,
+      multiple: values.multiple ? true : false,
+      yes_label: values.yes_label,
+      no_label: values.no_label
     };
 
     if (modelValues) {

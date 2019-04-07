@@ -18,12 +18,19 @@ class FieldRequest extends RequestModel
 
     public $values;
 
+    public $yes_label;
+
+    public $no_label;
+
+    public $multiple;
+
     public function rules()
     {
         return [
             [['name', 'type'], 'required'],
-            ['group_id', 'integer'],
-            [['value_suffix', 'value_prefix'], 'string'],
+            [['group_id'], 'integer'],
+            [['multiple'], 'boolean'],
+            [['value_suffix', 'value_prefix', 'yes_label', 'no_label'], 'string'],
             ['values', 'safe']
         ];
     }

@@ -180,13 +180,17 @@ class FieldsController extends Controller
         $request->load();
 
         $model = new Field();
+        $model->category_id = $category->id;
+
         $model->name = $request->name;
         $model->type = $request->type;
         $model->value_suffix = $request->value_suffix;
         $model->value_prefix = $request->value_prefix;
+        $model->yes_label = $request->yes_label;
+        $model->no_label = $request->no_label;
         $model->values = $request->values;
         $model->group_id = $request->group_id;
-        $model->category_id = $category->id;
+        $model->multiple = $request->multiple;
         $model->save();
 
         $this->categoryFieldsService()->addFieldToCategory($model, $category);

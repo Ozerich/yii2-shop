@@ -55,13 +55,17 @@ class ProductFieldsService
     public function getFieldPlainValue(ProductFieldValue $productField)
     {
         if ($productField->field->type == FieldType::BOOLEAN) {
-            $result = $productField->value ? 'Да' : 'Нет';
+            $result = $productField->value ? $productField->field->yes_label : $productField->field->no_label;
+        } else if ($productField->field->type == FieldType::STRING) {
+            $result = $productField->value;
         } else if ($productField->field->type == FieldType::INTEGER) {
-            $result = (int)$productField->value;
+            $result = $productField->field->value_prefix . (int)$productField->value . $productField->field->value_suffix;
+        } else if ($productField->field->type == FieldType::SELECT) {
+            $result = $productField->field->multiple ? explode(';', $productField->value) : $productField->value;
         } else {
             $result = $productField->value;
         }
 
-        return $productField->field->value_prefix . $result . $productField->field->value_suffix;
+        return $result;
     }
 }

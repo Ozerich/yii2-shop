@@ -17,6 +17,9 @@ class FieldDTO extends Field implements DTO
             'group_name' => $this->group ? $this->group->name : null,
             'value_suffix' => $this->value_suffix,
             'value_prefix' => $this->value_prefix,
+            'yes_label' => $this->yes_label,
+            'no_label' => $this->no_label,
+            'multiple' => $this->multiple ? true : false,
             'values' => $this->values
         ];
     }

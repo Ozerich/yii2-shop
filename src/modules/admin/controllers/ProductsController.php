@@ -98,6 +98,12 @@ class ProductsController extends AdminController
         foreach ($fields as $field) {
             if ($field->getField()->type == FieldType::BOOLEAN) {
                 $value = isset($params[$field->getField()->id]);
+            } else if ($field->getField()->type == FieldType::SELECT) {
+                if ($field->getField()->multiple) {
+                    $value = isset($params[$field->getField()->id]) ? implode(';', array_keys($params[$field->getField()->id])) : null;
+                } else {
+                    $value = isset($params[$field->getField()->id]);
+                }
             } else {
                 $value = isset($params[$field->getField()->id]) ? $params[$field->getField()->id] : null;
             }
