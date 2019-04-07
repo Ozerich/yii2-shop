@@ -60,15 +60,16 @@
 }
 
 .list {
-  margin: -10px 0 30px;
+  &:first-child {
+    margin-top: -10px;
+  }
 
-  label{
+  label {
     font-weight: normal;
     display: block;
     margin-bottom: auto;
     cursor: pointer;
   }
-
 
   &:last-child {
     margin-bottom: 0;
@@ -82,6 +83,18 @@
     line-height: 45px;
     display: block;
     margin: 0 -10px;
+
+    &__right {
+      float: right;
+      margin-top: -3px;
+
+      &-note {
+        font-weight: normal;
+        font-size: 14px;
+        margin-right: 10px;
+        display: inline-block;
+      }
+    }
   }
 
   &-row {
@@ -115,6 +128,8 @@
 .list-body {
   min-height: 50px;
   position: relative;
+  margin: 0 -10px;
+  padding: 0 10px;
 }
 
 .overlay {
@@ -132,5 +147,73 @@
     margin-top: -15px;
     color: #000;
     font-size: 30px;
+    z-index: 11;
   }
+}
+
+.loader-wrapper.loading {
+  position: relative;
+  &:before {
+    position: absolute;
+    content: '';
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, .1);
+    z-index: 111;
+  }
+}
+
+.list table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin-bottom: 15px;
+
+  td, th {
+    padding: 5px 10px;
+  }
+
+  th {
+    font-weight: bold;
+    padding-top: 15px;
+  }
+
+  tbody tr:last-child {
+    td {
+      padding-bottom: 0;
+      .form-group {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .cell-filter {
+    width: 300px;
+  }
+
+  .cell-compare {
+    width: 200px;
+  }
+
+  .cell-actions {
+    width: 50px;
+    vertical-align: top;
+    text-align: right;
+    a {
+      display: inline-block;
+      margin-top: 10px;
+      color: red;
+      font-size: 12px;
+    }
+  }
+}
+
+.button-wrapper {
+  border-top: 1px solid #eee;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  text-align: center;
+  margin: 0 -10px;
 }

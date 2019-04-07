@@ -18,7 +18,7 @@ class m190404_000001_fix_category_types extends Migration
         $this->update('{{%categories}}', ['type' => 'CATALOG']);
 
         $this->createTable('{{%category_conditions}}', [
-            'id' => $this->integer()->notNull(),
+            'id' => $this->primaryKey(),
             'category_id' => $this->integer()->notNull(),
             'type' => $this->string()->notNull(),
             'value' => $this->string()->notNull()

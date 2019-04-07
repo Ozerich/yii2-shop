@@ -2,17 +2,18 @@
 
 namespace ozerich\shop\models;
 
-use Yii;
-
 /**
  * This is the model class for table "category_conditions".
  *
  * @property int $id
  * @property int $category_id
+ * @property int $field_id
+ * @property string $compare
  * @property string $type
  * @property string $value
  *
  * @property Category $category
+ * @property Field $field
  */
 class CategoryCondition extends \yii\db\ActiveRecord
 {
@@ -30,5 +31,13 @@ class CategoryCondition extends \yii\db\ActiveRecord
     public function getCategory()
     {
         return $this->hasOne(Category::className(), ['id' => 'category_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getField()
+    {
+        return $this->hasOne(Field::className(), ['id' => 'field_id']);
     }
 }
