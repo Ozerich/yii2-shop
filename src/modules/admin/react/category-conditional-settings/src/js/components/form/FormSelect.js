@@ -33,7 +33,7 @@ class FormSelect extends Component {
         <div className="form-group">
           <select className="form-control" name={name || id} onChange={this.onChange.bind(this)} multiple={multiple}>
             {this.getItems().map(item => {
-              const selected = Array.isArray(value) ? value.indexOf(item.id) !== -1 : value;
+              const selected = Array.isArray(value) ? value.indexOf(item.id) !== -1 : item.id === value;
               return <option key={item.id} value={item.id} selected={selected}>{item.label}</option>
             })}
           </select>

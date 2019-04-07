@@ -102,4 +102,27 @@ class CategoriesService
 
         return $result;
     }
+
+
+    /**
+     * @param Category $category
+     * @return Category[]
+     */
+    public function getCatalogCategoriesForConditionalCategory(Category $category)
+    {
+        if ($category->type != CategoryType::CONDITIONAL) {
+            return [];
+        }
+
+        $parent = $category->parent;
+        while ($parent && $parent->type != CategoryType::CATALOG) {
+            $parent = $parent->parent;
+        }
+
+        if (!$parent || $parent->type != CategoryType::CATALOG) {
+            return [];
+        }
+
+        return Category::findByParent($parent)->andWhere('type=:type', [':type' => CategoryType::CATALOG])->all();
+    }
 }

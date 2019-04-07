@@ -13,6 +13,7 @@ use ozerich\shop\modules\admin\api\requests\conditional\ModelRequest;
 use ozerich\shop\traits\ServicesTrait;
 use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 class ConditionalController extends Controller
 {
@@ -32,6 +33,10 @@ class ConditionalController extends Controller
             'rules' => [
                 [
                     'action' => 'index',
+                    'verbs' => ['GET']
+                ],
+                [
+                    'action' => 'categories',
                     'verbs' => ['GET']
                 ],
                 [
@@ -59,6 +64,22 @@ class ConditionalController extends Controller
         return $model;
     }
 
+    public function actionCategories($id)
+    {
+        $model = $this->getCategory($id);
+
+        $categories = $this->categoriesService()->getCatalogCategoriesForConditionalCategory($model);
+
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+
+        return array_map(function (Category $category) {
+            return [
+                'id' => $category->id,
+                'name' => $category->name
+            ];
+        }, $categories);
+    }
+
     public function actionIndex($id)
     {
         $model = $this->getCategory($id);
@@ -82,7 +103,7 @@ class ConditionalController extends Controller
             $model = new CategoryCondition();
             $model->category_id = $category->id;
             $model->compare = $condition['compare'];
-            $model->type = $condition['filter'] == 'PRICE' ? CategoryConditionType::PRICE : CategoryConditionType::FIELD;
+            $model->type = $condition['filter'] == 'PRICE' ? CategoryConditionType::PRICE : ($condition['filter'] == 'CATEGORY' ? CategoryConditionType::CATEGORY : CategoryConditionType::FIELD);
             $model->field_id = $model->type == CategoryConditionType::FIELD ? $condition['filter'] : null;
             $model->value = is_array($condition['value']) ? implode(';', $condition['value']) : $condition['value'];
             $model->save();

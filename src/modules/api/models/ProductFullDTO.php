@@ -4,6 +4,7 @@ namespace ozerich\shop\modules\api\models;
 
 use ozerich\api\interfaces\DTO;
 use ozerich\shop\models\Category;
+use ozerich\shop\models\CategoryField;
 use ozerich\shop\models\Image;
 use ozerich\shop\models\Product;
 use ozerich\shop\models\ProductFieldValue;
@@ -15,10 +16,14 @@ class ProductFullDTO extends Product implements DTO
 
     private function getParamsJSON()
     {
-        $productCategoryIds = [$this->category_id];
+        $categoryFields = $this->category->categoryFields;
 
-        $params = array_filter($this->productFieldValues, function (ProductFieldValue $value) use ($productCategoryIds) {
-            return in_array($value->field->category_id, $productCategoryIds);
+        $categoryFieldsIds = array_map(function (CategoryField $categoryField) {
+            return $categoryField->field_id;
+        }, $categoryFields);
+
+        $params = array_filter($this->productFieldValues, function (ProductFieldValue $value) use ($categoryFieldsIds) {
+            return in_array($value->field_id, $categoryFieldsIds);
         });
 
         $groups = [];

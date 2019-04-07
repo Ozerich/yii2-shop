@@ -16,6 +16,12 @@ class ConditionRowCompare extends Component {
       ];
     }
 
+    if (filter === 'CATEGORY') {
+      return [
+        { id: 'ONE', label: 'Одна из' }
+      ];
+    }
+
     const filterModel = this.props.filters.find(item => item.id === +filter);
 
     if (!filterModel) {

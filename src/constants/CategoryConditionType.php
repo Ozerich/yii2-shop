@@ -8,4 +8,5 @@ class CategoryConditionType extends Enum
 {
     const FIELD = 'FIELD';
     const PRICE = 'PRICE';
+    const CATEGORY = 'CATEGORY';
 }
