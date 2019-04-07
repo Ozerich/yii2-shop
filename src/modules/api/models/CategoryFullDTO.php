@@ -4,6 +4,7 @@ namespace ozerich\shop\modules\api\models;
 
 use ozerich\api\interfaces\DTO;
 use ozerich\shop\models\Category;
+use ozerich\shop\models\CategoryDisplay;
 
 class CategoryFullDTO extends Category implements DTO
 {
@@ -27,6 +28,10 @@ class CategoryFullDTO extends Category implements DTO
             'children' => array_map(function (Category $category) {
                 return (new CategoryDTO($category))->toJSON();
             }, $this->categories),
+
+            'display_categories' => array_map(function (CategoryDisplay $category) {
+                return (new CategoryDTO($category->category))->toJSON();
+            }, $this->displayedCategories),
 
             'parents' => array_reverse(array_map(function (Category $parent) {
                 return [

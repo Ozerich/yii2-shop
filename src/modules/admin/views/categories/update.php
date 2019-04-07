@@ -7,20 +7,19 @@
  * @var ozerich\shop\models\Category $model
  * @var \ozerich\shop\modules\admin\forms\CategorySeoForm $seoFormModel
  */
-$this->title = 'Редактировать категорию - '.$model->name;
+$this->title = 'Редактировать категорию - ' . $model->name;
 ?>
 
 <div class="nav-tabs-custom">
   <ul class="nav nav-tabs">
     <li class="active"><a href="#main" data-toggle="tab">Основные параметры</a></li>
     <li><a href="#seo" data-toggle="tab">SEO параметры</a></li>
-
       <? if ($model->type == \ozerich\shop\constants\CategoryType::CATALOG): ?>
         <li><a href="#params" data-toggle="tab">Товарные поля</a></li>
       <? else: ?>
         <li><a href="#conditions" data-toggle="tab">Условия</a></li>
       <? endif; ?>
-
+    <li><a href="#appearance" data-toggle="tab">Отображение</a></li>
   </ul>
   <div class="tab-content">
     <div class="active tab-pane" id="main">
@@ -113,7 +112,6 @@ $this->title = 'Редактировать категорию - '.$model->name;
         <?php \yii\widgets\ActiveForm::end(); ?>
     </div>
 
-
       <? if ($model->type == \ozerich\shop\constants\CategoryType::CATALOG): ?>
         <div class="tab-pane" id="params">
             <? /** @var \yii\web\View $this */ ?>
@@ -124,9 +122,13 @@ $this->title = 'Редактировать категорию - '.$model->name;
         <div class="tab-pane" id="conditions">
             <? /** @var \yii\web\View $this */ ?>
             <? ozerich\shop\modules\admin\react\CategoryConditionalSettingsAsset::register($this); ?>
-          <div id="react-app-category-conditional-settings" data-category-id="<?=$model->id?>"></div>
+          <div id="react-app-category-conditional-settings" data-category-id="<?= $model->id ?>"></div>
         </div>
       <? endif; ?>
+
+    <div class="tab-pane" id="appearance">
+        <?= $this->render('tabs/appearance', ['model' => $model]) ?>
+    </div>
 
   </div>
 </div>

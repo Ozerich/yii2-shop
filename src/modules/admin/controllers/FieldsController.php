@@ -215,6 +215,9 @@ class FieldsController extends Controller
         $model->value_prefix = $request->value_prefix;
         $model->values = $request->values;
         $model->group_id = $request->group_id;
+        $model->yes_label = $request->yes_label;
+        $model->no_label = $request->no_label;
+        $model->multiple = $request->multiple;
 
         if (!$model->save()) {
             throw new NotFoundHttpException(print_r($model->getErrors(), true));

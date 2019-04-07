@@ -45,13 +45,14 @@ class CatalogController extends Controller
 
     public function actionCategories($id = null)
     {
+        /** @var Category $root */
         $root = null;
         if ($id !== null) {
             $root = Category::find()->andWhere('id=:id', [':id' => $id])->one();
         }
 
         $dataProvider = new ActiveDataProvider([
-            'query' => $root ? Category::findByParent($root) : Category::findRoot()
+            'query' => $root ? $this->categoriesService()->getDisplayedCategoriesForCategoryQuery($root) : Category::findRoot()
         ]);
 
         return new CollectionResponse($dataProvider, CategoryDTO::class);
@@ -72,7 +73,7 @@ class CatalogController extends Controller
                 $model = Category::findByParent($parent)
                     ->andWhere('url_alias=:url_alias', [':url_alias' => $part])
                     ->one();
-               $parent = $model;
+                $parent = $model;
             }
         }
 

@@ -4,6 +4,7 @@ namespace ozerich\shop\services\categories;
 
 use ozerich\shop\constants\CategoryType;
 use ozerich\shop\models\Category;
+use yii\db\ActiveQuery;
 
 class CategoriesService
 {
@@ -103,6 +104,18 @@ class CategoriesService
         return $result;
     }
 
+    public function getCategoriesForSameRoot(Category $category)
+    {
+        $model = $category;
+        while ($model) {
+            if (!$model->parent) {
+                break;
+            }
+            $model = $model->parent;
+        }
+
+        return Category::findByParent($model)->all();
+    }
 
     /**
      * @param Category $category
@@ -124,5 +137,16 @@ class CategoriesService
         }
 
         return Category::findByParent($parent)->andWhere('type=:type', [':type' => CategoryType::CATALOG])->all();
+    }
+
+    /**
+     * @param Category $category
+     * @return ActiveQuery
+     */
+    public function getDisplayedCategoriesForCategoryQuery(Category $category)
+    {
+        return Category::find()
+            ->joinWith('categoryDisplayCategories')
+            ->andWhere('category_display.parent_id=:parent_id', [':parent_id' => $category->id]);
     }
 }

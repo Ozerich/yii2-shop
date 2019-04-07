@@ -8,6 +8,7 @@ use ozerich\admin\actions\ListAction;
 use ozerich\admin\controllers\base\AdminController;
 use ozerich\shop\constants\CategoryType;
 use ozerich\shop\models\Category;
+use ozerich\shop\models\CategoryDisplay;
 use ozerich\shop\models\Product;
 use ozerich\shop\modules\admin\forms\CategoryChangeTypeToCatalogForm;
 use ozerich\shop\modules\admin\forms\CategoryChangeTypeToConditionalForm;
@@ -111,4 +112,33 @@ class CategoriesController extends AdminController
             ]);
         }
     }
+
+    public function actionAppearance($id)
+    {
+        $model = Category::findOne($id);
+        if (!$model) {
+            throw new NotFoundHttpException();
+        }
+
+        CategoryDisplay::deleteAll([
+            'parent_id' => $model->id
+        ]);
+
+        $display = \Yii::$app->request->post('display');
+        $position = \Yii::$app->request->post('position');
+
+        foreach (array_keys($display) as $category_id) {
+            $item = new CategoryDisplay();
+            $item->parent_id = $model->id;
+            $item->category_id = $category_id;
+            $item->position = isset($position[$category_id]) ? (isset($position[$category_id]) ? $position[$category_id] : 0) : 0;
+            if(!$item->position){
+                $item->position = 0;
+            }
+            $item->save();
+        }
+
+        return $this->redirect('/admin/categories/update/' . $model->id);
+    }
+
 }
