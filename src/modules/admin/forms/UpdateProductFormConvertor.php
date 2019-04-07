@@ -2,7 +2,6 @@
 
 namespace ozerich\shop\modules\admin\forms;
 
-use ozerich\shop\models\Category;
 use ozerich\shop\models\Product;
 use ozerich\shop\models\ProductCategory;
 use yii\base\Model;
@@ -23,10 +22,7 @@ class UpdateProductFormConvertor extends Model
         $form->sku = $product->sku;
         $form->sale_disabled = $product->sale_disabled;
         $form->sale_disabled_text = $product->sale_disabled_text;
-
-        $form->category_id = array_map(function (Category $category) {
-            return $category->id;
-        }, $product->categories);
+        $form->category_id = $product->category_id;
 
         return $form;
     }
@@ -44,13 +40,12 @@ class UpdateProductFormConvertor extends Model
         $model->sale_disabled = $form->sale_disabled;
         $model->sale_disabled_text = $form->sale_disabled_text;
 
-        ProductCategory::deleteAll(['product_id' => $model->id]);
-
-        foreach ($form->category_id as $cat_id) {
-            $productCategoryModel = new ProductCategory();
-            $productCategoryModel->category_id = $cat_id;
-            $productCategoryModel->product_id = $model->id;
-            $productCategoryModel->save();
+        if ($model->category_id != $form->category_id) {
+            ProductCategory::deleteAll(['product_id' => $model->id, 'category_id' => $form->category_id]);
+            $item = new ProductCategory();
+            $item->product_id = $model->id;
+            $item->category_id = $form->category_id;
+            $item->save();
         }
 
         return $model->save();

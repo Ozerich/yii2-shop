@@ -14,6 +14,7 @@ class CreateProductFormConvertor extends Model
     {
         $model->name = $form->name;
         $model->image_id = $form->image_id;
+        $model->category_id = $form->category_id;
         $model->sku = $form->sku;
         $model->url_alias = Translit::convert($model->name);
 
@@ -25,12 +26,10 @@ class CreateProductFormConvertor extends Model
                 $mediaItem->save();
             }
 
-            foreach ($form->category_id as $category_id) {
-                $category = new ProductCategory();
-                $category->category_id = $category_id;
-                $category->product_id = $model->id;
-                $category->save();
-            }
+            $item = new ProductCategory();
+            $item->product_id = $model->id;
+            $item->category_id = $model->category_id;
+            $item->save();
         }
 
         return $model;

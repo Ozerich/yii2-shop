@@ -6,7 +6,6 @@ use ozerich\api\interfaces\DTO;
 use ozerich\shop\models\Category;
 use ozerich\shop\models\Image;
 use ozerich\shop\models\Product;
-use ozerich\shop\models\ProductCategory;
 use ozerich\shop\models\ProductFieldValue;
 use ozerich\shop\traits\ServicesTrait;
 
@@ -16,9 +15,7 @@ class ProductFullDTO extends Product implements DTO
 
     private function getParamsJSON()
     {
-        $productCategoryIds = array_map(function (ProductCategory $model) {
-            return $model->category_id;
-        }, $this->productCategories);
+        $productCategoryIds = [$this->category_id];
 
         $params = array_filter($this->productFieldValues, function (ProductFieldValue $value) use ($productCategoryIds) {
             return in_array($value->field->category_id, $productCategoryIds);
@@ -75,7 +72,7 @@ class ProductFullDTO extends Product implements DTO
 
     public function getPath()
     {
-        $categories = $this->categories;
+        $categories = [$this->category];
 
         $max_level = null;
         $max = null;

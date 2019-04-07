@@ -42,6 +42,7 @@ class Field extends \yii\db\ActiveRecord
             [['name', 'type'], 'required'],
             [['image_id', 'group_id'], 'integer'],
             [['name', 'type', 'value_suffix', 'value_prefix'], 'string', 'max' => 255],
+            [['values', 'multiple'], 'safe']
         ];
     }
 

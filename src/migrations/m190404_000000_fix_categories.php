@@ -30,8 +30,6 @@ class m190404_000000_fix_categories extends Migration
         }
 
         $this->addForeignKey('product_category', '{{%products}}', 'category_id', '{{%categories}}', 'id');
-
-        $this->dropTable('{{%product_categories}}');
     }
 
     /**
@@ -39,15 +37,6 @@ class m190404_000000_fix_categories extends Migration
      */
     public function safeDown()
     {
-        $this->db->createCommand('CREATE TABLE `product_categories` (
-  `product_id` int(11) NOT NULL,
-  `category_id` int(11) NOT NULL,
-  PRIMARY KEY (`product_id`,`category_id`),
-  KEY `product_categories_category` (`category_id`),
-  CONSTRAINT `product_categories_category` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `product_categories_product` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;')->execute();
-
         $this->dropForeignKey('product_category', '{{%products}}');
         $this->dropColumn('{{%products}}', 'category_id');
     }

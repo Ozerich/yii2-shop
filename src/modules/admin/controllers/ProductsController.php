@@ -58,13 +58,8 @@ class ProductsController extends AdminController
                 'viewParams' => function ($params) {
                     $model = Product::findOne($params['id']);
 
-                    $fields = [];
-                    foreach ($model->categories as $category) {
-                        $fields[$category->id] = $this->productFieldsService()->getFieldsForProduct($model, $category);
-                    }
-
                     return [
-                        'fields' => $fields,
+                        'fields' => $this->productFieldsService()->getFieldsForProduct($model),
                         'mediaForm' => (new ProductMediaFormConvertor())->loadFormFromModel($model),
                         'seoFormModel' => (new ProductSeoFormConvertor())->loadFormFromModel($model)
                     ];
@@ -109,6 +104,8 @@ class ProductsController extends AdminController
 
             $this->productFieldsService()->setProductFieldValue($model, $field->getField(), $value);
         }
+
+        $this->categoryProductsService()->afterProductParamsChanged($model);
 
         return $this->redirect('/admin/products');
     }
@@ -162,6 +159,8 @@ class ProductsController extends AdminController
         $model->price = (int)\Yii::$app->request->post('value');
         $model->save(false, ['price']);
 
+
+        $this->categoryProductsService()->afterProductParamsChanged($model);
         return null;
     }
 }

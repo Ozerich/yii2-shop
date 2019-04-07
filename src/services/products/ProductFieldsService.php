@@ -3,7 +3,6 @@
 namespace ozerich\shop\services\products;
 
 use ozerich\shop\constants\FieldType;
-use ozerich\shop\models\Category;
 use ozerich\shop\models\Field;
 use ozerich\shop\models\Product;
 use ozerich\shop\models\ProductFieldValue;
@@ -13,39 +12,19 @@ class ProductFieldsService
 {
     /**
      * @param Product $product
-     * @param Category|null $category
      * @return ProductField[]
      */
-    public function getFieldsForProduct(Product $product, ?Category $category = null)
+    public function getFieldsForProduct(Product $product)
     {
-        $category = $product->category;
-
-        /** @var Field[] $fields */
-        $fields = Field::find()->joinWith('categoryFields')
-            ->andWhere('fields.category_id <> :main_id', [':main_id' => $category->id])
-            ->andWhere('category_fields.category_id=:category_id', [
-                ':category_id' => $category->id
-            ])
-            ->all();
-
-        /** @var Field[] $fields2 */
-        $fields2 = Field::find()->joinWith('categoryFields')
-            ->andWhere('fields.category_id = :main_id', [':main_id' => $category->id])
-            ->andWhere('category_fields.category_id=:category_id', [
-                ':category_id' => $category->id
-            ])
-            ->all();
-
-        $fields = array_merge($fields, $fields2);
-
         $result = [];
 
-        foreach ($fields as $field) {
+        $categoryFields = $product->category->categoryFields;
+        foreach ($categoryFields as $categoryField) {
             $item = new ProductField();
 
-            $item->setField($field);
+            $item->setField($categoryField->field);
             $item->setValue(ProductFieldValue::find()->select('value')
-                ->andWhere('field_id=:field_id', [':field_id' => $field->id])
+                ->andWhere('field_id=:field_id', [':field_id' => $categoryField->field_id])
                 ->andWhere('product_id=:product_id', [':product_id' => $product->id])
                 ->scalar());
 

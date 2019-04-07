@@ -13,6 +13,7 @@ use yii\helpers\Url;
  * @property string $name
  * @property int $image_id
  * @property int $schema_image_id
+ * @property int $category_id
  * @property int $price
  * @property string $text
  * @property string $video
@@ -36,7 +37,7 @@ use yii\helpers\Url;
  * @property ProductFieldValue[] $productFieldValues
  * @property ProductPriceParam[] $productPriceParams
  * @property ProductCategory[] $productCategories
- * @property Category[] $category
+ * @property Category $category
  */
 class Product extends \yii\db\ActiveRecord
 {
@@ -153,17 +154,17 @@ class Product extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProductPriceParams()
+    public function getProductCategories()
     {
-        return $this->hasMany(ProductPriceParam::className(), ['product_id' => 'id']);
+        return $this->hasMany(ProductCategory::className(), ['product_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCategories()
+    public function getProductPriceParams()
     {
-        return $this->hasMany(Category::class, ['id' => 'category_id']);
+        return $this->hasMany(ProductPriceParam::className(), ['product_id' => 'id']);
     }
 
     /**

@@ -23,7 +23,7 @@
 
   <div class="col-xs-12">
       <?= $form->field($formModel, 'category_id')->widget(\ozerich\shop\modules\admin\widgets\CategoryWidget::class, [
-          'multiple' => true
+          'multiple' => false
       ]); ?>
   </div>
 

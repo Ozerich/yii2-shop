@@ -21,7 +21,7 @@ class m190404_000002_fix_category_fields extends Migration
 
         $this->addPrimaryKey('category_fields_pk', '{{%category_fields}}', ['category_id', 'field_id']);
         $this->addForeignKey('category_fields_category', '{{%category_fields}}', 'category_id', '{{%categories}}', 'id');
-        $this->addForeignKey('category_fields_field', '{{%category_fields}}', 'field_id', '{{%fields}}', 'id');
+        $this->addForeignKey('category_fields_field', '{{%category_fields}}', 'field_id', '{{%fields}}', 'id', 'CASCADE');
 
         $items = $this->db->createCommand('SELECT id, category_id FROM fields')->queryAll();
         foreach ($items as $item) {

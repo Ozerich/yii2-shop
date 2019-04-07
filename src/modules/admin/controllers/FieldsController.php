@@ -159,7 +159,10 @@ class FieldsController extends Controller
         }
 
         $dataProvider = new ActiveDataProvider([
-            'query' => $this->categoryFieldsService()->getFieldsForCategoryQuery($category)
+            'query' => $this->categoryFieldsService()->getFieldsForCategoryQuery($category),
+            'pagination' => [
+                'pageSize' => -1
+            ]
         ]);
 
         return new CollectionResponse($dataProvider, FieldDTO::class);

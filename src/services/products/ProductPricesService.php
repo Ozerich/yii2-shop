@@ -4,9 +4,12 @@ namespace ozerich\shop\services\products;
 
 use ozerich\shop\models\Product;
 use ozerich\shop\models\ProductPriceParam;
+use ozerich\shop\traits\ServicesTrait;
 
 class ProductPricesService
 {
+    use ServicesTrait;
+
     /**
      * @param Product $product
      */
@@ -31,5 +34,7 @@ class ProductPricesService
 
         $product->price = $min;
         $product->save(false, ['price']);
+
+        $this->categoryProductsService()->afterProductParamsChanged($product);
     }
 }

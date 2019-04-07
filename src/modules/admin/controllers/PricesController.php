@@ -20,7 +20,6 @@ use ozerich\shop\modules\admin\api\requests\prices\CommonRequest;
 use ozerich\shop\modules\admin\api\requests\prices\ParamItemRequest;
 use ozerich\shop\modules\admin\api\requests\prices\ParamRequest;
 use ozerich\shop\modules\admin\api\requests\prices\SaveRequest;
-use ozerich\shop\modules\api\models\ProductDTO;
 use ozerich\shop\traits\ServicesTrait;
 use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
@@ -144,6 +143,8 @@ class PricesController extends Controller
         $product->price_hidden_text = $request->disabled ? $request->disabled_text : null;
 
         $product->save(false, ['price', 'price_hidden', 'price_hidden_text']);
+
+        $this->categoryProductsService()->afterProductParamsChanged($product);
     }
 
     public function actionIndex($id)

@@ -88,6 +88,8 @@ class ConditionalController extends Controller
             $model->save();
         }
 
+        $this->categoryProductsService()->afterConditionalCategoryChanged($category);
+
         return null;
     }
 }

@@ -49,9 +49,7 @@ class FilterProduct extends Product
 
                 $ids = array_merge([$this->category_id], $children_ids);
 
-                if (!empty($ids)) {
-                    $query->andWhere('category_id IN (' . implode(',', $ids) . ')');
-                }
+                $query->joinWith('productCategories')->andWhere('product_categories.category_id IN (' . implode(',', $ids) . ')');
             }
         }
 
