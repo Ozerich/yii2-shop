@@ -32,7 +32,7 @@ class CategoriesService
             $result[$item['id']] = [
                 'model' => $item,
                 'plain_label' => str_repeat('-', ($item->level - 1) * 5) . $item->name,
-                'children' => $this->getTreeRec($item)
+                'children' => array_values($this->getTreeRec($item))
             ];
         }
 
@@ -49,7 +49,7 @@ class CategoriesService
         $result = [];
 
         foreach ($parentItems as $id => $row) {
-            $result[$id] = $row;
+            $result[] = $row;
             $result = array_merge($result, $this->rec($row['children']));
         }
 
