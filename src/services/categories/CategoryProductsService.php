@@ -146,7 +146,10 @@ class CategoryProductsService
         /** @var Category[] $categories */
         $categories = Category::findByParent($root)->andWhere('type=:type', [':type' => CategoryType::CONDITIONAL])->all();
 
-        ProductCategory::deleteAll(['product_id' => $product->id]);
+        ProductCategory::deleteAll('product_id=:product_id and category_id <> :category_id', [
+            ':product_id' => $product->id,
+            ':category_id' => $product->category_id
+        ]);
 
         foreach ($categories as $category) {
             if ($this->checkProduct($product, $category)) {
