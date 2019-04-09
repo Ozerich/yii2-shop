@@ -8,7 +8,7 @@ class FormInput extends Component {
         <div className="form-group field-updateproductform-name required">
           <label className="control-label" htmlFor={id}>{label}</label>
           <input type="text" id={id} disabled={disabled} className="form-control" value={value}
-                 onChange={handleChange} />
+                 onChange={this.onChange.bind(this)} />
         </div>
     );
   }
