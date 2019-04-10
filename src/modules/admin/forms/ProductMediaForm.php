@@ -10,6 +10,8 @@ class ProductMediaForm extends Model
 
     public $images;
 
+    public $image_texts;
+
     public function attributeLabels()
     {
         return [
@@ -21,12 +23,17 @@ class ProductMediaForm extends Model
     public function rules()
     {
         return [
-            [['images', 'video'], 'safe']
+            [['images', 'video', 'image_texts'], 'safe']
         ];
     }
 
     public function getImageIds()
     {
         return empty($this->images) ? [] : explode(',', $this->images);
+    }
+
+    public function getImageTexts()
+    {
+        return $this->image_texts;
     }
 }

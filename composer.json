@@ -24,7 +24,6 @@
     "ozerich/yii2-tools": "^1.0",
     "google/apiclient": "^2.0"
   },
-  "minimum-stability": "stable",
   "autoload": {
     "psr-4": {
       "ozerich\\shop\\": "src/"

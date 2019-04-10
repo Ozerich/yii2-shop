@@ -130,7 +130,7 @@ class ProductsController extends AdminController
             $model->video = $form->video;
             $model->save(false, ['video']);
 
-            $this->productMediaService()->setProductImages($model, $form->getImageIds());
+            $this->productMediaService()->setProductImages($model, $form->getImageIds(), $form->getImageTexts());
         }
 
         return $this->redirect('/admin/products');

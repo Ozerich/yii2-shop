@@ -5,9 +5,9 @@ namespace ozerich\shop\modules\api\models;
 use ozerich\api\interfaces\DTO;
 use ozerich\shop\models\Category;
 use ozerich\shop\models\CategoryField;
-use ozerich\shop\models\Image;
 use ozerich\shop\models\Product;
 use ozerich\shop\models\ProductFieldValue;
+use ozerich\shop\models\ProductImage;
 use ozerich\shop\traits\ServicesTrait;
 
 class ProductFullDTO extends Product implements DTO
@@ -120,12 +120,13 @@ class ProductFullDTO extends Product implements DTO
 
             'path' => $this->getPath(),
 
-            'images' => array_map(function (Image $image) {
+            'images' => array_map(function (ProductImage $image) {
                 return [
-                    'small' => $image->getUrl('gallery-preview'),
-                    'big' => $image->getUrl()
+                    'text' => $image->text,
+                    'small' => $image->image->getUrl('gallery-preview'),
+                    'big' => $image->image->getUrl()
                 ];
-            }, $this->images),
+            }, $this->productImages),
 
             'h1_value' => empty($this->h1_value) ? $this->name : $this->h1_value,
             'seo_title' => empty($this->seo_title) ? $this->name : $this->seo_title,

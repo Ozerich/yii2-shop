@@ -32,7 +32,7 @@ use yii\helpers\Url;
  * @property Image $image
  * @property Image $schemaImage
  * @property Image[] $images
- * @property ProductImage $productImages
+ * @property ProductImage[] $productImages
  * @property ProductPrice $prices
  * @property ProductFieldValue[] $productFieldValues
  * @property ProductPriceParam[] $productPriceParams

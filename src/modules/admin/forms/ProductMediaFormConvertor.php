@@ -20,10 +20,14 @@ class ProductMediaFormConvertor extends Model
             ->all();
 
         $image_ids = [];
+        $image_texts = [];
         foreach ($images as $image) {
             $image_ids[] = $image->image_id;
+            $image_texts[$image->image_id] = $image->text;
         }
+
         $form->images = $image_ids;
+        $form->image_texts = $image_texts;
 
         return $form;
     }
