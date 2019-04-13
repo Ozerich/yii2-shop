@@ -112,7 +112,10 @@ class CatalogController extends Controller
     public function actionProducts($id)
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => $this->productGetService()->getSearchByCategoryQuery($id)->joinWith('productFieldValues')->joinWith('category'),
+            'query' => $this->productGetService()->getSearchByCategoryQuery($id)
+                ->joinWith('productFieldValues')
+                ->joinWith('category')
+                ->joinWith('image'),
             'pagination' => [
                 'pageSize' => 10000
             ],
