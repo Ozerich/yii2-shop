@@ -24,12 +24,14 @@ class FieldRequest extends RequestModel
 
     public $multiple;
 
+    public $filter_enabled;
+
     public function rules()
     {
         return [
             [['name', 'type'], 'required'],
             [['group_id'], 'integer'],
-            [['multiple'], 'boolean'],
+            [['multiple', 'filter_enabled'], 'boolean'],
             [['value_suffix', 'value_prefix', 'yes_label', 'no_label'], 'string'],
             ['values', 'safe']
         ];

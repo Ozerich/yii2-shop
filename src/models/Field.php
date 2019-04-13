@@ -19,6 +19,7 @@ use ozerich\shop\constants\FieldType;
  * @property boolean $multiple
  * @property string $yes_label
  * @property string $no_label
+ * @property boolean $filter_enabled
  *
  * @property FieldGroup $group
  * @property Image $image

@@ -22,6 +22,8 @@ class FieldForm extends Component {
                 <form onSubmit={handleSubmit}>
                   <FormInput id="name" name="name" label="Название поля" handleChange={handleChange}
                              value={values.name} />
+                  <FormCheckbox id="filter_enabled" name="filter_enabled" label="Выводить в фильтре" handleChange={handleChange}
+                             value={values.filter_enabled} />
                   <FormSelect id="group_id" name="group_id" items={this.getGroups()} label="Группа полей"
                               handleChange={handleChange}
                               value={values.group_id} />
@@ -104,7 +106,8 @@ class FieldForm extends Component {
       group_id: values.group_id ? parseInt(values.group_id) : null,
       value_prefix: values.value_prefix,
       value_suffix: values.value_suffix,
-      multiple: values.multiple ? true : false,
+      multiple: !!values.multiple,
+      filter_enabled: !!values.filter_enabled,
       yes_label: values.yes_label,
       no_label: values.no_label
     };

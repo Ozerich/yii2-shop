@@ -6,7 +6,7 @@ class FormCheckbox extends Component {
 
     return (
         <div className="form-group">
-          <div style={{ marginTop: '30px' }}>
+          <div>
             <label htmlFor={id}>
               <input type="checkbox" id={id} checked={value} onChange={this.onChange.bind(this)} />
               &nbsp;{label}

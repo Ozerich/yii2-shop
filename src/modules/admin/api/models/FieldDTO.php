@@ -20,7 +20,8 @@ class FieldDTO extends Field implements DTO
             'yes_label' => $this->yes_label,
             'no_label' => $this->no_label,
             'multiple' => $this->multiple ? true : false,
-            'values' => $this->values
+            'values' => $this->values,
+            'filter_enabled' => $this->filter_enabled ? true : false
         ];
     }
 }

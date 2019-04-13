@@ -14,6 +14,7 @@ class ProductGetService
     public function getSearchByCategoryQuery($id)
     {
         return Product::find()->joinWith('productCategories')
+            ->joinWith('image')
             ->andWhere('product_categories.category_id=:category_id', [':category_id' => $id])
             ->addOrderBy('popular_weight DESC')
             ->addOrderBy('name ASC');

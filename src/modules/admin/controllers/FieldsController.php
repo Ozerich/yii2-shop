@@ -191,6 +191,7 @@ class FieldsController extends Controller
         $model->values = $request->values;
         $model->group_id = $request->group_id;
         $model->multiple = $request->multiple;
+        $model->filter_enabled = $request->filter_enabled ? true : false;
         $model->save();
 
         $this->categoryFieldsService()->addFieldToCategory($model, $category);
@@ -217,6 +218,7 @@ class FieldsController extends Controller
         $model->group_id = $request->group_id;
         $model->yes_label = $request->yes_label;
         $model->no_label = $request->no_label;
+        $model->filter_enabled = $request->filter_enabled ? true : false;
         $model->multiple = $request->multiple;
 
         if (!$model->save()) {

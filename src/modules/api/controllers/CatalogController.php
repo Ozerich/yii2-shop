@@ -7,8 +7,10 @@ use ozerich\api\filters\AccessControl;
 use ozerich\api\response\CollectionResponse;
 use ozerich\api\response\ModelResponse;
 use ozerich\shop\models\Category;
+use ozerich\shop\models\Field;
 use ozerich\shop\modules\api\models\CategoryDTO;
 use ozerich\shop\modules\api\models\CategoryFullDTO;
+use ozerich\shop\modules\api\models\FilterFieldDTO;
 use ozerich\shop\modules\api\models\ProductDTO;
 use ozerich\shop\traits\ServicesTrait;
 use yii\data\ActiveDataProvider;
@@ -36,11 +38,34 @@ class CatalogController extends Controller
                 [
                     'action' => 'products',
                     'verbs' => 'GET'
+                ],
+                [
+                    'action' => 'filters',
+                    'verbs' => 'GET'
                 ]
             ]
         ];
 
         return $behaviors;
+    }
+
+    public function actionFilters($id)
+    {
+        $model = Category::find()->andWhere('categories.id=:id', [':id' => $id])->joinWith('categoryFields')->one();
+        if (!$model) {
+            throw new NotFoundHttpException('Категории не найдено');
+        }
+
+        $fields = [];
+        foreach ($model->categoryFields as $categoryField) {
+            if ($categoryField->field->filter_enabled) {
+                $fields[] = $categoryField->field;
+            }
+        }
+
+        return array_map(function (Field $field) {
+            return (new FilterFieldDTO($field))->toJSON();
+        }, $fields);
     }
 
     public function actionCategories($id = null)
@@ -87,7 +112,7 @@ class CatalogController extends Controller
     public function actionProducts($id)
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => $this->productGetService()->getSearchByCategoryQuery($id),
+            'query' => $this->productGetService()->getSearchByCategoryQuery($id)->joinWith('productFieldValues')->joinWith('category'),
             'pagination' => [
                 'pageSize' => 10000
             ],
