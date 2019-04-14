@@ -23,7 +23,7 @@ class ProductDTO extends Product implements DTO
 
         foreach ($this->productFieldValues as $productFieldValue) {
             if (in_array($productFieldValue->field_id, $field_ids)) {
-                $result[$productFieldValue->field_id] = $productFieldValue->value;
+                $result[$productFieldValue->field_id] = $productFieldValue->field->type == FieldType::SELECT ? explode(';', $productFieldValue->value) : $productFieldValue->value;
             }
         }
 
