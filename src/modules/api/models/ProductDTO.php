@@ -3,6 +3,7 @@
 namespace ozerich\shop\modules\api\models;
 
 use ozerich\api\interfaces\DTO;
+use ozerich\shop\constants\FieldType;
 use ozerich\shop\models\Product;
 use ozerich\shop\traits\ServicesTrait;
 
