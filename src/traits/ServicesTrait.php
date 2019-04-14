@@ -9,6 +9,7 @@ use ozerich\shop\services\products\ProductFieldsService;
 use ozerich\shop\services\products\ProductGetService;
 use ozerich\shop\services\products\ProductMediaService;
 use ozerich\shop\services\products\ProductPricesService;
+use ozerich\shop\services\search\SearchService;
 
 trait ServicesTrait
 {
@@ -25,6 +26,8 @@ trait ServicesTrait
     private $categoryFieldsService = null;
 
     private $categoryProductsService = null;
+
+    private $searchService = null;
 
     /**
      * @return ProductFieldsService
@@ -108,5 +111,17 @@ trait ServicesTrait
         }
 
         return $this->categoryProductsService;
+    }
+
+    /**
+     * @return SearchService
+     */
+    public function searchService()
+    {
+        if ($this->searchService === null) {
+            $this->searchService = new SearchService();
+        }
+
+        return $this->searchService;
     }
 }
