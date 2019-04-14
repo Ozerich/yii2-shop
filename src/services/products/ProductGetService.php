@@ -25,12 +25,7 @@ class ProductGetService
      */
     public function getSameProducts(Product $product)
     {
-        $categories = $product->categories;
-        if (empty($categories)) {
-            return [];
-        }
-
-        $category = $categories[0];
+        $category = $product->category;
 
         $baseQuery = Product::find()->andWhere('category_id=:category_id', [':category_id' => $category->id]);
 
