@@ -1,6 +1,7 @@
 <?
 /**
  * @var ozerich\shop\models\Product $model
+ * @var \ozerich\shop\modules\admin\forms\UpdateProductForm $formModel
  * @var ozerich\shop\structures\ProductField[] $fields
  */
 ?>
@@ -13,12 +14,19 @@
   <div class="col-xs-9">
       <?= $form->field($formModel, 'name')->textInput(); ?>
   </div>
+
   <div class="col-xs-3">
       <?= $form->field($formModel, 'sku')->textInput(); ?>
   </div>
 
   <div class="col-xs-12">
       <?= $form->field($formModel, 'url_alias')->textInput(); ?>
+  </div>
+
+  <div class="col-xs-12">
+      <?= $form->field($formModel, 'manufacture_id')->dropDownList(\ozerich\shop\models\Manufacture::getList(), [
+          'prompt' => 'Отсуствует'
+      ]); ?>
   </div>
 
   <div class="col-xs-12">
@@ -51,7 +59,8 @@
     </div>
   </div>
 
-  <div class="col-xs-6" id="sale-disabled-text_wrapper" style="display: <?=$formModel->sale_disabled ? 'block' : 'none'?>">
+  <div class="col-xs-6" id="sale-disabled-text_wrapper"
+       style="display: <?= $formModel->sale_disabled ? 'block' : 'none' ?>">
       <?= $form->field($formModel, 'sale_disabled_text')->textInput(); ?>
   </div>
 </div>

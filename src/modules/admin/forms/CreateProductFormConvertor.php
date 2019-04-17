@@ -14,6 +14,7 @@ class CreateProductFormConvertor extends Model
     {
         $model->name = $form->name;
         $model->image_id = $form->image_id;
+        $model->manufacture_id = $form->manufacture_id;
         $model->category_id = $form->category_id;
         $model->sku = $form->sku;
         $model->url_alias = Translit::convert($model->name);

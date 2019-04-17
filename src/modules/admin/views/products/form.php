@@ -26,6 +26,13 @@ $this->title = 'Создать товар';
       <?= $form->field($formModel, 'sku')->textInput(); ?>
   </div>
 
+  <div class="col-xs-12">
+      <?= $form->field($formModel, 'manufacture_id')->dropDownList(\ozerich\shop\models\Manufacture::getList(), [
+          'prompt' => 'Отсуствует'
+      ]); ?>
+  </div>
+
+
 <? if ($model->isNewRecord): ?>
   <div class="col-xs-12">
       <?= $form->field($formModel, 'category_id')->widget(\ozerich\shop\modules\admin\widgets\CategoryWidget::class, [

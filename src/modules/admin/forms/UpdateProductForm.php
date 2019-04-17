@@ -10,6 +10,8 @@ class UpdateProductForm extends Product
 
     public $image_id;
 
+    public $manufacture_id;
+
     public $schema_image_id;
 
     public $price;
@@ -33,7 +35,7 @@ class UpdateProductForm extends Product
         return [
             [['name'], 'required'],
             ['price', 'integer'],
-            [['is_prices_extended', 'sale_disabled'], 'integer'],
+            [['is_prices_extended', 'sale_disabled', 'manufacture_id'], 'integer'],
             [['category_id'], 'required'],
             [['text', 'sku', 'sale_disabled_text'], 'string'],
             [['url_alias'], 'string', 'max' => 100],

@@ -12,6 +12,10 @@ class Module extends \ozerich\admin\Module
 
     public $isBoxedLayout = false;
 
+    public $logoUrl = '/';
+
+    public $loginDuration = 99999999;
+
     public $menu = [
         [
             'id' => 'categories',
@@ -23,6 +27,12 @@ class Module extends \ozerich\admin\Module
             'id' => 'products',
             'link' => '/products',
             'label' => 'Товары',
+            'icon' => 'book'
+        ],
+        [
+            'id' => 'manufactures',
+            'link' => '/manufactures',
+            'label' => 'Производители',
             'icon' => 'book'
         ],
         [

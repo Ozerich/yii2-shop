@@ -14,6 +14,7 @@ use yii\helpers\Url;
  * @property int $image_id
  * @property int $schema_image_id
  * @property int $category_id
+ * @property int $manufacture_id
  * @property int $price
  * @property string $text
  * @property string $video
@@ -30,6 +31,7 @@ use yii\helpers\Url;
  * @property string $price_hidden_text
  *
  * @property Image $image
+ * @property Manufacture $manufacture
  * @property Image $schemaImage
  * @property Image[] $images
  * @property ProductImage[] $productImages
@@ -56,7 +58,7 @@ class Product extends \yii\db\ActiveRecord
     {
         return [
             [['url_alias', 'name'], 'required'],
-            [['image_id', 'price', 'popular', 'is_prices_extended'], 'integer'],
+            [['image_id', 'price', 'popular', 'is_prices_extended', 'manufacture_id'], 'integer'],
             [['text'], 'safe'],
             [['url_alias', 'name'], 'string', 'max' => 255],
 
@@ -91,6 +93,7 @@ class Product extends \yii\db\ActiveRecord
             'price_hidden_text' => 'Текст вместо цены',
             'sale_disabled' => 'Заказ товара недоступен',
             'sale_disabled_text' => 'Причина, по которой недоступен заказ',
+            'manufacture_id' => 'Производитель'
         ];
     }
 
@@ -125,6 +128,14 @@ class Product extends \yii\db\ActiveRecord
     public function getCategory()
     {
         return $this->hasOne(Category::className(), ['id' => 'category_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getManufacture()
+    {
+        return $this->hasOne(Manufacture::className(), ['id' => 'manufacture_id']);
     }
 
     /**
