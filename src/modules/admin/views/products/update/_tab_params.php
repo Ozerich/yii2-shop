@@ -35,6 +35,7 @@
                   <? endforeach; ?>
               <? else: ?>
                 <select class="form-control" name="fields[<?= $field->getField()->id ?>]">
+                  <option value="">Не указано</option>
                     <? foreach ($values as $value): ?>
                       <option
                           value="<?= $value ?>" <?= $field->getValue() == $value ? 'selected' : '' ?>><?= $value ?></option>
