@@ -10,6 +10,11 @@ foreach ((new \ozerich\shop\services\categories\CategoriesService())->getTreeAsP
     $categoryFilter[$id] = $item;
 }
 
+$manufactureFilter = ['' => 'Все производители'];
+foreach (ozerich\shop\models\Manufacture::getList() as $id => $name) {
+    $manufactureFilter[$id] = $name;
+}
+
 $columns = [
     'name' => [
         'header' => 'Название',
@@ -18,6 +23,12 @@ $columns = [
         'value' => function (ozerich\shop\models\Product $product) {
             return \yii\helpers\Html::a($product->name, '/admin/products/update/' . $product->id, ['target' => '_blank']);
         }
+    ],
+    'manufacture' => [
+        'header' => 'Производитель',
+        'attribute' => 'manufacture.name',
+        'format' => 'raw',
+        'filter' => \yii\helpers\Html::dropDownList('FilterProduct[manufacture_id]', $filterModel->manufacture_id, $manufactureFilter, ['class' => 'form-control']),
     ],
     'category_id' => [
         'header' => 'Категория',

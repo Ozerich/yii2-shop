@@ -8,12 +8,10 @@ use yii\db\ActiveQuery;
 
 class FilterProduct extends Product
 {
-    public $category_id;
-
     public function rules()
     {
         return [
-            [['name', 'category_id'], 'safe']
+            [['name', 'category_id', 'manufacture_id'], 'safe']
         ];
     }
 
@@ -51,6 +49,10 @@ class FilterProduct extends Product
 
                 $query->joinWith('productCategories')->andWhere('product_categories.category_id IN (' . implode(',', $ids) . ')');
             }
+        }
+
+        if(!empty($this->manufacture_id)){
+            $query->andWhere('manufacture_id = :manufacture_id', [':manufacture_id' => $this->manufacture_id]);
         }
 
         return $query;

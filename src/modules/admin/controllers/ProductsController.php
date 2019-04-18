@@ -33,7 +33,7 @@ class ProductsController extends AdminController
                 'class' => ListAction::class,
                 'query' => Product::find()->addOrderBy('popular_weight DESC')->addOrderBy('name ASC'),
                 'view' => 'index',
-                'pageSize' => 10000,
+                'pageSize' => 100,
                 'filterModel' => new FilterProduct(),
             ],
             'create' => [
