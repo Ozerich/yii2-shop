@@ -50,6 +50,7 @@ class ProductDTO extends Product implements DTO
             'sale_disabled_text' => $this->sale_disabled ? $this->sale_disabled_text : null,
 
             'params' => $this->getParamsJSON(),
+            'manufacture_id' => $this->manufacture_id
         ];
     }
 }

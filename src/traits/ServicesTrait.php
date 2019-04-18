@@ -4,6 +4,7 @@ namespace ozerich\shop\traits;
 
 use ozerich\shop\services\categories\CategoriesService;
 use ozerich\shop\services\categories\CategoryFieldsService;
+use ozerich\shop\services\categories\CategoryManufacturesService;
 use ozerich\shop\services\categories\CategoryProductsService;
 use ozerich\shop\services\products\ProductFieldsService;
 use ozerich\shop\services\products\ProductGetService;
@@ -26,6 +27,8 @@ trait ServicesTrait
     private $categoryFieldsService = null;
 
     private $categoryProductsService = null;
+
+    private $categoryManufacturesService = null;
 
     private $searchService = null;
 
@@ -111,6 +114,18 @@ trait ServicesTrait
         }
 
         return $this->categoryProductsService;
+    }
+
+    /**
+     * @return CategoryManufacturesService
+     */
+    public function categoryManufacturesService()
+    {
+        if ($this->categoryManufacturesService === null) {
+            $this->categoryManufacturesService = new CategoryManufacturesService();
+        }
+
+        return $this->categoryManufacturesService;
     }
 
     /**

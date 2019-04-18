@@ -9,9 +9,12 @@ use ozerich\shop\models\Category;
 use ozerich\shop\models\CategoryCondition;
 use ozerich\shop\models\Product;
 use ozerich\shop\models\ProductCategory;
+use ozerich\shop\traits\ServicesTrait;
 
 class CategoryProductsService
 {
+    use ServicesTrait;
+    
     private function checkNumberCondition($productValue, $conditionValue, $compare)
     {
         $productValue = (int)$productValue;
@@ -196,5 +199,7 @@ class CategoryProductsService
             $item->product_id = $id;
             $item->save();
         }
+
+        $this->categoryManufacturesService()->onUpdateCategory($category->id);
     }
 }

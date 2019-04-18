@@ -140,6 +140,8 @@ class ProductFullDTO extends Product implements DTO
 
             'sale_disabled' => $this->sale_disabled ? true : false,
             'sale_disabled_text' => $this->sale_disabled ? $this->sale_disabled_text : null,
+
+            'manufacture' => $this->manufacture ? (new ManufactureDTO($this->manufacture))->toJSON() : null
         ];
     }
 }

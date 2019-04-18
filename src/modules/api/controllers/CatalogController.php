@@ -7,10 +7,9 @@ use ozerich\api\filters\AccessControl;
 use ozerich\api\response\CollectionResponse;
 use ozerich\api\response\ModelResponse;
 use ozerich\shop\models\Category;
-use ozerich\shop\models\Field;
 use ozerich\shop\modules\api\models\CategoryDTO;
 use ozerich\shop\modules\api\models\CategoryFullDTO;
-use ozerich\shop\modules\api\models\FilterFieldDTO;
+use ozerich\shop\modules\api\models\FilterDTO;
 use ozerich\shop\modules\api\models\ProductDTO;
 use ozerich\shop\traits\ServicesTrait;
 use yii\data\ActiveDataProvider;
@@ -51,9 +50,21 @@ class CatalogController extends Controller
 
     public function actionFilters($id)
     {
-        $model = Category::find()->andWhere('categories.id=:id', [':id' => $id])->joinWith('categoryFields')->one();
+        $model = Category::find()->andWhere('categories.id=:id', [':id' => $id])->joinWith('categoryFields')->joinWith('manufactures')->one();
         if (!$model) {
             throw new NotFoundHttpException('Категории не найдено');
+        }
+
+        $result = [];
+
+        $manufactures = $model->manufactures;
+        if (!empty($manufactures)) {
+            $filter = new FilterDTO('MANUFACTURE', 'Производитель');
+            $filter->setFilterType('SELECT');
+            foreach ($manufactures as $manufacture) {
+                $filter->addFilterValue($manufacture->id, $manufacture->name);
+            }
+            $result[] = $filter;
         }
 
         $fields = [];
@@ -63,9 +74,19 @@ class CatalogController extends Controller
             }
         }
 
-        return array_map(function (Field $field) {
-            return (new FilterFieldDTO($field))->toJSON();
-        }, $fields);
+        foreach ($fields as $field) {
+            $filter = new FilterDTO($field->id, $field->name);
+            $filter->setFilterType($field->type);
+            foreach ($field->values as $value) {
+                $filter->addFilterValue(null, $value);
+            }
+
+            $result[] = $filter;
+        }
+
+        return array_map(function (FilterDTO $filter) {
+            return $filter->toJSON();
+        }, $result);
     }
 
     public function actionCategories($id = null)

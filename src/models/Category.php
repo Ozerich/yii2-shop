@@ -30,6 +30,8 @@ use yii\helpers\Url;
  * @property CategoryField[] $categoryFields
  * @property Category[] $categoryDisplayCategories
  * @property Category[] $displayedCategories
+ * @property CategoryManufacture[] $categoryManufactures
+ * @property Manufacture[] $manufactures
  */
 class Category extends \yii\db\ActiveRecord
 {
@@ -140,6 +142,21 @@ class Category extends \yii\db\ActiveRecord
     {
         return $this->hasMany(CategoryDisplay::className(), ['category_id' => 'id']);
     }
+
+
+    public function getCategoryManufactures()
+    {
+        return $this->hasMany(CategoryManufacture::className(), ['category_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getManufactures()
+    {
+        return $this->hasMany(Manufacture::class, ['id' => 'manufacture_id'])->via('categoryManufactures');
+    }
+
 
     /**
      * @return \yii\db\ActiveQuery

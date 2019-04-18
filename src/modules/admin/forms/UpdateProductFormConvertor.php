@@ -4,10 +4,13 @@ namespace ozerich\shop\modules\admin\forms;
 
 use ozerich\shop\models\Product;
 use ozerich\shop\models\ProductCategory;
+use ozerich\shop\traits\ServicesTrait;
 use yii\base\Model;
 
 class UpdateProductFormConvertor extends Model
 {
+    use ServicesTrait;
+
     public function loadFormFromModel(Product $product)
     {
         $form = new UpdateProductForm();
@@ -48,6 +51,9 @@ class UpdateProductFormConvertor extends Model
             $item->product_id = $model->id;
             $item->category_id = $form->category_id;
             $item->save();
+
+            $this->categoryManufacturesService()->onUpdateCategory($model->category_id);
+            $this->categoryManufacturesService()->onUpdateCategory($form->category_id);
         }
 
         return $model->save();
