@@ -33,6 +33,11 @@ class UpdateProductFormConvertor extends Model
 
     public function saveModelFromForm(Product $model, UpdateProductForm $form)
     {
+        $manufactureChanged = false;
+        if ($model->manufacture_id != $form->manufacture_id) {
+            $manufactureChanged = true;
+        }
+
         $model->name = $form->name;
         $model->image_id = $form->image_id;
         $model->manufacture_id = $form->manufacture_id;
@@ -56,7 +61,13 @@ class UpdateProductFormConvertor extends Model
             $this->categoryManufacturesService()->onUpdateCategory($form->category_id);
         }
 
-        return $model->save();
+        $model->save();
+
+        if ($manufactureChanged) {
+            $this->categoryManufacturesService()->onUpdateCategory($model->category_id);
+        }
+
+        return true;
     }
 
 
