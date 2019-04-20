@@ -131,7 +131,7 @@ export function load(productId) {
 
 const successTimer = null;
 
-export function save(price, isPriceDisabled, priceDisabledText) {
+export function save(price, isPriceDisabled, priceDisabledText, discountMode, discountValue) {
   return (dispatch, getState) => {
     dispatch({
       type: SAVE + _START
@@ -140,7 +140,9 @@ export function save(price, isPriceDisabled, priceDisabledText) {
     service.save(getState().common.productId, {
       price: +price,
       disabled: !!isPriceDisabled,
-      disabled_text: priceDisabledText
+      disabled_text: priceDisabledText,
+      discount_mode: discountMode,
+      discount_value: discountValue
     }).then(data => {
       dispatch({
         type: SAVE + _SUCCESS

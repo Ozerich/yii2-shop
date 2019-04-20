@@ -41,10 +41,7 @@ class ProductDTO extends Product implements DTO
             'url_alias' => $this->url_alias,
             'sku' => $this->sku,
 
-            'price' => $this->price,
-            'is_prices_extended' => $this->is_prices_extended ? true : false,
-            'price_hidden' => $this->price_hidden,
-            'price_hidden_text' => $this->price_hidden_text,
+            'price' => (new PriceDTO($this))->toJSON(),
 
             'sale_disabled' => $this->sale_disabled ? true : false,
             'sale_disabled_text' => $this->sale_disabled ? $this->sale_disabled_text : null,

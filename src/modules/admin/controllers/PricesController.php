@@ -126,7 +126,10 @@ class PricesController extends Controller
         $product = $this->getProduct($id);
 
         $product->is_prices_extended = $value == 1;
-        $product->save(false, ['is_prices_extended']);
+        $product->discount_value = null;
+        $product->discount_mode = null;
+        $product->price_with_discount = null;
+        $product->save(false, ['is_prices_extended', 'discount_value', 'discount_mode', 'price_with_discount']);
 
         return null;
     }
@@ -141,10 +144,14 @@ class PricesController extends Controller
         $product->price = $request->disabled ? null : $request->price;
         $product->price_hidden = $request->disabled;
         $product->price_hidden_text = $request->disabled ? $request->disabled_text : null;
+        $product->discount_mode = $request->discount_mode;
+        $product->discount_value = $request->discount_value;
 
-        $product->save(false, ['price', 'price_hidden', 'price_hidden_text']);
+        if (!$product->save(true, ['price', 'price_hidden', 'price_hidden_text', 'discount_mode', 'discount_value'])) {
+            throw new InvalidRequestException(print_r($product->getErrors(), true));
+        }
 
-        $this->categoryProductsService()->afterProductParamsChanged($product);
+        $this->productPricesService()->updateProductPrice($product);
     }
 
     public function actionIndex($id)

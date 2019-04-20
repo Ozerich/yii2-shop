@@ -16,6 +16,8 @@ use yii\helpers\Url;
  * @property int $category_id
  * @property int $manufacture_id
  * @property int $price
+ * @property string $discount_mode
+ * @property float $discount_value
  * @property string $text
  * @property string $video
  * @property boolean $popular
@@ -29,6 +31,7 @@ use yii\helpers\Url;
  * @property string $sale_disabled_text
  * @property boolean $price_hidden
  * @property string $price_hidden_text
+ * @property float $price_with_discount
  *
  * @property Image $image
  * @property Manufacture $manufacture
@@ -66,7 +69,10 @@ class Product extends \yii\db\ActiveRecord
             [['seo_description'], 'string'],
 
             [['sku', 'price_hidden_text', 'sale_disabled_text'], 'string'],
-            [['price_hidden', 'sale_disabled'], 'boolean']
+            [['price_hidden', 'sale_disabled'], 'boolean'],
+
+            [['discount_mode'], 'string'],
+            [['discount_value'], 'safe'],
         ];
     }
 
