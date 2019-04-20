@@ -16,8 +16,28 @@ $this->title = 'Пункты меню';
         ]
     ],
     'columns' => [
-        'title',
-        'url'
+        'name' => [
+            'header' => 'Название',
+            'attribute' => 'name',
+            'format' => 'raw',
+            'value' => function ($item) {
+                return $item['plain_label'];
+            }
+        ],
+        [
+            'header' => 'URL',
+            'format' => 'raw',
+            'value' => function ($item) {
+                $link = $item['model']->getUrl(true);
+                $label = $item['model']->getUrl(false);
+                return \yii\helpers\Html::a($label, $link, ['target' => '_blank']);
+            }
+        ],
     ],
-    'actions' => ['edit' => 'update', 'delete' => 'delete']
+
+    'actions' => ['move' => 'move', 'edit' => 'update', 'delete' => 'delete'],
+
+    'idGetter' => function ($category) {
+        return $category['model']['id'];
+    }
 ]); ?>

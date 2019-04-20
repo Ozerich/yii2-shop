@@ -11,6 +11,7 @@ use ozerich\shop\services\products\ProductGetService;
 use ozerich\shop\services\products\ProductMediaService;
 use ozerich\shop\services\products\ProductPricesService;
 use ozerich\shop\services\search\SearchService;
+use ozerich\shop\services\menu\MenuService;
 
 trait ServicesTrait
 {
@@ -31,6 +32,8 @@ trait ServicesTrait
     private $categoryManufacturesService = null;
 
     private $searchService = null;
+
+    private $menuService = null;
 
     /**
      * @return ProductFieldsService
@@ -138,5 +141,16 @@ trait ServicesTrait
         }
 
         return $this->searchService;
+    }
+    /**
+     * @return MenuService
+     */
+    public function menuService()
+    {
+        if ($this->menuService === null) {
+            $this->menuService = new MenuService();
+        }
+
+        return $this->menuService;
     }
 }

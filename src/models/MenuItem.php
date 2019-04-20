@@ -3,6 +3,7 @@
 namespace ozerich\shop\models;
 
 use ozerich\tools\behaviors\PriorityBehavior;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "menu_items".
@@ -95,5 +96,23 @@ class MenuItem extends \yii\db\ActiveRecord
     public static function findRoot(Menu $menu)
     {
         return self::findByMenu($menu)->andWhere('parent_id is null');
+    }
+
+    /**
+     * @param Menu $menu
+     * @return \yii\db\ActiveQuery
+     */
+    public static function findByParent(Menu $menu, MenuItem $menuItem)
+    {
+        return self::findByMenu($menu)->andWhere('parent_id = :parent_id', [':parent_id' => $menuItem->id]);
+    }
+
+    public function getUrl($absolute = false)
+    {
+        if (empty($this->url)) {
+            return null;
+        }
+
+        return Url::to($this->url, $absolute);
     }
 }
