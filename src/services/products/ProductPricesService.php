@@ -55,9 +55,11 @@ class ProductPricesService
 
             $prices = $product->prices;
             $min = null;
+            $min_price = null;
             $min_discount_mode = null;
             $min_discount_value = null;
             $min_discount_price = null;
+
 
             foreach ($prices as $price) {
                 if ($paramsCount == 2 && !$price->param_value_second_id || !$price->param_value_id) {
@@ -67,7 +69,8 @@ class ProductPricesService
                 $summaryPrice = $this->getPriceWithDiscount($price);
 
                 if ($min === null || $summaryPrice < $min) {
-                    $min = $price->value;
+                    $min = $summaryPrice;
+                    $min_price = $price->value;
                     $min_discount_mode = $price->discount_mode;
                     $min_discount_value = $price->discount_value;
                     if ($price->discount_mode) {
@@ -78,7 +81,7 @@ class ProductPricesService
                 }
             }
 
-            $product->price = $min;
+            $product->price = $min_price;
             $product->discount_mode = $min_discount_mode;
             $product->discount_value = $min_discount_value;
             $product->price_with_discount = $min_discount_price;
