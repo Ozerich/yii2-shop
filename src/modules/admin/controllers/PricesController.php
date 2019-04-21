@@ -309,6 +309,9 @@ class PricesController extends Controller
         }
         if ($request->issetAttribute('discount_value')) {
             $model->discount_value = $request->discount_value;
+            if ($model->discount_value === null) {
+                $model->discount_mode = null;
+            }
         }
         if ($request->issetAttribute('stock_waiting_days')) {
             $model->stock_waiting_days = $request->stock_waiting_days;
@@ -317,9 +320,6 @@ class PricesController extends Controller
             $model->stock = $request->stock;
         }
 
-        if ($model->discount_value === null) {
-            $model->discount_mode = null;
-        }
 
         $model->save();
 
