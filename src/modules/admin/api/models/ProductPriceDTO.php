@@ -13,7 +13,9 @@ class ProductPriceDTO extends ProductPrice implements DTO
             'id' => $this->id,
             'value_id' => $this->param_value_id,
             'second_value_id' => $this->param_value_second_id,
-            'value' => $this->value
+            'value' => $this->value,
+            'discount_mode' => $this->discount_mode,
+            'discount_value' => $this->discount_value
         ];
     }
 }

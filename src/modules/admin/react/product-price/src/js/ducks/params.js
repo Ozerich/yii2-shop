@@ -22,6 +22,8 @@ const MOVE_PARAM_ITEM = 'params/MOVE_PARAM_ITEM';
 const GET_PRICES = 'params/GET_PRICES';
 const SAVE_PRICE = 'params/SAVE_PRICE';
 
+const TOGGLE_DISCOUNT = 'params/TOGGLE_DISCOUNT';
+
 const paramService = new ParamsService;
 const paramItemsService = new ParamItemsService;
 
@@ -288,7 +290,9 @@ export default function reducer(state = initialState, action = {}) {
 
     case GET_PRICES + _SUCCESS:
       const obj = {};
-      action.payload.items.forEach(model => obj[getPriceKey(model.value_id, model.second_value_id)] = model.value);
+      action.payload.items.forEach(model => obj[getPriceKey(model.value_id, model.second_value_id)] = Object.assign({}, model, {
+        has_discount: model.discount_mode !== null
+      }));
 
       return Object.assign({}, state, {
         pricesLoading: false,
@@ -298,7 +302,16 @@ export default function reducer(state = initialState, action = {}) {
     case SAVE_PRICE + _START:
       return Object.assign({}, state, {
         prices: Object.assign({}, state.prices, {
-          [getPriceKey(action.payload.firstParamId, action.payload.secondParamId)]: action.payload.value
+          [getPriceKey(action.payload.firstParamId, action.payload.secondParamId)]:
+              Object.assign({}, state.prices[getPriceKey(action.payload.firstParamId, action.payload.secondParamId)], action.payload.value)
+        })
+      });
+
+    case TOGGLE_DISCOUNT:
+      return Object.assign({}, state, {
+        prices: Object.assign({}, state.prices, {
+          [getPriceKey(action.payload.firstParamId, action.payload.secondParamId)]:
+              Object.assign({}, state.prices[getPriceKey(action.payload.firstParamId, action.payload.secondParamId)], { has_discount: action.payload.enabled })
         })
       });
 
@@ -580,6 +593,19 @@ export function savePrice(productId, firstParamId, secondParamId, value) {
         error
       });
     });
+  };
+}
+
+export function toggleDiscount(productId, firstParamId, secondParamId, enabled) {
+  return dispatch => {
+    dispatch({
+      type: TOGGLE_DISCOUNT,
+      payload: { firstParamId, secondParamId, enabled }
+    });
+
+    if(enabled){
+      dispatch(savePrice(productId, firstParamId, secondParamId, {discount_mode: 'FIXED'}))
+    }
   };
 }
 

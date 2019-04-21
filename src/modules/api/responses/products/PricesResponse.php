@@ -2,9 +2,10 @@
 
 namespace ozerich\shop\modules\api\responses\products;
 
+use ozerich\api\response\BaseResponse;
 use ozerich\shop\models\ProductPriceParam;
 use ozerich\shop\models\ProductPriceParamValue;
-use ozerich\api\response\BaseResponse;
+use ozerich\shop\modules\api\models\ProductPriceDTO;
 
 class PricesResponse extends BaseResponse
 {
@@ -27,7 +28,8 @@ class PricesResponse extends BaseResponse
         $result = [];
 
         foreach ($this->prices as $price) {
-            $result[$price->param_value_id . ($price->param_value_second_id ? 'x' . $price->param_value_second_id : '')] = $price->value;
+            $key = $price->param_value_id . ($price->param_value_second_id ? 'x' . $price->param_value_second_id : '');
+            $result[$key] = (new ProductPriceDTO($price))->toJSON();
         }
 
         return $result;

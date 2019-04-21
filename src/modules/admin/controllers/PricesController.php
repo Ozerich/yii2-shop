@@ -299,7 +299,16 @@ class PricesController extends Controller
             $model->param_value_second_id = $request->second_param_id;
         }
 
-        $model->value = $request->value;
+        if ($request->value !== null) {
+            $model->value = $request->value;
+        }
+        if ($request->discount_mode !== null) {
+            $model->discount_mode = $request->discount_mode;
+        }
+        if ($request->discount_value !== null) {
+            $model->discount_value = $request->discount_value;
+        }
+
         $model->save();
 
         $this->productPricesService()->updateProductPrice(Product::findOne($id));

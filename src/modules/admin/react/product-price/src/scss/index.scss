@@ -68,7 +68,7 @@
     }
   }
 
-  textarea{
+  textarea {
     resize: none;
   }
 
@@ -86,7 +86,7 @@
     background: transparent;
 
     text-decoration: underline;
-    &:hover{
+    &:hover {
       text-decoration: none;
     }
 
@@ -116,11 +116,41 @@
     border: 1px solid #eee;
     text-align: center;
     padding: 5px;
+    vertical-align: top;
   }
 
-  input {
+  input[type=text] {
     width: 80px;
     text-align: center;
     display: inline-block;
+  }
+}
+
+.price-cell {
+  input[type=number] {
+    text-align: center;
+  }
+
+  &__price {
+    margin-bottom: 5px;
+  }
+
+  &__mode {
+    padding-top: 5px;
+    padding-bottom: 10px;
+
+    .form-control {
+      font-size: 10px;
+      height: 20px;
+    }
+
+    input.form-control{
+      height: 24px;
+      font-size: 12px;
+    }
+  }
+
+  .form-group {
+    margin-bottom: 5px;
   }
 }

@@ -10,6 +10,8 @@ namespace ozerich\shop\models;
  * @property int $param_value_id
  * @property int $param_value_second_id
  * @property int $value
+ * @property string $discount_mode
+ * @property integer $discount_value
  *
  * @property ProductPriceParamValue $paramValue
  * @property Product $product

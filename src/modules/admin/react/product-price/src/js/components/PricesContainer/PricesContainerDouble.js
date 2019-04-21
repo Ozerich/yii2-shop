@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { savePrice } from "../../ducks/params";
+import { savePrice, toggleDiscount } from "../../ducks/params";
+import PriceCell from "./PriceCell";
 
 class PricesContainerDouble extends Component {
   render() {
@@ -19,10 +20,18 @@ class PricesContainerDouble extends Component {
                 <tr>
                   <td>{model.model.name}</td>
                   {firstItems.map(item => {
-                    return <td><input type="number"
-                                      value={this.getPriceValue(item.serverId, model.serverId)}
-                                      onChange={e => this.onPriceChange(item.serverId, model.serverId, e)}
-                                      className="form-control" />
+                    const key = item.serverId + 'x' + model.serverId;
+                    return <td key={key}>
+                      <PriceCell id={key}
+                                 price={this.getPriceValue(item.serverId, model.serverId)}
+                                 hasDiscount={this.hasDiscount(item.serverId, model.serverId)}
+                                 discountMode={this.getDiscountMode(item.serverId, model.serverId)}
+                                 discountValue={this.getDiscountValue(item.serverId, model.serverId)}
+                                 onPriceChange={value => this.onPriceChange(item.serverId, model.serverId, { value })}
+                                 onDiscountEnabledChange={value => this.onDiscountEnabledChange(item.serverId, model.serverId, value)}
+                                 onDiscountModeChange={value => this.onPriceChange(item.serverId, model.serverId, { discount_mode: value })}
+                                 onDiscountValueChange={value => this.onPriceChange(item.serverId, model.serverId, { discount_value: value })}
+                      />
                     </td>;
                   })}
                 </tr>
@@ -33,17 +42,41 @@ class PricesContainerDouble extends Component {
     );
   }
 
-  getPriceValue(valueId, secondValueId) {
-    const key = valueId + 'x' + secondValueId;
+  getModel(valueId, secondValudId) {
+    const key = valueId + 'x' + secondValudId;
     const { prices } = this.props;
 
-    return key in prices ? prices[key] : '';
+    return key in prices ? prices[key] : null;
   }
 
-  onPriceChange(firstValueId, secondValueId, e) {
-    const { productId, savePrice } = this.props;
+  getPriceValue(valueId, secondValueId) {
+    const model = this.getModel(valueId, secondValueId);
+    return model ? model.value : '';
+  }
 
-    savePrice(productId, firstValueId, secondValueId, parseInt(e.target.value));
+  getDiscountValue(valueId, secondValueId) {
+    const model = this.getModel(valueId, secondValueId);
+    return model ? model.discount_value : '';
+  }
+
+  getDiscountMode(valueId, secondValueId) {
+    const model = this.getModel(valueId, secondValueId);
+    return model ? model.discount_mode : '';
+  }
+
+  hasDiscount(valueId, secondValueId) {
+    const model = this.getModel(valueId, secondValueId);
+    return model ? model.has_discount : false;
+  }
+
+  onPriceChange(firstValueId, secondValueId, value) {
+    const { productId, savePrice } = this.props;
+    savePrice(productId, firstValueId, secondValueId, value);
+  }
+
+  onDiscountEnabledChange(firstValueId, secondValueId, value) {
+    const { productId, toggleDiscount } = this.props;
+    toggleDiscount(productId, firstValueId, secondValueId, value);
   }
 }
 
@@ -54,4 +87,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { savePrice })(PricesContainerDouble);
+export default connect(mapStateToProps, { savePrice, toggleDiscount })(PricesContainerDouble);

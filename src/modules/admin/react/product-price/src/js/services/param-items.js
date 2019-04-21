@@ -34,10 +34,9 @@ export default class ParamItemsService extends BaseService {
   }
 
   price(productId, firstParamId, secondParamId, value) {
-    return this.post('/prices/save/' + productId, {
+    return this.post('/prices/save/' + productId, Object.assign({
       first_param_id: firstParamId,
       second_param_id: secondParamId,
-      value
-    });
+    }, value));
   }
 }
