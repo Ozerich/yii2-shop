@@ -16,6 +16,15 @@ if (!$model->isNewRecord) {
     $parentsQuery->andWhere('id <> :id', [':id' => $model->id])->all();
 }
 $parents = $parentsQuery->all();
+
+
+$result = ['' => 'Без родительской категории'];
+
+$tree = (new \ozerich\shop\services\menu\MenuService())->getTreeAsArray($menu);
+
+foreach ($tree as $id => $item) {
+    $result[$item['model']['id']] = $item['plain_label'];
+}
 ?>
 
 <?php $form = \yii\widgets\ActiveForm::begin([
@@ -28,10 +37,7 @@ $parents = $parentsQuery->all();
 
 
   <div class="col-xs-12">
-      <?= $form->field($formModel, 'parent_id')->dropDownList(\yii\helpers\ArrayHelper::map(
-          $parents, 'id', 'title'), [
-          'prompt' => 'Нет родительской'
-      ]); ?>
+      <?= $form->field($formModel, 'parent_id')->dropDownList($result); ?>
   </div>
 
   <div class="col-xs-12">
