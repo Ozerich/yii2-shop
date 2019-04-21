@@ -77,6 +77,26 @@ class Bootstrap implements BootstrapInterface
                         'extensions' => ['jpg', 'jpeg', 'bmp', 'gif', 'png']
                     ]
                 ],
+                'og' => [
+                    'storage' => [
+                        'type' => 'file',
+                        'uploadDirPath' => __DIR__ . '/../../../../web/uploads/og',
+                        'uploadDirUrl' => '/uploads/og',
+                    ],
+                    'validator' => [
+                        'maxSize' => 16 * 1024 * 1024,
+                        'checkExtensionByMimeType' => true,
+                        'extensions' => ['jpg', 'jpeg', 'bmp', 'gif', 'png']
+                    ],
+                    'thumbnails' => [
+                        [
+                            'width' => 1200,
+                            'height' => 630,
+                            'crop' => true,
+                            'alias' => 'main'
+                        ],
+                    ],
+                ],
                 'field' => [
                     'storage' => [
                         'type' => 'file',

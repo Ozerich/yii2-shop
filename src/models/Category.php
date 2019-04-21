@@ -20,6 +20,8 @@ use yii\helpers\Url;
  * @property string $seo_title
  * @property string $seo_description
  * @property string $type
+ * @property boolean $home_display
+ * @property integer $home_position
  *
  * @property Image $image
  * @property Category $parent

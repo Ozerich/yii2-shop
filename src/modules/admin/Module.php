@@ -59,5 +59,18 @@ class Module extends \ozerich\admin\Module
                 ],
             ]
         ],
+        [
+            'id' => 'settings',
+            'link' => '#',
+            'label' => 'Настройки',
+            'icon' => 'book',
+            'submenu' => [
+                [
+                    'id' => 'settings-home',
+                    'label' => 'Главная страница',
+                    'link' => '/settings/home',
+                ],
+            ]
+        ],
     ];
 }

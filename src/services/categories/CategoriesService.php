@@ -149,4 +149,12 @@ class CategoriesService
             ->joinWith('categoryDisplayCategories')
             ->andWhere('category_display.parent_id=:parent_id', [':parent_id' => $category->id]);
     }
+
+    /**
+     * @return ActiveQuery
+     */
+    public function getHomeCategoriesQuery()
+    {
+        return Category::find()->andWhere('home_display = 1')->addOrderBy('home_position ASC');
+    }
 }

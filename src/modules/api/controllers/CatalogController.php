@@ -31,6 +31,10 @@ class CatalogController extends Controller
                     'verbs' => 'GET'
                 ],
                 [
+                    'action' => 'home',
+                    'verbs' => 'GET'
+                ],
+                [
                     'action' => 'category',
                     'verbs' => 'GET'
                 ],
@@ -87,6 +91,15 @@ class CatalogController extends Controller
         return array_map(function (FilterDTO $filter) {
             return $filter->toJSON();
         }, $result);
+    }
+
+    public function actionHome()
+    {
+        $dataProvider = new ActiveDataProvider([
+            'query' =>$this->categoriesService()->getHomeCategoriesQuery()
+        ]);
+
+        return new CollectionResponse($dataProvider, CategoryDTO::class);
     }
 
     public function actionCategories($id = null)

@@ -6,12 +6,13 @@ use ozerich\shop\services\categories\CategoriesService;
 use ozerich\shop\services\categories\CategoryFieldsService;
 use ozerich\shop\services\categories\CategoryManufacturesService;
 use ozerich\shop\services\categories\CategoryProductsService;
+use ozerich\shop\services\menu\MenuService;
 use ozerich\shop\services\products\ProductFieldsService;
 use ozerich\shop\services\products\ProductGetService;
 use ozerich\shop\services\products\ProductMediaService;
 use ozerich\shop\services\products\ProductPricesService;
 use ozerich\shop\services\search\SearchService;
-use ozerich\shop\services\menu\MenuService;
+use ozerich\shop\services\settings\SettingsService;
 
 trait ServicesTrait
 {
@@ -34,6 +35,8 @@ trait ServicesTrait
     private $searchService = null;
 
     private $menuService = null;
+
+    private $settingsService = null;
 
     /**
      * @return ProductFieldsService
@@ -142,6 +145,7 @@ trait ServicesTrait
 
         return $this->searchService;
     }
+
     /**
      * @return MenuService
      */
@@ -152,5 +156,17 @@ trait ServicesTrait
         }
 
         return $this->menuService;
+    }
+
+    /**
+     * @return SettingsService
+     */
+    public function settingsService()
+    {
+        if ($this->settingsService === null) {
+            $this->settingsService = new SettingsService();
+        }
+
+        return $this->settingsService;
     }
 }
