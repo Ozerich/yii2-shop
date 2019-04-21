@@ -146,8 +146,10 @@ class PricesController extends Controller
         $product->price_hidden_text = $request->disabled ? $request->disabled_text : null;
         $product->discount_mode = $request->discount_mode;
         $product->discount_value = $request->discount_value;
+        $product->stock = $request->stock;
+        $product->stock_waiting_days = $request->stock_waiting_days;
 
-        if (!$product->save(true, ['price', 'price_hidden', 'price_hidden_text', 'discount_mode', 'discount_value'])) {
+        if (!$product->save(true, ['price', 'price_hidden', 'price_hidden_text', 'discount_mode', 'discount_value', 'stock', 'stock_waiting_days'])) {
             throw new InvalidRequestException(print_r($product->getErrors(), true));
         }
 
@@ -299,14 +301,24 @@ class PricesController extends Controller
             $model->param_value_second_id = $request->second_param_id;
         }
 
-        if ($request->value !== null) {
+        if ($request->issetAttribute('value')) {
             $model->value = $request->value;
         }
-        if ($request->discount_mode !== null) {
+        if ($request->issetAttribute('discount_mode')) {
             $model->discount_mode = $request->discount_mode;
         }
-        if ($request->discount_value !== null) {
+        if ($request->issetAttribute('discount_value')) {
             $model->discount_value = $request->discount_value;
+        }
+        if ($request->issetAttribute('stock_waiting_days')) {
+            $model->stock_waiting_days = $request->stock_waiting_days;
+        }
+        if ($request->issetAttribute('stock')) {
+            $model->stock = $request->stock;
+        }
+
+        if ($model->discount_value === null) {
+            $model->discount_mode = null;
         }
 
         $model->save();

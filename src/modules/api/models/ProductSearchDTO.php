@@ -49,6 +49,8 @@ class ProductSearchDTO extends Product implements DTO
             'url_alias' => $this->url_alias,
 
             'price' => (new PriceDTO($this))->toJSON(),
+            'stock' => $this->stock,
+            'stock_waiting_days' => $this->stock_waiting_days,
 
             'sale_disabled' => $this->sale_disabled ? true : false,
             'sale_disabled_text' => $this->sale_disabled ? $this->sale_disabled_text : null,

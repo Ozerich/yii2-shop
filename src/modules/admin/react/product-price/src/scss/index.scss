@@ -127,6 +127,22 @@
 }
 
 .price-cell {
+
+  &__top {
+    display: flex;
+  }
+
+  &__price {
+    flex-basis: 50%;
+  }
+
+  &__discount {
+    flex: 1;
+    padding-top: 5px;
+    padding-left: 20px;
+    text-align: left;
+  }
+
   input[type=number] {
     text-align: center;
   }
@@ -139,12 +155,28 @@
     padding-top: 5px;
     padding-bottom: 10px;
 
-    .form-control {
-      font-size: 10px;
-      height: 20px;
+    display: flex;
+
+    &-left {
+      flex-basis: 50%;
+      align-items: center;
     }
 
-    input.form-control{
+    &-right {
+      flex: 1;
+      padding-left: 20px;
+    }
+
+    .form-control {
+      font-size: 10px;
+      height: 25px;
+    }
+
+    .form-group {
+      margin-bottom: 0;
+    }
+
+    input.form-control {
       height: 24px;
       font-size: 12px;
     }
@@ -152,5 +184,67 @@
 
   .form-group {
     margin-bottom: 5px;
+  }
+}
+
+.stock-cell {
+  padding-top: 5px;
+
+  .form-group {
+    margin-bottom: 5px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    text-align: left;
+    .control-label {
+      margin: 0 5px;
+      display: inline-block;
+    }
+  }
+}
+
+.prices-table--double {
+  label {
+    font-size: 12px;
+    margin-left: 0 !important;
+    margin-bottom: 0;
+  }
+
+  .price-cell__price {
+    margin-bottom: 0;
+  }
+  .price-cell__top, .price-cell__mode {
+    display: block;
+  }
+  .price-cell__mode {
+    padding-bottom: 0;
+    margin-top: 0;
+    padding-top: 3px;
+  }
+  .price-cell__mode-right {
+    padding-left: 0;
+  }
+  .price-cell__discount {
+    text-align: center;
+    padding-left: 0;
+    padding-top: 0;
+  }
+  .form-control {
+    font-size: 10px;
+    height: 25px;
+  }
+
+  .stock-cell {
+    border-top: 1px solid #eee;
+    padding-top: 5px;
+    margin-top: 5px;
+
+    .form-group:first-child {
+      margin-bottom: 5px;
+    }
+    .form-group:last-child {
+      margin-bottom: 0;
+    }
   }
 }

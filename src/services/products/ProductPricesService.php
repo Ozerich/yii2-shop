@@ -3,6 +3,7 @@
 namespace ozerich\shop\services\products;
 
 use ozerich\shop\constants\DiscountType;
+use ozerich\shop\constants\Stock;
 use ozerich\shop\models\Product;
 use ozerich\shop\models\ProductPrice;
 use ozerich\shop\models\ProductPriceParam;
@@ -59,7 +60,8 @@ class ProductPricesService
             $min_discount_mode = null;
             $min_discount_value = null;
             $min_discount_price = null;
-
+            $best_stock = null;
+            $best_stock_val = null;
 
             foreach ($prices as $price) {
                 if ($paramsCount == 2 && !$price->param_value_second_id || !$price->param_value_id) {
@@ -79,14 +81,20 @@ class ProductPricesService
                         $min_discount_price = null;
                     }
                 }
+
+                if ($best_stock == null || (Stock::toInteger($price->stock) > $best_stock)) {
+                    $best_stock = Stock::toInteger($price->stock);
+                    $best_stock_val = $price->stock;
+                }
             }
 
+            $product->stock = $best_stock_val;
             $product->price = $min_price;
             $product->discount_mode = $min_discount_mode;
             $product->discount_value = $min_discount_value;
             $product->price_with_discount = $min_discount_price;
 
-            $product->save(false, ['price', 'price_with_discount', 'discount_mode', 'discount_value']);
+            $product->save(false, ['price', 'price_with_discount', 'discount_mode', 'discount_value', 'stock']);
         }
 
 

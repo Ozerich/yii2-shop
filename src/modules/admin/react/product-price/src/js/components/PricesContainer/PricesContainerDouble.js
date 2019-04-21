@@ -3,13 +3,14 @@ import { connect } from 'react-redux';
 
 import { savePrice, toggleDiscount } from "../../ducks/params";
 import PriceCell from "./PriceCell";
+import StockCell from "./StockCell";
 
 class PricesContainerDouble extends Component {
   render() {
     const { firstItems, secondItems } = this.props;
 
     return (
-        <table className="prices-table">
+        <table className="prices-table prices-table--double">
           <tbody>
           <tr>
             <td>&nbsp;</td>
@@ -32,6 +33,12 @@ class PricesContainerDouble extends Component {
                                  onDiscountModeChange={value => this.onPriceChange(item.serverId, model.serverId, { discount_mode: value })}
                                  onDiscountValueChange={value => this.onPriceChange(item.serverId, model.serverId, { discount_value: value })}
                       />
+                      <StockCell id={key}
+                                 stock={this.getStockValue(item.serverId, model.serverId)}
+                                 days={this.getStockWaitingDays(item.serverId, model.serverId)}
+                                 onStockChange={value => this.onPriceChange(item.serverId, model.serverId, { stock: value })}
+                                 onStockDaysChange={value => this.onPriceChange(item.serverId, model.serverId, { stock_waiting_days: value })}
+                      />
                     </td>;
                   })}
                 </tr>
@@ -47,6 +54,16 @@ class PricesContainerDouble extends Component {
     const { prices } = this.props;
 
     return key in prices ? prices[key] : null;
+  }
+
+  getStockValue(valueId, secondValueId) {
+    const model = this.getModel(valueId, secondValueId);
+    return model ? model.stock : '';
+  }
+
+  getStockWaitingDays(valueId, secondValueId) {
+    const model = this.getModel(valueId, secondValueId);
+    return model ? model.stock_waiting_days : '';
   }
 
   getPriceValue(valueId, secondValueId) {

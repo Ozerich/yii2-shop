@@ -30,6 +30,7 @@ const paramItemsService = new ParamItemsService;
 const initialState = {
   loading: false,
   error: null,
+
   params: [],
   paramItems: {},
 
@@ -603,8 +604,10 @@ export function toggleDiscount(productId, firstParamId, secondParamId, enabled) 
       payload: { firstParamId, secondParamId, enabled }
     });
 
-    if(enabled){
-      dispatch(savePrice(productId, firstParamId, secondParamId, {discount_mode: 'FIXED'}))
+    if (enabled) {
+      dispatch(savePrice(productId, firstParamId, secondParamId, { discount_mode: 'FIXED' }))
+    } else {
+      dispatch(savePrice(productId, firstParamId, secondParamId, { discount_mode: null, discount_value: null }))
     }
   };
 }

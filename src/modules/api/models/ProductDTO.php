@@ -42,6 +42,8 @@ class ProductDTO extends Product implements DTO
             'sku' => $this->sku,
 
             'price' => (new PriceDTO($this))->toJSON(),
+            'stock' => $this->stock,
+            'stock_waiting_days' => $this->stock_waiting_days,
 
             'sale_disabled' => $this->sale_disabled ? true : false,
             'sale_disabled_text' => $this->sale_disabled ? $this->sale_disabled_text : null,

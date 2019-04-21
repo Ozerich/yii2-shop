@@ -17,6 +17,11 @@ class CommonRequest extends RequestModel
 
     public $discount_value;
 
+    public $stock;
+
+    public $stock_waiting_days;
+
+
     public function rules()
     {
         return [
@@ -25,6 +30,8 @@ class CommonRequest extends RequestModel
             [['disabled_text'], 'string'],
             [['discount_mode'], 'string'],
             [['discount_value'], 'validateDiscountValue'],
+            [['stock'], 'string'],
+            [['stock_waiting_days'], 'integer']
         ];
     }
 

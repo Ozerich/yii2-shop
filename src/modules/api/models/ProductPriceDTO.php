@@ -37,6 +37,8 @@ class ProductPriceDTO implements DTO
             'price_with_discount' => $this->getPriceWithDiscount(),
             'discount_mode' => $this->model->discount_mode,
             'discount_value' => $this->model->discount_value,
+            'stock' => $this->model->stock,
+            'stock_waiting_days' => $this->model->stock_waiting_days,
         ];
     }
 }

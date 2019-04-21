@@ -15,7 +15,9 @@ class ProductPriceCommonDTO extends Product implements DTO
             'price_hidden' => $this->price_hidden,
             'price_hidden_text' => $this->price_hidden_text,
             'discount_mode' => $this->discount_mode,
-            'discount_value' => $this->discount_value
+            'discount_value' => $this->discount_value,
+            'stock' => $this->stock,
+            'stock_waiting_days' => $this->stock_waiting_days
         ];
     }
 }

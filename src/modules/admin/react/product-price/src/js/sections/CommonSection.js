@@ -9,11 +9,9 @@ import FormSelect from "../components/Form/FormSelect";
 import { enableExtendedMode, save } from "../ducks/common";
 import CommonSectionDiscountParams from "./CommonSectionDiscountParams";
 
-const discountModes = [
-  { id: 'FIXED', label: 'Цена со скидкой' },
-  { id: 'AMOUNT', label: 'Скидка на сумму' },
-  { id: 'PERCENT', label: 'Скидка в процентах' },
-];
+import { FIXED, items as discountModes } from "../constants/DiscountMode";
+import { items as stockModes, NO, WAITING } from "../constants/Stock";
+
 
 class CommonSection extends Component {
   getInitialValues() {
@@ -25,8 +23,11 @@ class CommonSection extends Component {
       priceDisabledText: model.price_hidden_text,
 
       discountEnabled: !!model.discount_mode,
-      discountMode: model.discount_mode || 'FIXED',
-      discountValue: model.discount_value
+      discountMode: model.discount_mode || FIXED,
+      discountValue: model.discount_value,
+
+      stock: model.stock || NO,
+      stock_waiting_days: model.stock_waiting_days
     }
   }
 
@@ -74,7 +75,7 @@ class CommonSection extends Component {
                             <div className="col-xs-12">
                               <FormSelect id="discountMode" label="Тип скидки"
                                           handleChange={handleChange}
-                                          value={values.discountMode} items={discountModes}
+                                          value={values.discountMode} items={discountModes()}
                               />
                             </div>
                           </div>
@@ -86,6 +87,17 @@ class CommonSection extends Component {
                       ) : null}
                       </>
                   )}
+
+                  <div className="row">
+                    <div className="col-xs-6">
+                      <FormSelect items={stockModes()} label="Наличие" id="stock" value={values.stock}
+                                  handleChange={handleChange} />
+                    </div>
+                    {values.stock === WAITING ? <div className="col-xs-6">
+                      <FormInput label="Макс. кол-во дней" id="stock_waiting_days" value={values.stock_waiting_days}
+                                 handleChange={handleChange} />
+                    </div> : null}
+                  </div>
 
                   <button className="btn btn-success">Сохранить</button>
                   &nbsp;или&nbsp;
@@ -104,7 +116,9 @@ class CommonSection extends Component {
         values.priceDisabled,
         values.priceDisabledText,
         values.discountEnabled ? values.discountMode : null,
-        values.discountEnabled ? values.discountValue : null
+        values.discountEnabled ? values.discountValue : null,
+        values.stock,
+        values.stock === WAITING ? values.stock_waiting_days : null
     );
   }
 

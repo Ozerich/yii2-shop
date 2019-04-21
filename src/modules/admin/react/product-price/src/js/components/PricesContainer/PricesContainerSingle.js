@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import { savePrice, toggleDiscount } from "../../ducks/params";
 import PriceCell from "./PriceCell";
+import StockCell from "./StockCell";
 
 class PricesContainerSingle extends Component {
   render() {
@@ -15,6 +16,7 @@ class PricesContainerSingle extends Component {
           <tr>
             <th>Название</th>
             <th>Цена</th>
+            <th>Наличие</th>
           </tr>
           </thead>
           <tbody>
@@ -23,16 +25,25 @@ class PricesContainerSingle extends Component {
             return (
                 <tr>
                   <td>{model.model.name}</td>
-                  <td><PriceCell id={key}
-                                 price={this.getPriceValue(model.serverId)}
-                                 hasDiscount={this.hasDiscount(model.serverId)}
-                                 discountMode={this.getDiscountMode(model.serverId)}
-                                 discountValue={this.getDiscountValue(model.serverId)}
-                                 onPriceChange={value => this.onPriceChange(model.serverId, { value })}
-                                 onDiscountEnabledChange={value => this.onDiscountEnabledChange(model.serverId, value)}
-                                 onDiscountModeChange={value => this.onPriceChange(model.serverId, { discount_mode: value })}
-                                 onDiscountValueChange={value => this.onPriceChange(model.serverId, { discount_value: value })}
-                  />
+                  <td>
+                    <PriceCell id={key}
+                               price={this.getPriceValue(model.serverId)}
+                               hasDiscount={this.hasDiscount(model.serverId)}
+                               discountMode={this.getDiscountMode(model.serverId)}
+                               discountValue={this.getDiscountValue(model.serverId)}
+                               onPriceChange={value => this.onPriceChange(model.serverId, { value })}
+                               onDiscountEnabledChange={value => this.onDiscountEnabledChange(model.serverId, value)}
+                               onDiscountModeChange={value => this.onPriceChange(model.serverId, { discount_mode: value })}
+                               onDiscountValueChange={value => this.onPriceChange(model.serverId, { discount_value: value })}
+                    />
+                  </td>
+                  <td>
+                    <StockCell id={key}
+                               stock={this.getStockValue(model.serverId)}
+                               days={this.getStockWaitingDays(model.serverId)}
+                               onStockChange={value => this.onPriceChange(model.serverId, { stock: value })}
+                               onStockDaysChange={value => this.onPriceChange(model.serverId, { stock_waiting_days: value })}
+                    />
                   </td>
                 </tr>
             );
@@ -47,6 +58,16 @@ class PricesContainerSingle extends Component {
     return valueId in prices ? prices[valueId] : null;
   }
 
+  getStockValue(valueId) {
+    const model = this.getModel(valueId);
+    return model ? model.stock : '';
+  }
+
+  getStockWaitingDays(valueId) {
+    const model = this.getModel(valueId);
+    return model ? model.stock_waiting_days : '';
+  }
+  
   getPriceValue(valueId) {
     const model = this.getModel(valueId);
     return model ? model.value : '';

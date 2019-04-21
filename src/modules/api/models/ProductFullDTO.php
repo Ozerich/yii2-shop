@@ -134,6 +134,8 @@ class ProductFullDTO extends Product implements DTO
             'seo_image' => $this->image ? $this->image->getUrl() : null,
 
             'price' => (new PriceDTO($this))->toJSON(),
+            'stock' => $this->stock,
+            'stock_waiting_days' => $this->stock_waiting_days,
 
             'sale_disabled' => $this->sale_disabled ? true : false,
             'sale_disabled_text' => $this->sale_disabled ? $this->sale_disabled_text : null,

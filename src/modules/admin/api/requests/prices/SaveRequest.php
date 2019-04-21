@@ -11,11 +11,15 @@ class SaveRequest extends RequestModel
 
     public $second_param_id;
 
-    public $value = null;
+    public $value;
 
-    public $discount_mode = null;
+    public $discount_mode;
 
-    public $discount_value = null;
+    public $discount_value;
+
+    public $stock;
+
+    public $stock_waiting_days;
 
     public function rules()
     {
@@ -25,7 +29,10 @@ class SaveRequest extends RequestModel
 
             [['value'], 'integer'],
             [['discount_mode'], 'string'],
-            [['discount_value'], 'integer']
+            [['discount_value'], 'integer'],
+
+            [['stock'], 'string'],
+            [['stock_waiting_days'], 'integer']
         ];
     }
 }

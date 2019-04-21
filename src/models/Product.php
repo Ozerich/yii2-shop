@@ -32,6 +32,8 @@ use yii\helpers\Url;
  * @property boolean $price_hidden
  * @property string $price_hidden_text
  * @property float $price_with_discount
+ * @property string $stock
+ * @property integer $stock_waiting_days
  *
  * @property Image $image
  * @property Manufacture $manufacture
