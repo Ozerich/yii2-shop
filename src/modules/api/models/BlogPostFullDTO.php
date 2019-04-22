@@ -31,6 +31,7 @@ class BlogPostFullDTO extends BlogPost implements DTO
     {
         return [
             'id' => $this->id,
+            'url_alias' => $this->url_alias,
             'name' => $this->title,
             'content' => $this->content,
             'path' => $this->getPath(),
