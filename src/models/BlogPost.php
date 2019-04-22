@@ -107,6 +107,14 @@ class BlogPost extends \yii\db\ActiveRecord
         return self::find()->andWhere('category_id = :parent_id', [':parent_id' => $category->id]);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public static function findByAlias($alias)
+    {
+        return self::find()->andWhere('url_alias=:alias', [':alias' => $alias]);
+    }
+
     public function getUrl($absolute = false)
     {
         return Url::to('/blog/' . $this->url_alias, $absolute);

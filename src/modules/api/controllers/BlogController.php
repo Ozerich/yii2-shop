@@ -81,10 +81,10 @@ class BlogController extends Controller
         return new ArrayResponse($posts, BlogPostDTO::class);
     }
 
-    public function actionPost($id)
+    public function actionPost($alias)
     {
         /** @var BlogPost $model */
-        $model = BlogPost::findOne($id);
+        $model = BlogPost::findByAlias($alias)->one();
         if (!$model) {
             throw new NotFoundHttpException('Поста не найдено');
         }
