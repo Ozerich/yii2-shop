@@ -31,7 +31,7 @@ class m190423_000000_blog extends Migration
         $this->createTable('{{%blog_posts}}', [
             'id' => $this->primaryKey(),
             'url_alias' => $this->string()->notNull(),
-            'category_id' => $this->integer()->notNull(),
+            'category_id' => $this->integer(),
             'image_id' => $this->integer(),
             'title' => $this->string()->notNull(),
             'excerpt' => $this->text(),

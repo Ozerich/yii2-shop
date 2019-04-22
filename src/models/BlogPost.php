@@ -37,7 +37,7 @@ class BlogPost extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['url_alias', 'category_id', 'title'], 'required'],
+            [['url_alias', 'title'], 'required'],
             [['category_id', 'image_id'], 'integer'],
             [['excerpt', 'content', 'meta_description'], 'string'],
             [['url_alias', 'title', 'page_title'], 'string', 'max' => 255],
