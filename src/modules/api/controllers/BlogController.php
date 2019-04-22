@@ -69,7 +69,16 @@ class BlogController extends Controller
             }
         }
 
-        return new ArrayResponse(BlogPost::findByParent($parent)->all(), BlogPostDTO::class);
+        $posts = [];
+        if($parent === null){
+            $posts = BlogPost::find()->all();
+        } else if(!$parent){
+            $posts = BlogPost::findByParent(null);
+        } else{
+            $posts = BlogPost::findByParent($parent);
+        }
+
+        return new ArrayResponse($posts, BlogPostDTO::class);
     }
 
     public function actionPost($id)
