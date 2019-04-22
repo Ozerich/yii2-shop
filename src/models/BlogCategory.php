@@ -2,6 +2,7 @@
 
 namespace ozerich\shop\models;
 
+use himiklab\sitemap\behaviors\SitemapBehavior;
 use yii\db\ActiveQuery;
 use yii\helpers\Url;
 
@@ -60,6 +61,23 @@ class BlogCategory extends \yii\db\ActiveRecord
             'description' => 'Описание',
             'page_title' => 'Заголовок страницы',
             'meta_description' => 'SEO описание',
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            'sitemap' => [
+                'class' => SitemapBehavior::class,
+                'dataClosure' => function (self $model) {
+                    return [
+                        'loc' => $model->getUrl(true),
+                        'lastmod' => time() - 86400,
+                        'changefreq' => SitemapBehavior::CHANGEFREQ_DAILY,
+                        'priority' => 0.6
+                    ];
+                }
+            ],
         ];
     }
 
