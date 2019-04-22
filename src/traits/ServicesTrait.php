@@ -2,6 +2,7 @@
 
 namespace ozerich\shop\traits;
 
+use ozerich\shop\services\blog\BlogService;
 use ozerich\shop\services\categories\CategoriesService;
 use ozerich\shop\services\categories\CategoryFieldsService;
 use ozerich\shop\services\categories\CategoryManufacturesService;
@@ -37,6 +38,8 @@ trait ServicesTrait
     private $menuService = null;
 
     private $settingsService = null;
+
+    private $blogService = null;
 
     /**
      * @return ProductFieldsService
@@ -168,5 +171,17 @@ trait ServicesTrait
         }
 
         return $this->settingsService;
+    }
+
+    /**
+     * @return BlogService
+     */
+    public function blogService()
+    {
+        if ($this->blogService === null) {
+            $this->blogService = new BlogService();
+        }
+
+        return $this->blogService;
     }
 }

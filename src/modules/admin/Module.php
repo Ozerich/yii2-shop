@@ -42,6 +42,24 @@ class Module extends \ozerich\admin\Module
             'icon' => 'book'
         ],
         [
+            'id' => 'blog',
+            'link' => '/blog',
+            'label' => 'Блог',
+            'icon' => 'book',
+            'submenu' => [
+                [
+                    'id' => 'posts',
+                    'label' => 'Посты',
+                    'link' => '/blog/posts',
+                ],
+                [
+                    'id' => 'categories',
+                    'label' => 'Категории',
+                    'link' => '/blog/categories',
+                ],
+            ]
+        ],
+        [
             'id' => 'menu',
             'link' => '/menu/1',
             'label' => 'Меню',

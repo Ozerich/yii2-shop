@@ -97,6 +97,32 @@ class Bootstrap implements BootstrapInterface
                         ],
                     ],
                 ],
+                'blog' => [
+                    'storage' => [
+                        'type' => 'file',
+                        'uploadDirPath' => __DIR__ . '/../../../../web/uploads/blog',
+                        'uploadDirUrl' => '/uploads/blog',
+                    ],
+                    'validator' => [
+                        'maxSize' => 16 * 1024 * 1024,
+                        'checkExtensionByMimeType' => true,
+                        'extensions' => ['jpg', 'jpeg', 'bmp', 'gif', 'png']
+                    ],
+                    'thumbnails' => [
+                        [
+                            'width' => 1200,
+                            'height' => 630,
+                            'crop' => true,
+                            'alias' => 'og'
+                        ],
+                        [
+                            'width' => 300,
+                            'height' => 300,
+                            'crop' => true,
+                            'alias' => 'blog-category'
+                        ],
+                    ],
+                ],
                 'field' => [
                     'storage' => [
                         'type' => 'file',
