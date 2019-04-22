@@ -34,7 +34,9 @@ class BlogCategoryDTO extends BlogCategory implements DTO
             'description' => $this->description,
             'url' => $this->getUrl(true),
             'image' => $this->image ? $this->image->getUrl('preview') : null,
-            'parents' => $this->getParents()
+            'parents' => $this->getParents(),
+            'page_title' => $this->page_title,
+            'meta_description' => $this->meta_description
         ];
     }
 }
