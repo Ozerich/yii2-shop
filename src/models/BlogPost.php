@@ -138,7 +138,7 @@ class BlogPost extends \yii\db\ActiveRecord
             $query->andWhere('status=:status', [':status' => $status]);
         }
 
-        return $status;
+        return $query;
     }
 
     /**
