@@ -5,6 +5,8 @@ namespace ozerich\shop\modules\admin\controllers;
 use ozerich\admin\actions\CreateOrUpdateAction;
 use ozerich\admin\controllers\base\AdminController;
 use ozerich\shop\models\Category;
+use ozerich\shop\modules\admin\forms\settings\BlogSettingsForm;
+use ozerich\shop\modules\admin\forms\settings\BlogSettingsFormConvertor;
 use ozerich\shop\modules\admin\forms\settings\HomeSettingsForm;
 use ozerich\shop\modules\admin\forms\settings\HomeSettingsFormConvertor;
 
@@ -17,7 +19,15 @@ class SettingsController extends AdminController
                 'class' => CreateOrUpdateAction::class,
                 'formClass' => HomeSettingsForm::class,
                 'formConvertor' => HomeSettingsFormConvertor::class,
-                'view' => 'home'
+                'view' => 'home',
+                'redirectUrl' => '/admin/settings/home'
+            ],
+            'blog' => [
+                'class' => CreateOrUpdateAction::class,
+                'formClass' => BlogSettingsForm::class,
+                'formConvertor' => BlogSettingsFormConvertor::class,
+                'view' => 'blog',
+                'redirectUrl' => '/admin/settings/blog'
             ],
         ];
     }

@@ -2,8 +2,14 @@
 
 namespace ozerich\shop\modules\admin;
 
+use ozerich\shop\constants\SettingOption;
+use ozerich\shop\constants\SettingValueType;
+use ozerich\shop\traits\ServicesTrait;
+
 class Module extends \ozerich\admin\Module
 {
+    use ServicesTrait;
+
     public $userIdentityClass = 'ozerich\shop\modules\admin\models\AdminUser';
 
     public $shortName = 'YS';
@@ -88,7 +94,25 @@ class Module extends \ozerich\admin\Module
                     'label' => 'Главная страница',
                     'link' => '/settings/home',
                 ],
+                [
+                    'id' => 'blog',
+                    'label' => 'Блог',
+                    'link' => '/settings/blog',
+                ],
             ]
         ],
     ];
+
+    public function init()
+    {
+        $blogEnabled = $this->settingsService()->get(SettingOption::BLOG_ENABLED, false, SettingValueType::BOOLEAN);
+
+        if (!$blogEnabled) {
+            $this->menu = array_filter($this->menu, function ($item) {
+                return $item['id'] != 'blog';
+            });
+        }
+
+        parent::init();
+    }
 }

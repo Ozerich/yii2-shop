@@ -28,6 +28,9 @@ foreach ($tree as $id => $item) {
     'isCreate' => $isCreate
 ]); ?>
 
+  <div class="col-xs-12">
+      <?= $form->field($formModel, 'status')->dropDownList(\ozerich\shop\constants\PostStatus::getList()); ?>
+  </div>
 
   <div class="col-xs-12">
       <?= $form->field($formModel, 'category_id')->dropDownList($result); ?>

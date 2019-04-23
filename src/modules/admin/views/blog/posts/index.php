@@ -17,6 +17,12 @@ $this->title = 'Посты';
     ],
     'columns' => [
         'title',
+        'status' => [
+            'attribute' => 'status',
+            'value' => function (\ozerich\shop\models\BlogPost $post) {
+                return \ozerich\shop\constants\PostStatus::label($post->status);
+            }
+        ],
         'image_id' => [
             'attribute' => 'image_id',
             'format' => 'raw',

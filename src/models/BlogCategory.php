@@ -3,6 +3,9 @@
 namespace ozerich\shop\models;
 
 use himiklab\sitemap\behaviors\SitemapBehavior;
+use ozerich\shop\constants\SettingOption;
+use ozerich\shop\constants\SettingValueType;
+use ozerich\shop\traits\ServicesTrait;
 use yii\db\ActiveQuery;
 use yii\helpers\Url;
 
@@ -24,6 +27,8 @@ use yii\helpers\Url;
  */
 class BlogCategory extends \yii\db\ActiveRecord
 {
+    use ServicesTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -66,6 +71,12 @@ class BlogCategory extends \yii\db\ActiveRecord
 
     public function behaviors()
     {
+        $blogEnabled = $this->settingsService()->get(SettingOption::BLOG_ENABLED, false, SettingValueType::BOOLEAN);
+
+        if (!$blogEnabled) {
+            return [];
+        }
+
         return [
             'sitemap' => [
                 'class' => SitemapBehavior::class,

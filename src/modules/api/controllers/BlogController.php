@@ -6,15 +6,22 @@ use ozerich\api\controllers\Controller;
 use ozerich\api\filters\AccessControl;
 use ozerich\api\response\ArrayResponse;
 use ozerich\api\response\ModelResponse;
+use ozerich\shop\constants\PostStatus;
+use ozerich\shop\constants\SettingOption;
 use ozerich\shop\models\BlogCategory;
 use ozerich\shop\models\BlogPost;
+use ozerich\shop\models\Image;
 use ozerich\shop\modules\api\models\BlogCategoryDTO;
 use ozerich\shop\modules\api\models\BlogPostDTO;
 use ozerich\shop\modules\api\models\BlogPostFullDTO;
+use ozerich\shop\modules\api\responses\blog\SettingsResponse;
+use ozerich\shop\traits\ServicesTrait;
 use yii\web\NotFoundHttpException;
 
 class BlogController extends Controller
 {
+    use ServicesTrait;
+
     public function behaviors()
     {
         $behaviors = parent::behaviors();
@@ -22,6 +29,10 @@ class BlogController extends Controller
         $behaviors['access'] = [
             'class' => AccessControl::class,
             'rules' => [
+                [
+                    'action' => 'settings',
+                    'verbs' => 'GET'
+                ],
                 [
                     'action' => 'categories',
                     'verbs' => 'GET'
@@ -69,13 +80,12 @@ class BlogController extends Controller
             }
         }
 
-        $posts = [];
-        if($parent === null){
-            $posts = BlogPost::find()->all();
-        } else if(!$parent){
-            $posts = BlogPost::findByParent(null);
-        } else{
-            $posts = BlogPost::findByParent($parent);
+        if ($parent === null) {
+            $posts = BlogPost::findByStatus(PostStatus::PUBLISHED)->all();
+        } else if (!$parent) {
+            $posts = BlogPost::findByParent(null, PostStatus::PUBLISHED);
+        } else {
+            $posts = BlogPost::findByParent($parent, PostStatus::PUBLISHED);
         }
 
         return new ArrayResponse($posts, BlogPostDTO::class);
@@ -84,14 +94,13 @@ class BlogController extends Controller
     public function actionPost($alias)
     {
         /** @var BlogPost $model */
-        $model = BlogPost::findByAlias($alias)->one();
+        $model = BlogPost::findByAlias($alias, PostStatus::PUBLISHED)->one();
         if (!$model) {
             throw new NotFoundHttpException('Поста не найдено');
         }
 
         return new ModelResponse($model, BlogPostFullDTO::class);
     }
-
 
     public function actionCategory($id)
     {
@@ -104,5 +113,19 @@ class BlogController extends Controller
         return new ModelResponse($model, BlogCategoryDTO::class);
     }
 
+    public function actionSettings()
+    {
+        $response = new SettingsResponse();
+
+        $imageId = $this->settingsService()->get(SettingOption::BLOG_IMAGE_ID);
+
+        $response->setSeoParams(
+            $this->settingsService()->get(SettingOption::BLOG_TITLE),
+            $this->settingsService()->get(SettingOption::BLOG_DESCRIPTION),
+            $imageId ? Image::findOne($imageId) : null
+        );
+
+        return $response;
+    }
 
 }

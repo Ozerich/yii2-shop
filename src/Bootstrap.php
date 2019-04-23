@@ -4,13 +4,18 @@ namespace ozerich\shop;
 
 use ozerich\shop\components\Google\Spreadsheets\GoogleSpreadsheets;
 use ozerich\shop\components\Google\Spreadsheets\GoogleSpreadsheetsSync;
+use ozerich\shop\constants\SettingOption;
+use ozerich\shop\constants\SettingValueType;
 use ozerich\shop\models\Category;
 use ozerich\shop\models\Page;
 use ozerich\shop\models\Product;
+use ozerich\shop\traits\ServicesTrait;
 use yii\base\BootstrapInterface;
 
 class Bootstrap implements BootstrapInterface
 {
+    use ServicesTrait;
+
     private function bootstrapConsole(\yii\console\Application $app)
     {
         if (!isset($app->controllerMap['migrate'])) {
@@ -44,6 +49,8 @@ class Bootstrap implements BootstrapInterface
             return $this->bootstrapConsole($app);
         }
 
+        $blogEnabled = $this->settingsService()->get(SettingOption::BLOG_ENABLED, false, SettingValueType::BOOLEAN);
+
         \Yii::$app->setModule('admin', [
             'class' => 'ozerich\shop\modules\admin\Module'
         ]);
@@ -58,7 +65,14 @@ class Bootstrap implements BootstrapInterface
                 Category::class,
                 Product::class,
                 Page::class
-            ]
+            ],
+            'urls' => $blogEnabled ? [
+                [
+                    'loc' => '/blog',
+                    'changefreq' => 'daily',
+                    'priority' => 0.5,
+                ]
+            ] : []
         ]);
 
         $mediaConfig = [

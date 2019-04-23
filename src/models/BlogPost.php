@@ -3,6 +3,9 @@
 namespace ozerich\shop\models;
 
 use himiklab\sitemap\behaviors\SitemapBehavior;
+use ozerich\shop\constants\SettingOption;
+use ozerich\shop\constants\SettingValueType;
+use ozerich\shop\traits\ServicesTrait;
 use yii\helpers\Url;
 
 /**
@@ -17,12 +20,15 @@ use yii\helpers\Url;
  * @property string $content
  * @property string $page_title
  * @property string $meta_description
+ * @property string $status
  *
  * @property BlogCategory $category
  * @property Image $image
  */
 class BlogPost extends \yii\db\ActiveRecord
 {
+    use ServicesTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -37,7 +43,7 @@ class BlogPost extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['url_alias', 'title'], 'required'],
+            [['url_alias', 'title', 'status'], 'required'],
             [['category_id', 'image_id'], 'integer'],
             [['excerpt', 'content', 'meta_description'], 'string'],
             [['url_alias', 'title', 'page_title'], 'string', 'max' => 255],
@@ -59,11 +65,19 @@ class BlogPost extends \yii\db\ActiveRecord
             'content' => 'Содержание',
             'page_title' => 'Заголовок страницы',
             'meta_description' => 'SEO описание',
+            'status' => 'Статус'
         ];
     }
 
     public function behaviors()
     {
+        $blogEnabled = $this->settingsService()->get(SettingOption::BLOG_ENABLED, false, SettingValueType::BOOLEAN);
+
+        if (!$blogEnabled) {
+            return [];
+        }
+
+
         return [
             'sitemap' => [
                 'class' => SitemapBehavior::class,
@@ -98,21 +112,41 @@ class BlogPost extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public static function findByParent(?BlogCategory $category = null)
+    public static function findByParent(?BlogCategory $category = null, $status = null)
     {
         if ($category === null) {
-            return self::find()->andWhere('category_id is null');
+            $query = self::find()->andWhere('category_id is null');
+        } else {
+            $query = self::find()->andWhere('category_id = :parent_id', [':parent_id' => $category->id]);
         }
 
-        return self::find()->andWhere('category_id = :parent_id', [':parent_id' => $category->id]);
+        if ($status) {
+            $query->andWhere('status=:status', [':status' => $status]);
+        }
+
+        return $status;
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public static function findByAlias($alias)
+    public static function findByAlias($alias, $status = null)
     {
-        return self::find()->andWhere('url_alias=:alias', [':alias' => $alias]);
+        $query = self::find()->andWhere('url_alias=:alias', [':alias' => $alias]);
+
+        if ($status) {
+            $query->andWhere('status=:status', [':status' => $status]);
+        }
+
+        return $status;
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public static function findByStatus($status)
+    {
+        return self::find()->andWhere('status=:status', [':status' => $status]);
     }
 
     public function getUrl($absolute = false)
