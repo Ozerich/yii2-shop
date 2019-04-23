@@ -130,10 +130,10 @@ class Bootstrap implements BootstrapInterface
                             'alias' => 'og'
                         ],
                         [
-                            'width' => 300,
+                            'width' => 540,
                             'height' => 300,
                             'crop' => true,
-                            'alias' => 'blog-category'
+                            'alias' => 'preview'
                         ],
                     ],
                 ],

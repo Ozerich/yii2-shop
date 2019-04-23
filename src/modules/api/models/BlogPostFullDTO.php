@@ -37,7 +37,8 @@ class BlogPostFullDTO extends BlogPost implements DTO
             'path' => $this->getPath(),
 
             'page_title' => $this->page_title,
-            'meta_description' => $this->meta_description
+            'meta_description' => $this->meta_description,
+            'og_image' => $this->image ? $this->image->getUrl('og') : null
         ];
     }
 }
