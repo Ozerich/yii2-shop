@@ -5,6 +5,7 @@ import { Formik } from 'formik';
 import FormInput from '../components/Form/FormInput';
 import FormCheckbox from "../components/Form/FormCheckbox";
 import FormSelect from "../components/Form/FormSelect";
+import FormArea from "../components/Form/FormArea";
 
 import { enableExtendedMode, save } from "../ducks/common";
 import CommonSectionDiscountParams from "./CommonSectionDiscountParams";
@@ -27,7 +28,10 @@ class CommonSection extends Component {
       discountValue: model.discount_value,
 
       stock: model.stock || NO,
-      stock_waiting_days: model.stock_waiting_days
+      stock_waiting_days: model.stock_waiting_days,
+
+      priceNote: model.price_note,
+      isPriceFrom: !!model.is_price_from,
     }
   }
 
@@ -45,10 +49,22 @@ class CommonSection extends Component {
                                  disabled={values.priceDisabled}
                                  value={values.price} />
                     </div>
-                    <div className="col-xs-2">
+                    <div className="col-xs-3">
+                      <FormCheckbox id="priceFrom" label={"Минимальная цена"}
+                                    handleChange={handleChange}
+                                    value={values.isPriceFrom} />
+                    </div>
+                    <div className="col-xs-3">
                       <FormCheckbox id="priceDisabled" label="Цена неизвестна"
                                     handleChange={handleChange}
                                     value={values.priceDisabled} />
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-xs-12">
+                      <FormArea id="priceNote" label="Комментарий к цене" handleChange={handleChange}
+                                value={values.priceNote} />
                     </div>
                   </div>
 
@@ -118,7 +134,9 @@ class CommonSection extends Component {
         values.discountEnabled ? values.discountMode : null,
         values.discountEnabled ? values.discountValue : null,
         values.stock,
-        values.stock === WAITING ? values.stock_waiting_days : null
+        values.stock === WAITING ? values.stock_waiting_days : null,
+        values.priceNote,
+        values.isPriceFrom
     );
   }
 

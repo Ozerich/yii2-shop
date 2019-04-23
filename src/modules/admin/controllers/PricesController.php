@@ -148,8 +148,10 @@ class PricesController extends Controller
         $product->discount_value = $request->discount_value;
         $product->stock = $request->stock;
         $product->stock_waiting_days = $request->stock_waiting_days;
+        $product->price_note = $request->price_note;
+        $product->is_price_from = $request->is_price_from;
 
-        if (!$product->save(true, ['price', 'price_hidden', 'price_hidden_text', 'discount_mode', 'discount_value', 'stock', 'stock_waiting_days'])) {
+        if (!$product->save(true, ['price_note', 'is_price_from', 'price', 'price_hidden', 'price_hidden_text', 'discount_mode', 'discount_value', 'stock', 'stock_waiting_days'])) {
             throw new InvalidRequestException(print_r($product->getErrors(), true));
         }
 

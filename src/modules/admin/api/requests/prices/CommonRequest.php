@@ -21,6 +21,9 @@ class CommonRequest extends RequestModel
 
     public $stock_waiting_days;
 
+    public $price_note;
+
+    public $is_price_from;
 
     public function rules()
     {
@@ -31,7 +34,9 @@ class CommonRequest extends RequestModel
             [['discount_mode'], 'string'],
             [['discount_value'], 'validateDiscountValue'],
             [['stock'], 'string'],
-            [['stock_waiting_days'], 'integer']
+            [['stock_waiting_days'], 'integer'],
+            [['price_note'], 'string'],
+            [['is_price_from'], 'boolean']
         ];
     }
 

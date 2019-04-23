@@ -34,6 +34,8 @@ use yii\helpers\Url;
  * @property float $price_with_discount
  * @property string $stock
  * @property integer $stock_waiting_days
+ * @property string $price_note
+ * @property boolean $is_price_from
  *
  * @property Image $image
  * @property Manufacture $manufacture
@@ -75,6 +77,9 @@ class Product extends \yii\db\ActiveRecord
 
             [['discount_mode'], 'string'],
             [['discount_value'], 'safe'],
+
+            [['price_note'], 'string'],
+            [['is_price_from'], 'boolean']
         ];
     }
 
