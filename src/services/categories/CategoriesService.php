@@ -67,7 +67,10 @@ class CategoriesService
 
         $result = [];
         foreach ($array as $item) {
-            $result[$item['model']['id']] = $item['plain_label'];
+            $result[] = [
+                'id' => $item['model']['id'],
+                'label' => $item['plain_label']
+            ];
         }
 
         return $result;
@@ -78,14 +81,19 @@ class CategoriesService
         $array = $this->rec($this->getTree());
 
         $result = [];
+
         foreach ($array as $item) {
             if ($item['model']->type == CategoryType::CONDITIONAL) {
                 continue;
             }
-            $result[$item['model']['id']] = $item['plain_label'];
+            $result[] = [
+                'id' => $item['model']['id'],
+                'label' => $item['plain_label']
+            ];
         }
 
         return $result;
+
     }
 
     public function updateCategoryLevel(Category $category)
