@@ -73,6 +73,21 @@ class CategoriesService
         return $result;
     }
 
+    public function getCatalogTreeAsPlainArray()
+    {
+        $array = $this->rec($this->getTree());
+
+        $result = [];
+        foreach ($array as $item) {
+            if ($item['model']->type == CategoryType::CONDITIONAL) {
+                continue;
+            }
+            $result[$item['model']['id']] = $item['plain_label'];
+        }
+
+        return $result;
+    }
+
     public function updateCategoryLevel(Category $category)
     {
         $level = 1;

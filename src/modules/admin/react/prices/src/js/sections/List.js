@@ -18,6 +18,7 @@ class List extends Component {
               <tr>
                 <th className="cell-name">Товар</th>
                 <th className="cell-price">Цена</th>
+                <th className="cell-discount">Скидка</th>
                 <th className="cell-stock">Наличие</th>
               </tr>
               </thead>

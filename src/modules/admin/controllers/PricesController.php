@@ -8,6 +8,8 @@ use ozerich\api\filters\AccessControl;
 use ozerich\api\request\InvalidRequestException;
 use ozerich\api\response\CollectionResponse;
 use ozerich\api\response\ModelResponse;
+use ozerich\shop\models\Category;
+use ozerich\shop\models\Manufacture;
 use ozerich\shop\models\Product;
 use ozerich\shop\models\ProductPrice;
 use ozerich\shop\models\ProductPriceParam;
@@ -19,10 +21,12 @@ use ozerich\shop\modules\admin\api\models\ProductPriceParamValueDTO;
 use ozerich\shop\modules\admin\api\requests\prices\CommonRequest;
 use ozerich\shop\modules\admin\api\requests\prices\ParamItemRequest;
 use ozerich\shop\modules\admin\api\requests\prices\ParamRequest;
+use ozerich\shop\modules\admin\api\requests\prices\PricesRequest;
 use ozerich\shop\modules\admin\api\requests\prices\SaveRequest;
 use ozerich\shop\modules\api\models\PriceDTO;
 use ozerich\shop\traits\ServicesTrait;
 use yii\data\ActiveDataProvider;
+use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
@@ -44,6 +48,10 @@ class PricesController extends Controller
             'rules' => [
                 [
                     'action' => 'products',
+                    'verbs' => ['POST']
+                ],
+                [
+                    'action' => 'init',
                     'verbs' => ['GET']
                 ],
                 [
@@ -359,8 +367,26 @@ class PricesController extends Controller
 
     public function actionProducts()
     {
-        /** @var Product[] $products */
-        $products = Product::find()->joinWith('productPriceParams')->joinWith('prices')->all();
+        $request = new PricesRequest();
+        $request->load();
+
+        $query = Product::find()->joinWith('productPriceParams')->joinWith('prices');
+
+        if ($request->manufacture_id) {
+            $query->andWhere('manufacture_id=:manufacture_id', [':manufacture_id' => $request->manufacture_id]);
+        }
+        if ($request->category_id) {
+            $ids = Category::find()->select('id')->andWhere('parent_id=:parent_id', [':parent_id' => $request->category_id])->column();
+            $ids = $ids ? array_merge([$request->category_id], $ids) : [$request->category_id];
+
+            $query->andWhere('category_id in (' . implode(',', $ids) . ')');
+        }
+
+        if ($request->without_price) {
+            $query->andWhere('price is null');
+        }
+
+        $products = $query->all();
 
         $result = [];
 
@@ -418,5 +444,15 @@ class PricesController extends Controller
 
         \Yii::$app->response->format = Response::FORMAT_JSON;
         return $result;
+    }
+
+    public function actionInit()
+    {
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+
+        return [
+            'categories' => $this->categoriesService()->getCatalogTreeAsPlainArray(),
+            'manufactures' => ArrayHelper::map(Manufacture::find()->all(), 'id', 'name')
+        ];
     }
 }

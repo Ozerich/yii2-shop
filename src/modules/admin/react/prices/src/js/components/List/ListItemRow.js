@@ -1,18 +1,24 @@
 import React, { Component } from 'react';
-import ListItemPrice from "./ListItemPrice";
 import ListItemStock from "./ListItemStock";
+import ListItemPriceDiscount from "./ListItemPriceDiscount";
 
 class ListItem extends Component {
   render() {
-    const { name, price } = this.props;
+    const { name, price, isChild, productId } = this.props;
 
     return (
-        <tr>
+        <tr className={isChild ? 'row-child' : ''}>
           <td className="cell-name">
-            {name}
+            {isChild ? name : <a href={"/admin/products/update/" + productId} target="_blank">{name}</a>}
           </td>
           <td className="cell-price">
-            <ListItemPrice model={price} onChange={this.onPriceChange.bind(this)} />
+            <input type="text" className="price-input" value={price ? price.price : ''}
+                   onChange={this.onPriceChange.bind(this)} />
+          </td>
+          <td className="cell-price">
+            <ListItemPriceDiscount discountMode={price ? price.discount_mode : null}
+                                   discountValue={price ? price.discount_value : null}
+                                   onChange={this.onDiscountChange.bind(this)} />
           </td>
           <td className="cell-stock">
             <ListItemStock
@@ -23,6 +29,16 @@ class ListItem extends Component {
           </td>
         </tr>
     );
+  }
+
+
+  onDiscountChange(discountMode, discountValue) {
+    if (this.props.onChange) {
+      this.props.onChange(Object.assign(this.props.price || {}, {
+        discount_mode: discountMode,
+        discount_value: discountValue
+      }));
+    }
   }
 
   onChangeStock(stock, stockWaitingDays) {

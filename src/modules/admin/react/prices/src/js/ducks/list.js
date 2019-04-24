@@ -15,13 +15,13 @@ const initialState = {
   items: []
 };
 
-export function load() {
+export function load(request) {
   return dispatch => {
     dispatch({
       type: LOAD + _START
     });
 
-    service.products().then(items => {
+    service.products(request).then(items => {
       dispatch({
         type: LOAD + _SUCCESS,
         payload: {
@@ -54,6 +54,7 @@ export function change(productId, paramIds, data) {
     });
   };
 }
+
 
 
 // Reducer

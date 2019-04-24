@@ -14,7 +14,7 @@ class ListItem extends Component {
       return (
           <>
           <ListItemProductHeader model={model} />
-          {model.children.map(item => <ListItemRow key={item.id}
+          {model.children.map(item => <ListItemRow key={item.id} isChild={true}
                                                    onChange={data => this.onChange(item.params.map(item => item.id), data)}
                                                    name={item.params.map(item => item.value).join(', ')}
                                                    price={item.price}
@@ -22,7 +22,7 @@ class ListItem extends Component {
           </>
       );
     } else {
-      return <ListItemRow name={model.name} price={model.price} onChange={data => this.onChange(null, data)} />
+      return <ListItemRow name={model.name} price={model.price} productId={model.id} onChange={data => this.onChange(null, data)} />
     }
   }
 

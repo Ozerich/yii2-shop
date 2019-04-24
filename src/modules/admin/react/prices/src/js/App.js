@@ -7,14 +7,17 @@ import Filter from "./sections/Filter";
 import List from "./sections/List";
 
 class Application extends Component {
-  componentWillMount(){
+  componentWillMount() {
 
   }
+
   render() {
     return (
         <Provider store={store}>
-          <Filter />
-          <List />
+          <div className="app">
+            <Filter />
+            <List />
+          </div>
         </Provider>
     );
   }

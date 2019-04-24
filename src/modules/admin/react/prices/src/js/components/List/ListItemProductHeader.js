@@ -6,7 +6,9 @@ class ListItemProductHeader extends Component {
 
     return (
         <tr>
-          <td className="product-row" colSpan={3}>#{model.id} - {model.name}</td>
+          <td className="product-row" colSpan={4}>
+            <a href={"/admin/products/update/" + model.id} target="_blank">{model.name}</a>
+          </td>
         </tr>
     );
   }

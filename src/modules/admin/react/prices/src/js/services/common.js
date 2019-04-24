@@ -1,8 +1,12 @@
 import BaseService from './base';
 
 export default class CommonService extends BaseService {
-  products() {
-    return this.query('/prices/products');
+  init() {
+    return this.query('/prices/init');
+  }
+  
+  products(request) {
+    return this.post('/prices/products', request);
   }
 
   save(productId, paramValueId, secondParamValueId, data) {
