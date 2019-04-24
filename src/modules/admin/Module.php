@@ -36,6 +36,12 @@ class Module extends \ozerich\admin\Module
             'icon' => 'book'
         ],
         [
+            'id' => 'prices',
+            'link' => '/products/prices',
+            'label' => 'Цены и наличие',
+            'icon' => 'book'
+        ],
+        [
             'id' => 'manufactures',
             'link' => '/manufactures',
             'label' => 'Производители',

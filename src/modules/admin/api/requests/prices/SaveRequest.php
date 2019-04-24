@@ -3,7 +3,6 @@
 namespace ozerich\shop\modules\admin\api\requests\prices;
 
 use ozerich\api\request\RequestModel;
-use ozerich\shop\constants\DiscountType;
 
 class SaveRequest extends RequestModel
 {
@@ -21,11 +20,12 @@ class SaveRequest extends RequestModel
 
     public $stock_waiting_days;
 
+    public $price;
+
     public function rules()
     {
         return [
-            [['first_param_id'], 'required'],
-            [['second_param_id'], 'integer'],
+            [['first_param_id', 'second_param_id', 'price'], 'integer'],
 
             [['value'], 'integer'],
             [['discount_mode'], 'string'],

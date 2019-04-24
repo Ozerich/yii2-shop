@@ -169,4 +169,9 @@ class ProductsController extends AdminController
         $this->categoryProductsService()->afterProductParamsChanged($model);
         return null;
     }
+
+    public function actionPrices()
+    {
+        return $this->render('prices');
+    }
 }

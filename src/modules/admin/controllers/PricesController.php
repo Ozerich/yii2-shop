@@ -20,9 +20,11 @@ use ozerich\shop\modules\admin\api\requests\prices\CommonRequest;
 use ozerich\shop\modules\admin\api\requests\prices\ParamItemRequest;
 use ozerich\shop\modules\admin\api\requests\prices\ParamRequest;
 use ozerich\shop\modules\admin\api\requests\prices\SaveRequest;
+use ozerich\shop\modules\api\models\PriceDTO;
 use ozerich\shop\traits\ServicesTrait;
 use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 class PricesController extends Controller
 {
@@ -40,6 +42,10 @@ class PricesController extends Controller
         $behaviors['access'] = [
             'class' => AccessControl::class,
             'rules' => [
+                [
+                    'action' => 'products',
+                    'verbs' => ['GET']
+                ],
                 [
                     'action' => 'index',
                     'verbs' => ['GET']
@@ -287,46 +293,130 @@ class PricesController extends Controller
         $request = new SaveRequest();
         $request->load();
 
-        $query = ProductPrice::find()
-            ->andWhere('product_id=:product_id', [':product_id' => $id])
-            ->andWhere('param_value_id=:value_id', [':value_id' => $request->first_param_id]);
+        if (!$request->first_param_id && !$request->second_param_id) {
+            $model = Product::findOne($id);
+        } else {
+            $query = ProductPrice::find()
+                ->andWhere('product_id=:product_id', [':product_id' => $id])
+                ->andWhere('param_value_id=:value_id', [':value_id' => $request->first_param_id]);
 
-        if ($request->second_param_id) {
-            $query->andWhere('param_value_second_id=:value2_id', [':value2_id' => $request->second_param_id]);
+            if ($request->second_param_id) {
+                $query->andWhere('param_value_second_id=:value2_id', [':value2_id' => $request->second_param_id]);
+            }
+            $model = $query->one();
+
+            if (!$model) {
+                $model = new ProductPrice();
+                $model->product_id = $id;
+                $model->param_value_id = $request->first_param_id;
+                $model->param_value_second_id = $request->second_param_id;
+            }
         }
 
-        $model = $query->one();
-        if (!$model) {
-            $model = new ProductPrice();
-            $model->product_id = $id;
-            $model->param_value_id = $request->first_param_id;
-            $model->param_value_second_id = $request->second_param_id;
-        }
-
-        if ($request->issetAttribute('value')) {
+        if ($model instanceof ProductPrice && $request->issetAttribute('value')) {
             $model->value = $request->value;
+        } elseif ($request->issetAttribute('stock')) {
+            $model->stock = $request->stock;
+        }
+
+        if ($request->issetAttribute('price')) {
+            $model->value = $request->price;
         }
         if ($request->issetAttribute('discount_mode')) {
             $model->discount_mode = $request->discount_mode;
         }
         if ($request->issetAttribute('discount_value')) {
             $model->discount_value = $request->discount_value;
-            if ($model->discount_value === null) {
+            if (!$model->discount_value) {
                 $model->discount_mode = null;
             }
         }
         if ($request->issetAttribute('stock_waiting_days')) {
             $model->stock_waiting_days = $request->stock_waiting_days;
         }
-        if ($request->issetAttribute('stock')) {
-            $model->stock = $request->stock;
-        }
-
 
         $model->save();
 
         $this->productPricesService()->updateProductPrice(Product::findOne($id));
 
         return null;
+    }
+
+
+    private function getProductPriceJSON($prices, $first_param_id, $second_param_id = null)
+    {
+        $price = null;
+
+        foreach ($prices as $_price) {
+            if ($_price->param_value_id == $first_param_id && $_price->param_value_second_id == $second_param_id) {
+                $price = $_price;
+                break;
+            }
+        }
+
+        return $price ? (new \ozerich\shop\modules\api\models\ProductPriceDTO($price))->toJSON() : null;
+    }
+
+    public function actionProducts()
+    {
+        /** @var Product[] $products */
+        $products = Product::find()->joinWith('productPriceParams')->joinWith('prices')->all();
+
+        $result = [];
+
+        foreach ($products as $product) {
+            $model = [
+                'id' => $product->id,
+                'name' => $product->name,
+                'price' => (new PriceDTO($product))->toJSON(),
+                'children' => []
+            ];
+
+            if ($product->is_prices_extended) {
+                if (count($product->productPriceParams) == 1) {
+                    $priceParam = $product->productPriceParams[0];
+                    foreach ($priceParam->productPriceParamValues as $value) {
+                        $model['children'][] = [
+                            'params' => [
+                                [
+                                    'id' => $value->id,
+                                    'label' => $priceParam->name,
+                                    'value' => $value->name
+                                ]
+                            ],
+                            'price' => $this->getProductPriceJSON($product->prices, $value->id)
+                        ];
+                    }
+                } elseif (count($product->productPriceParams) == 2) {
+                    $firstParam = $product->productPriceParams[0];
+                    $secondParam = $product->productPriceParams[1];
+
+                    foreach ($firstParam->productPriceParamValues as $firstParamValue) {
+                        foreach ($secondParam->productPriceParamValues as $secondParamValue) {
+                            $model['children'][] = [
+                                'params' => [
+                                    [
+                                        'id' => $firstParamValue->id,
+                                        'label' => $firstParam->name,
+                                        'value' => $firstParamValue->name
+                                    ],
+                                    [
+                                        'id' => $secondParamValue->id,
+                                        'label' => $secondParam->name,
+                                        'value' => $secondParamValue->name
+                                    ]
+                                ],
+                                'price' => $this->getProductPriceJSON($product->prices, $firstParamValue->id, $secondParamValue->id)
+                            ];
+                        }
+                    }
+                }
+            }
+
+            $result[] = $model;
+        }
+
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        return $result;
     }
 }

@@ -1,0 +1,63 @@
+.table-list {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-size: 12px;
+
+  td, th {
+    padding: 5px 5px;
+    border: 1px solid #eee;
+    vertical-align: top;
+  }
+
+  .product-row {
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  .cell-name {
+
+  }
+
+  .cell-price, .cell-stock {
+    width: 250px;
+    max-width: 250px;
+  }
+
+  select {
+    width: 100%;
+  }
+
+  input, select {
+    font-size: 12px;
+  }
+
+  .price {
+    input {
+      text-align: center;
+      width: 100%;
+    }
+    &-discount {
+      margin-top: 5px;
+      .form-group {
+        margin-bottom: 0;
+      }
+
+      select {
+        margin-bottom: 5px;
+      }
+    }
+  }
+
+  .stock {
+    label {
+      display: block;
+      margin-top: 8px;
+      margin-bottom: 3px;
+    }
+    input {
+      text-align: center;
+      width: 100%;
+    }
+  }
+}
