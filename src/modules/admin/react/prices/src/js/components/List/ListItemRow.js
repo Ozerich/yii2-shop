@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import ListItemStock from "./ListItemStock";
 import ListItemPriceDiscount from "./ListItemPriceDiscount";
+import CurrencySwitcher from './CurrencySwitcher';
 
 class ListItem extends Component {
   render() {
-    const { name, price, isChild, productId } = this.props;
+    const { name, price, isChild, productId, model } = this.props;
 
     return (
         <tr className={isChild ? 'row-child' : ''}>
@@ -12,8 +13,14 @@ class ListItem extends Component {
             {isChild ? name : <a href={"/admin/products/update/" + productId} target="_blank">{name}</a>}
           </td>
           <td className="cell-price">
-            <input type="text" className="price-input" value={price ? price.price : ''}
-                   onChange={this.onPriceChange.bind(this)} />
+            <div className="price-wrapper">
+              <div className="price-input-wrapper">
+                <input type="text" className="price-input" value={price ? price.price : ''}
+                       onChange={this.onPriceChange.bind(this)} />
+              </div>
+
+              {isChild ? null : <CurrencySwitcher model={model} />}
+            </div>
           </td>
           <td className="cell-price">
             <ListItemPriceDiscount discountMode={price ? price.discount_mode : null}

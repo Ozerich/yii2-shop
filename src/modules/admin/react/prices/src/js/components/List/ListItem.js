@@ -22,7 +22,7 @@ class ListItem extends Component {
           </>
       );
     } else {
-      return <ListItemRow name={model.name} price={model.price} productId={model.id} onChange={data => this.onChange(null, data)} />
+      return <ListItemRow name={model.name} model={model} isChild={false} price={model.price} productId={model.id} onChange={data => this.onChange(null, data)} />
     }
   }
 

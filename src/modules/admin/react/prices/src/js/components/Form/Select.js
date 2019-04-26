@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 
 class Select extends Component {
   render() {
-    const { options, value } = this.props;
+    const { options, value, defaultValue } = this.props;
 
     if (!options) {
       return null;
     }
 
     return (
-        <select  onChange={this.onChange.bind(this)} value={value}>
+        <select onChange={this.onChange.bind(this)} value={value} defaultValue={defaultValue}>
           {options.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}
         </select>
     );

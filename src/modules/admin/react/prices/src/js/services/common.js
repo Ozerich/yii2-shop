@@ -4,7 +4,15 @@ export default class CommonService extends BaseService {
   init() {
     return this.query('/prices/init');
   }
-  
+
+  currencies() {
+    return this.query('/prices/currencies');
+  }
+
+  saveCurrency(productId, currency) {
+    return this.post('/prices/currency/' + productId, { currency: +currency });
+  }
+
   products(request) {
     return this.post('/prices/products', request);
   }

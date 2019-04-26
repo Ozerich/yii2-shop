@@ -8,9 +8,14 @@ const CHANGE = 'CHANGE';
 const _START = '_START';
 const _SUCCESS = '_SUCCESS';
 const _FAILURE = '_FAILURE';
+
 const LOAD = 'LOAD';
+const INIT = 'INIT';
 
 const initialState = {
+  initLoading: true,
+  currencies: [],
+
   loading: false,
   items: []
 };
@@ -42,7 +47,7 @@ export function load(request) {
 
 export function change(productId, paramIds, data) {
   return dispatch => {
-    service.save(productId, paramIds.length ? paramIds[0] : null, paramIds.length > 1 ? paramIds[1] : null, data);
+    service.save(productId, Array.isArray(paramIds) && paramIds.length ? paramIds[0] : null, Array.isArray(paramIds) && paramIds.length > 1 ? paramIds[1] : null, data);
 
     dispatch({
       type: CHANGE,
@@ -56,10 +61,15 @@ export function change(productId, paramIds, data) {
 }
 
 
-
 // Reducer
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
+
+    case  INIT + _SUCCESS:
+      return Object.assign({}, state, {
+        initLoading: false,
+        currencies: action.payload
+      });
 
     case LOAD + _START:
       return Object.assign({}, state, { loading: true });
@@ -104,4 +114,21 @@ export default function reducer(state = initialState, action = {}) {
     default:
       return state;
   }
+}
+
+export function loadCurrencies() {
+  return dispatch => {
+    service.currencies().then(data => {
+      dispatch({
+        type: INIT + _SUCCESS,
+        payload: data
+      });
+    });
+  };
+}
+
+export function changeProductCurrency(productId, currency) {
+  return dispatch => {
+    service.saveCurrency(productId, currency);
+  };
 }

@@ -3,7 +3,7 @@ import CommonService from '../services/common';
 const service = new CommonService;
 
 // Actions
-const INIT = 'common/INIT';
+const INIT = 'filter/INIT';
 
 const _START = '_START';
 const _SUCCESS = '_SUCCESS';

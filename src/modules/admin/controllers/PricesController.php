@@ -423,6 +423,7 @@ class PricesController extends Controller
                 'id' => $product->id,
                 'name' => $product->name,
                 'price' => (new PriceDTO($product))->toJSON(),
+                'currency_id' => $product->currency_id,
                 'children' => []
             ];
 
