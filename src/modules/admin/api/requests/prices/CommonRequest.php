@@ -25,6 +25,8 @@ class CommonRequest extends RequestModel
 
     public $is_price_from;
 
+    public $currency;
+
     public function rules()
     {
         return [
@@ -36,7 +38,8 @@ class CommonRequest extends RequestModel
             [['stock'], 'string'],
             [['stock_waiting_days'], 'integer'],
             [['price_note'], 'string'],
-            [['is_price_from'], 'boolean']
+            [['is_price_from'], 'boolean'],
+            [['currency'], 'safe']
         ];
     }
 

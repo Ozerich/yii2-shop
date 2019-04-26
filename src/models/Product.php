@@ -36,6 +36,7 @@ use yii\helpers\Url;
  * @property integer $stock_waiting_days
  * @property string $price_note
  * @property boolean $is_price_from
+ * @property integer $currency_id
  *
  * @property Image $image
  * @property Currency $currency

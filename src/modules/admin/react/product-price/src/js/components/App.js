@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { init, load } from "../ducks/common";
+import { init, load, loadCurrencies } from "../ducks/common";
 
 import CommonSection from '../sections/CommonSection';
 import CommonSectionExtended from '../sections/CommonSectionExtended';
@@ -9,10 +9,11 @@ import ExtendedMode from "../sections/ExtendedMode";
 
 class App extends Component {
   componentWillMount() {
-    const { init, load, productId } = this.props;
+    const { init, load, productId, loadCurrencies } = this.props;
 
     init(productId);
     load(productId);
+    loadCurrencies();
   }
 
   render() {
@@ -24,7 +25,7 @@ class App extends Component {
 
     return (
         <>
-        {isExtendedMode ? <CommonSectionExtended/> : <CommonSection />}
+        {isExtendedMode ? <CommonSectionExtended /> : <CommonSection />}
         {isExtendedMode ? <ExtendedMode /> : null}
         </>
     );
@@ -38,4 +39,4 @@ function mapStateToProps(state, ownProps) {
   }
 }
 
-export default connect(mapStateToProps, { init, load })(App);
+export default connect(mapStateToProps, { init, load, loadCurrencies })(App);

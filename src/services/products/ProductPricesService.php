@@ -48,7 +48,6 @@ class ProductPricesService
     {
         if (!$product->is_prices_extended) {
             $product->price_with_discount = $this->getSimplePriceWithDiscount($product);
-
             $product->save(false, ['price_with_discount']);
         } else {
 
@@ -96,7 +95,6 @@ class ProductPricesService
 
             $product->save(false, ['price', 'price_with_discount', 'discount_mode', 'discount_value', 'stock']);
         }
-
 
         $this->categoryProductsService()->afterProductParamsChanged($product);
     }

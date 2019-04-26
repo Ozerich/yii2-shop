@@ -32,7 +32,43 @@ class CommonSection extends Component {
 
       priceNote: model.price_note,
       isPriceFrom: !!model.is_price_from,
+
+      currency: model.currency_id ? model.currency_id : null
     }
+  }
+
+  renderPriceInput(values, handleChange) {
+    return (
+        <FormInput id="price" label="Цена"
+                   handleChange={handleChange}
+                   disabled={values.priceDisabled}
+                   value={values.price} />
+    );
+  }
+
+  renderPrice(values, handleChange) {
+    const { currencyEnabled, currencies } = this.props;
+
+    if (currencyEnabled === false) {
+      return (
+          <div className="col-xs-6">
+            {this.renderPriceInput(values, handleChange)}
+          </div>
+      );
+    }
+    return (
+        <div className="col-xs-6">
+          <div className="price-input-wrapper">
+            <div>
+              {this.renderPriceInput(values, handleChange)}
+            </div>
+            <div>
+              <FormSelect handleChange={handleChange} id="currency" value={values.currency}
+                          items={currencies} />
+            </div>
+          </div>
+        </div>
+    );
   }
 
   render() {
@@ -43,12 +79,8 @@ class CommonSection extends Component {
             {({ values, handleChange, handleSubmit }) => (
                 <form onSubmit={handleSubmit}>
                   <div className="row">
-                    <div className="col-xs-6">
-                      <FormInput id="price" label="Цена"
-                                 handleChange={handleChange}
-                                 disabled={values.priceDisabled}
-                                 value={values.price} />
-                    </div>
+                    {this.renderPrice(values, handleChange)}
+
                     <div className="col-xs-3">
                       <FormCheckbox id="priceFrom" label={"Минимальная цена"}
                                     handleChange={handleChange}
@@ -136,7 +168,8 @@ class CommonSection extends Component {
         values.stock,
         values.stock === WAITING ? values.stock_waiting_days : null,
         values.priceNote,
-        values.isPriceFrom
+        values.isPriceFrom,
+        values.currency
     );
   }
 

@@ -9,11 +9,13 @@ use ozerich\api\request\InvalidRequestException;
 use ozerich\api\response\CollectionResponse;
 use ozerich\api\response\ModelResponse;
 use ozerich\shop\models\Category;
+use ozerich\shop\models\Currency;
 use ozerich\shop\models\Manufacture;
 use ozerich\shop\models\Product;
 use ozerich\shop\models\ProductPrice;
 use ozerich\shop\models\ProductPriceParam;
 use ozerich\shop\models\ProductPriceParamValue;
+use ozerich\shop\modules\admin\api\models\CurrencyDTO;
 use ozerich\shop\modules\admin\api\models\ProductPriceCommonDTO;
 use ozerich\shop\modules\admin\api\models\ProductPriceDTO;
 use ozerich\shop\modules\admin\api\models\ProductPriceParamDTO;
@@ -52,6 +54,10 @@ class PricesController extends Controller
                 ],
                 [
                     'action' => 'init',
+                    'verbs' => ['GET']
+                ],
+                [
+                    'action' => 'currencies',
                     'verbs' => ['GET']
                 ],
                 [
@@ -164,8 +170,9 @@ class PricesController extends Controller
         $product->stock_waiting_days = $request->stock_waiting_days;
         $product->price_note = $request->price_note;
         $product->is_price_from = $request->is_price_from;
+        $product->currency_id = $request->currency ? $request->currency : Currency::defaultId();
 
-        if (!$product->save(true, ['price_note', 'is_price_from', 'price', 'price_hidden', 'price_hidden_text', 'discount_mode', 'discount_value', 'stock', 'stock_waiting_days'])) {
+        if (!$product->save(true, ['currency_id', 'price_note', 'is_price_from', 'price', 'price_hidden', 'price_hidden_text', 'discount_mode', 'discount_value', 'stock', 'stock_waiting_days'])) {
             throw new InvalidRequestException(print_r($product->getErrors(), true));
         }
 
@@ -460,7 +467,7 @@ class PricesController extends Controller
             });
 
             foreach ($result as &$row) {
-                $row['children'] = array_values(array_filter($row['children'], function($child){
+                $row['children'] = array_values(array_filter($row['children'], function ($child) {
                     return $child['price']['price'] == null;
                 }));
             }
@@ -480,5 +487,17 @@ class PricesController extends Controller
             'categories' => $this->categoriesService()->getCatalogTreeAsPlainArray(),
             'manufactures' => ArrayHelper::map(Manufacture::find()->all(), 'id', 'name')
         ];
+    }
+
+    public function actionCurrencies()
+    {
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+
+        /** @var Currency[] $currencies */
+        $currencies = Currency::find()->all();
+
+        return array_map(function (Currency $currency) {
+            return (new CurrencyDTO($currency))->toJSON();
+        }, $currencies);
     }
 }

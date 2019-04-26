@@ -16,4 +16,8 @@ export default class CommonService extends BaseService {
   load(productId) {
     return this.query('/prices/load/' + productId);
   }
+
+  currencies(){
+    return this.query('/prices/currencies');
+  }
 }

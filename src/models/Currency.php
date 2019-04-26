@@ -59,4 +59,15 @@ class Currency extends \yii\db\ActiveRecord
         return parent::beforeSave($insert);
     }
 
+    /**
+     * @return int|null
+     */
+    public static function defaultId()
+    {
+        $default = self::find()->andWhere('primary = 1')->one();
+        if (!$default) {
+            return null;
+        }
+        return $default->id;
+    }
 }

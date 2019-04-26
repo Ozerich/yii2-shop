@@ -248,3 +248,24 @@
     }
   }
 }
+
+.price-input-wrapper {
+  display: flex;
+  justify-content: space-between;
+
+  > div {
+    &:first-child {
+      flex: 1;
+    }
+
+    &:last-child {
+      flex-basis: 50px;
+      margin-left: 10px;
+      padding-top: 25px;
+    }
+  }
+
+  select{
+    text-align: center;
+  }
+}

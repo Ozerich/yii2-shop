@@ -3,7 +3,8 @@ import CommonService from '../services/common';
 const service = new CommonService;
 
 // Actions
-const INIT = 'common/INIT';
+const INIT = 'common:INIT';
+const LOAD_CURRENCIES = 'common:LOAD_CURRENCIES';
 
 const _START = '_START';
 const _SUCCESS = '_SUCCESS';
@@ -22,6 +23,9 @@ const initialState = {
   loading: false,
   loaded: false,
   productId: false,
+
+  currencyEnabled: false,
+  currencies: [],
 
   isExtendedMode: false,
 
@@ -47,6 +51,10 @@ export default function reducer(state = initialState, action = {}) {
     case HIDE_SUCCESS:
       return Object.assign({}, state, { successNoteVisible: false });
 
+    case LOAD_CURRENCIES + _SUCCESS:
+      return Object.assign({}, state, { currencies: action.payload, currencyEnabled: action.payload.length > 0 });
+
+
     case LOAD + _START:
       return Object.assign({}, state, { loading: true, loaded: false });
     case LOAD + _FAILURE:
@@ -71,6 +79,15 @@ export function init(productId) {
     payload: {
       productId
     }
+  };
+}
+
+export function loadCurrencies() {
+  return dispatch => {
+    service.currencies().then(data => dispatch({
+      type: LOAD_CURRENCIES + _SUCCESS,
+      payload: data
+    }))
   };
 }
 
@@ -131,7 +148,7 @@ export function load(productId) {
 
 const successTimer = null;
 
-export function save(price, isPriceDisabled, priceDisabledText, discountMode, discountValue, stock, stockDays, priceNote, isPriceFrom) {
+export function save(price, isPriceDisabled, priceDisabledText, discountMode, discountValue, stock, stockDays, priceNote, isPriceFrom, currency) {
   return (dispatch, getState) => {
     dispatch({
       type: SAVE + _START
@@ -146,7 +163,8 @@ export function save(price, isPriceDisabled, priceDisabledText, discountMode, di
       stock: stock,
       stock_waiting_days: stockDays,
       price_note: priceNote,
-      is_price_from: !!isPriceFrom
+      is_price_from: !!isPriceFrom,
+      currency: currency
     }).then(data => {
       dispatch({
         type: SAVE + _SUCCESS
