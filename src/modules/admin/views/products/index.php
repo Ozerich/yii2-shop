@@ -37,13 +37,6 @@ $columns = [
         'value' => function (ozerich\shop\models\Product $product) {
             return $product->category ? $product->category->name : null;
         }
-    ],
-    'price' => [
-        'header' => 'Цена',
-        'format' => 'raw',
-        'value' => function (ozerich\shop\models\Product $product) {
-            return $this->render('/products/columns/price', ['model' => $product]);
-        }
     ]
 ];
 

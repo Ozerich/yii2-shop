@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 class FormSelect extends Component {
   getOptions() {
     const { items, emptyValue } = this.props;
-
     let result = [];
 
     if (Array.isArray(items)) {
@@ -17,10 +16,10 @@ class FormSelect extends Component {
       });
     }
 
-    result.unshift({
+    result = [{
       id: null,
       label: emptyValue
-    });
+    }, ...result];
 
     return result;
   }

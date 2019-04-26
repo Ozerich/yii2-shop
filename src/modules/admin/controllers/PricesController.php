@@ -343,7 +343,11 @@ class PricesController extends Controller
             $model->stock_waiting_days = $request->stock_waiting_days;
         }
 
-        $model->save();
+        if ($model instanceof ProductPrice && !$model->value) {
+            $model->delete();
+        } else {
+            $model->save();
+        }
 
         $this->productPricesService()->updateProductPrice(Product::findOne($id));
 
@@ -367,10 +371,12 @@ class PricesController extends Controller
 
     public function actionProducts()
     {
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+
         $request = new PricesRequest();
         $request->load();
 
-        $query = Product::find()->joinWith('productPriceParams')->joinWith('prices');
+        $query = Product::find()->andWhere('sale_disabled = 0')->joinWith('productPriceParams')->joinWith('prices');
 
         if ($request->manufacture_id) {
             $query->andWhere('manufacture_id=:manufacture_id', [':manufacture_id' => $request->manufacture_id]);
@@ -380,10 +386,6 @@ class PricesController extends Controller
             $ids = $ids ? array_merge([$request->category_id], $ids) : [$request->category_id];
 
             $query->andWhere('category_id in (' . implode(',', $ids) . ')');
-        }
-
-        if ($request->without_price) {
-            $query->andWhere('price is null');
         }
 
         $products = $query->all();
@@ -442,7 +444,31 @@ class PricesController extends Controller
             $result[] = $model;
         }
 
-        \Yii::$app->response->format = Response::FORMAT_JSON;
+        if ($request->without_price) {
+            $result = array_filter($result, function ($product) {
+                if ($product['price']['price'] == null) {
+                    return true;
+                }
+
+                foreach ($product['children'] as $param) {
+                    if (!$param['price']['price']) {
+                        return true;
+                    }
+                }
+
+                return false;
+            });
+
+            foreach ($result as &$row) {
+                $row['children'] = array_values(array_filter($row['children'], function($child){
+                    return $child['price']['price'] == null;
+                }));
+            }
+
+
+            $result = array_values($result);
+        }
+
         return $result;
     }
 

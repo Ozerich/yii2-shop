@@ -50,10 +50,11 @@ class ListItem extends Component {
     }
   }
 
-  onPriceChange(price) {
+  onPriceChange(e) {
     if (this.props.onChange) {
+      const value = parseInt(e.target.value);
       this.props.onChange(Object.assign(this.props.price || {}, {
-        price: price.price
+        price: value ? value : null
       }));
     }
   }
