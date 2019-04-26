@@ -38,6 +38,7 @@ use yii\helpers\Url;
  * @property boolean $is_price_from
  *
  * @property Image $image
+ * @property Currency $currency
  * @property Manufacture $manufacture
  * @property Image $schemaImage
  * @property Image[] $images
@@ -133,6 +134,14 @@ class Product extends \yii\db\ActiveRecord
     public function getImage()
     {
         return $this->hasOne(Image::className(), ['id' => 'image_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCurrency()
+    {
+        return $this->hasOne(Currency::className(), ['id' => 'currency_id']);
     }
 
     /**

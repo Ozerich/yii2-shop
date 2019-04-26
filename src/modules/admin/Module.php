@@ -105,6 +105,11 @@ class Module extends \ozerich\admin\Module
                     'label' => 'Блог',
                     'link' => '/settings/blog',
                 ],
+                [
+                    'id' => 'blog',
+                    'label' => 'Курсы валют',
+                    'link' => '/settings/currencies',
+                ],
             ]
         ],
     ];

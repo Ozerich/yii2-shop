@@ -3,12 +3,17 @@
 namespace ozerich\shop\modules\admin\controllers;
 
 use ozerich\admin\actions\CreateOrUpdateAction;
+use ozerich\admin\actions\DeleteAction;
+use ozerich\admin\actions\ListAction;
 use ozerich\admin\controllers\base\AdminController;
 use ozerich\shop\models\Category;
+use ozerich\shop\models\Currency;
 use ozerich\shop\modules\admin\forms\settings\BlogSettingsForm;
 use ozerich\shop\modules\admin\forms\settings\BlogSettingsFormConvertor;
 use ozerich\shop\modules\admin\forms\settings\HomeSettingsForm;
 use ozerich\shop\modules\admin\forms\settings\HomeSettingsFormConvertor;
+use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 class SettingsController extends AdminController
 {
@@ -29,6 +34,29 @@ class SettingsController extends AdminController
                 'view' => 'blog',
                 'redirectUrl' => '/admin/settings/blog'
             ],
+            'currencies' => [
+                'class' => ListAction::class,
+                'query' => Currency::find(),
+                'view' => 'currencies/index'
+            ],
+            'create-currency' => [
+                'class' => CreateOrUpdateAction::class,
+                'modelClass' => Currency::class,
+                'view' => 'currencies/form',
+                'isCreate' => true,
+                'redirectUrl' => '/admin/settings/currencies'
+            ],
+            'update-currency' => [
+                'class' => CreateOrUpdateAction::class,
+                'modelClass' => Currency::class,
+                'view' => 'currencies/form',
+                'isCreate' => false,
+                'redirectUrl' => '/admin/settings/currencies'
+            ],
+            'delete-currency' => [
+                'class' => DeleteAction::class,
+                'modelClass' => Currency::class
+            ]
         ];
     }
 
@@ -56,5 +84,25 @@ class SettingsController extends AdminController
         }
 
         return $this->redirect(\Yii::$app->request->getReferrer());
+    }
+
+    public function actionChangeRate()
+    {
+        if (!\Yii::$app->request->isPost || !\Yii::$app->request->isAjax) {
+            throw new NotFoundHttpException();
+        }
+
+        $currency = Currency::findOne(\Yii::$app->request->post('id'));
+        if (!$currency) {
+            throw new NotFoundHttpException();
+        }
+
+        $currency->rate = \Yii::$app->request->post('value');
+        $currency->save(false, ['rate']);
+
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        return [
+            'success' => true
+        ];
     }
 }

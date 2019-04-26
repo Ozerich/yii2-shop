@@ -17,6 +17,7 @@ namespace ozerich\shop\models;
  *
  * @property ProductPriceParamValue $paramValue
  * @property Product $product
+ * @property Currency $currency_id
  */
 class ProductPrice extends \yii\db\ActiveRecord
 {
@@ -26,6 +27,14 @@ class ProductPrice extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return '{{%product_prices}}';
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCurrency()
+    {
+        return $this->hasOne(Currency::className(), ['id' => 'currency_id']);
     }
 
     /**
