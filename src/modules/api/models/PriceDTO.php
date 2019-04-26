@@ -4,9 +4,12 @@ namespace ozerich\shop\modules\api\models;
 
 use ozerich\api\interfaces\DTO;
 use ozerich\shop\models\Product;
+use ozerich\shop\traits\ServicesTrait;
 
 class PriceDTO implements DTO
 {
+    use ServicesTrait;
+
     private $model;
 
     public function __construct(Product $product)
@@ -22,8 +25,8 @@ class PriceDTO implements DTO
             'is_hidden' => $this->model->price_hidden ? true : false,
             'hidden_text' => $this->model->price_hidden_text,
 
-            'price' => $this->model->price,
-            'price_with_discount' => $this->model->price_with_discount,
+            'price' => $this->productPricesService()->preparePriceForOutput($this->model->price, $this->model->currency_id),
+            'price_with_discount' => $this->productPricesService()->preparePriceForOutput($this->model->price_with_discount, $this->model->currency_id),
 
             'discount_mode' => $this->model->discount_mode,
             'discount_value' => $this->model->discount_value,

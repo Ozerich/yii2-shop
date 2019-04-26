@@ -4,6 +4,7 @@ namespace ozerich\shop\services\products;
 
 use ozerich\shop\constants\DiscountType;
 use ozerich\shop\constants\Stock;
+use ozerich\shop\models\Currency;
 use ozerich\shop\models\Product;
 use ozerich\shop\models\ProductPrice;
 use ozerich\shop\models\ProductPriceParam;
@@ -97,5 +98,45 @@ class ProductPricesService
         }
 
         $this->categoryProductsService()->afterProductParamsChanged($product);
+    }
+
+    private $cachePrimaryCurrencyId = 0;
+
+    private function getPrimaryCurrencyId()
+    {
+        if ($this->cachePrimaryCurrencyId === 0) {
+            $this->cachePrimaryCurrencyId = Currency::defaultId();
+        }
+        return $this->cachePrimaryCurrencyId;
+    }
+
+    private $cacheRates = null;
+
+    private function getRate($currency)
+    {
+        if ($currency == $this->getPrimaryCurrencyId()) {
+            return 1;
+        }
+
+        if ($this->cacheRates === null) {
+            $rates = [];
+
+            /** @var Currency[] $currencies */
+            $currencies = Currency::find()->all();
+            foreach ($currencies as $_currency) {
+                $rates[$_currency->id] = $_currency->rate;
+            }
+
+            $this->cacheRates = $rates;
+        }
+
+        return isset($this->cacheRates[$currency]) ? $this->cacheRates[$currency] : 1;
+    }
+
+    public function preparePriceForOutput($price, $currencyId)
+    {
+        $rate = $this->getRate($currencyId);
+
+        return $price * $rate;
     }
 }

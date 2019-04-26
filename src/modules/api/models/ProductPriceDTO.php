@@ -5,9 +5,12 @@ namespace ozerich\shop\modules\api\models;
 use ozerich\api\interfaces\DTO;
 use ozerich\shop\constants\DiscountType;
 use ozerich\shop\models\ProductPrice;
+use ozerich\shop\traits\ServicesTrait;
 
 class ProductPriceDTO implements DTO
 {
+    use ServicesTrait;
+
     /** @var ProductPrice */
     private $model;
 
@@ -33,8 +36,8 @@ class ProductPriceDTO implements DTO
     public function toJSON()
     {
         return [
-            'price' => $this->model->value,
-            'price_with_discount' => $this->getPriceWithDiscount(),
+            'price' => $this->productPricesService()->preparePriceForOutput($this->model->value, $this->model->product->currency_id),
+            'price_with_discount' => $this->productPricesService()->preparePriceForOutput($this->getPriceWithDiscount(), $this->model->product->currency_id),
             'discount_mode' => $this->model->discount_mode,
             'discount_value' => $this->model->discount_value,
             'stock' => $this->model->stock,

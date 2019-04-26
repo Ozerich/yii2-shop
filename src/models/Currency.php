@@ -74,10 +74,18 @@ class Currency extends \yii\db\ActiveRecord
      */
     public static function defaultId()
     {
-        $default = self::find()->andWhere('primary = 1')->one();
+        $default = self::find()->andWhere('`primary` = 1')->one();
         if (!$default) {
             return null;
         }
         return $default->id;
+    }
+
+    public function beforeDelete()
+    {
+        if ($this->primary) {
+            return false;
+        }
+        return parent::beforeDelete();
     }
 }
