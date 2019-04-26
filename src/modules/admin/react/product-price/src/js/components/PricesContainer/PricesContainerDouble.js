@@ -10,42 +10,44 @@ class PricesContainerDouble extends Component {
     const { firstItems, secondItems } = this.props;
 
     return (
-        <table className="prices-table prices-table--double">
-          <tbody>
-          <tr>
-            <td>&nbsp;</td>
-            {firstItems.map(model => <td>{model.model.name}</td>)}
-          </tr>
-          {secondItems.map(model => {
-            return (
-                <tr>
-                  <td>{model.model.name}</td>
-                  {firstItems.map(item => {
-                    const key = item.serverId + 'x' + model.serverId;
-                    return <td key={key}>
-                      <PriceCell id={key}
-                                 price={this.getPriceValue(item.serverId, model.serverId)}
-                                 hasDiscount={this.hasDiscount(item.serverId, model.serverId)}
-                                 discountMode={this.getDiscountMode(item.serverId, model.serverId)}
-                                 discountValue={this.getDiscountValue(item.serverId, model.serverId)}
-                                 onPriceChange={value => this.onPriceChange(item.serverId, model.serverId, { value })}
-                                 onDiscountEnabledChange={value => this.onDiscountEnabledChange(item.serverId, model.serverId, value)}
-                                 onDiscountModeChange={value => this.onPriceChange(item.serverId, model.serverId, { discount_mode: value })}
-                                 onDiscountValueChange={value => this.onPriceChange(item.serverId, model.serverId, { discount_value: value })}
-                      />
-                      <StockCell id={key}
-                                 stock={this.getStockValue(item.serverId, model.serverId)}
-                                 days={this.getStockWaitingDays(item.serverId, model.serverId)}
-                                 onStockChange={value => this.onPriceChange(item.serverId, model.serverId, { stock: value })}
-                                 onStockDaysChange={value => this.onPriceChange(item.serverId, model.serverId, { stock_waiting_days: value })}
-                      />
-                    </td>;
-                  })}
-                </tr>
-            );
-          })}
-          </tbody>
-        </table>
+        <div className="prices-table--double-container">
+          <table className="prices-table prices-table--double">
+            <tbody>
+            <tr>
+              <td>&nbsp;</td>
+              {firstItems.map(model => <td>{model.model.name}</td>)}
+            </tr>
+            {secondItems.map(model => {
+              return (
+                  <tr>
+                    <td>{model.model.name}</td>
+                    {firstItems.map(item => {
+                      const key = item.serverId + 'x' + model.serverId;
+                      return <td key={key}>
+                        <PriceCell id={key}
+                                   price={this.getPriceValue(item.serverId, model.serverId)}
+                                   hasDiscount={this.hasDiscount(item.serverId, model.serverId)}
+                                   discountMode={this.getDiscountMode(item.serverId, model.serverId)}
+                                   discountValue={this.getDiscountValue(item.serverId, model.serverId)}
+                                   onPriceChange={value => this.onPriceChange(item.serverId, model.serverId, { value })}
+                                   onDiscountEnabledChange={value => this.onDiscountEnabledChange(item.serverId, model.serverId, value)}
+                                   onDiscountModeChange={value => this.onPriceChange(item.serverId, model.serverId, { discount_mode: value })}
+                                   onDiscountValueChange={value => this.onPriceChange(item.serverId, model.serverId, { discount_value: value })}
+                        />
+                        <StockCell id={key}
+                                   stock={this.getStockValue(item.serverId, model.serverId)}
+                                   days={this.getStockWaitingDays(item.serverId, model.serverId)}
+                                   onStockChange={value => this.onPriceChange(item.serverId, model.serverId, { stock: value })}
+                                   onStockDaysChange={value => this.onPriceChange(item.serverId, model.serverId, { stock_waiting_days: value })}
+                        />
+                      </td>;
+                    })}
+                  </tr>
+              );
+            })}
+            </tbody>
+          </table>
+        </div>
     );
   }
 

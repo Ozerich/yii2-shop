@@ -52,7 +52,7 @@ export default function reducer(state = initialState, action = {}) {
       return Object.assign({}, state, { successNoteVisible: false });
 
     case LOAD_CURRENCIES + _SUCCESS:
-      return Object.assign({}, state, { currencies: action.payload, currencyEnabled: action.payload.length > 0 });
+      return Object.assign({}, state, { currencies: action.payload, currencyEnabled: action.payload.length > 1 });
 
 
     case LOAD + _START:
@@ -185,5 +185,12 @@ export function save(price, isPriceDisabled, priceDisabledText, discountMode, di
         type: SAVE + _FAILURE
       });
     });
+  };
+}
+
+
+export function saveCurrency(currency) {
+  return (dispatch, getState) => {
+    service.saveCurrency(getState().common.productId, +currency);
   };
 }

@@ -2,6 +2,8 @@
 
 namespace ozerich\shop\models;
 
+use yii\db\ActiveQuery;
+
 /**
  * This is the model class for table "{{%currencies}}".
  *
@@ -47,6 +49,14 @@ class Currency extends \yii\db\ActiveRecord
             'rate' => 'Курс',
             'primary' => 'Основная валюта',
         ];
+    }
+
+    /**
+     * @return ActiveQuery
+     */
+    public static function find()
+    {
+        return parent::find()->addOrderBy('primary DESC');
     }
 
     public function beforeSave($insert)

@@ -17,7 +17,11 @@ export default class CommonService extends BaseService {
     return this.query('/prices/load/' + productId);
   }
 
-  currencies(){
+  currencies() {
     return this.query('/prices/currencies');
+  }
+
+  saveCurrency(productId, currency) {
+    return this.post('/prices/currency/' + productId, { currency });
   }
 }

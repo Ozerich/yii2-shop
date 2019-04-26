@@ -97,6 +97,10 @@ class PricesController extends Controller
                     'verbs' => ['POST']
                 ],
                 [
+                    'action' => 'currency',
+                    'verbs' => ['POST']
+                ],
+                [
                     'action' => 'toggle-extended',
                     'verbs' => ['POST']
                 ],
@@ -177,6 +181,21 @@ class PricesController extends Controller
         }
 
         $this->productPricesService()->updateProductPrice($product);
+    }
+
+    public function actionCurrency($id)
+    {
+        $product = $this->getProduct($id);
+
+        $currency = \Yii::$app->request->post('currency');
+
+        $product->currency_id = $currency;
+        $product->save();
+
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        return [
+            'success' => true
+        ];
     }
 
     public function actionIndex($id)
