@@ -8,7 +8,7 @@ $this->title = 'Товары';
 $categoryFilter = ['' => 'Все категории'];
 $tree = (new \ozerich\shop\services\categories\CategoriesService())->getTreeAsPlainArray();
 foreach ($tree as $id => $item) {
-    $categoryFilter[$id] = $item['label'];
+    $categoryFilter[$item['id']] = $item['label'];
 }
 
 $manufactureFilter = ['' => 'Все производители'];
@@ -22,7 +22,8 @@ $columns = [
         'attribute' => 'name',
         'format' => 'raw',
         'value' => function (ozerich\shop\models\Product $product) {
-            return \yii\helpers\Html::a($product->name, '/admin/products/update/' . $product->id, ['target' => '_blank']);
+            $result = \yii\helpers\Html::a($product->name . (!empty($product->label) ? ' - ' . $product->label : ''), '/admin/products/update/' . $product->id, ['target' => '_blank']);;
+            return $result;
         }
     ],
     'manufacture' => [
