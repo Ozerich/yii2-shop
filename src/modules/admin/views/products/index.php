@@ -22,7 +22,7 @@ $columns = [
         'attribute' => 'name',
         'format' => 'raw',
         'value' => function (ozerich\shop\models\Product $product) {
-            $result = \yii\helpers\Html::a($product->name . (!empty($product->label) ? ' - ' . $product->label : ''), '/admin/products/update/' . $product->id, ['target' => '_blank']);;
+            $result = \yii\helpers\Html::a($product->name . (!empty($product->label) ? ' - <small>' . $product->label . '</small>' : ''), '/admin/products/update/' . $product->id, ['target' => '_blank']);;
             return $result;
         }
     ],

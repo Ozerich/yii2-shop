@@ -33,7 +33,19 @@ class Module extends \ozerich\admin\Module
             'id' => 'products',
             'link' => '/products',
             'label' => 'Товары',
-            'icon' => 'book'
+            'icon' => 'book',
+            'submenu' => [
+                [
+                    'id' => 'posts',
+                    'label' => 'Все товары',
+                    'link' => '/products',
+                ],
+                [
+                    'id' => 'categories',
+                    'label' => 'Спрятанные товары',
+                    'link' => '/products/?FilterProduct[hidden]=1',
+                ],
+            ]
         ],
         [
             'id' => 'prices',
