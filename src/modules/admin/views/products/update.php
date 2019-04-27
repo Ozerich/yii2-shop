@@ -8,8 +8,27 @@
  * @var ozerich\shop\modules\admin\forms\ProductMediaForm $mediaForm
  */
 
-$this->title = 'Редактировать товар - ' . $model->name;
+$this->title = 'Редактировать товар - ' . $model->name . ' <span class="content-header__label">' . $model->label . '</span>';
 ?>
+
+<style>
+  .content-header__label {
+    font-weight: normal;
+    font-size: 15px;
+    margin-left: 10px;
+    display: inline-block;
+    color: #888;
+  }
+
+  .btn-preview-container {
+    float: right;
+    margin-top: -40px;
+  }
+</style>
+
+<div class="btn-preview-container">
+  <a href="<?= $model->getUrl(true) ?>" target="_blank" class="btn btn-success">Просмотреть на сайте</a>
+</div>
 
 <div class="nav-tabs-custom">
   <ul class="nav nav-tabs">

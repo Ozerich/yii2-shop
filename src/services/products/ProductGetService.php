@@ -13,7 +13,7 @@ class ProductGetService
      */
     public function getSearchByCategoryQuery($id)
     {
-        return Product::find()->joinWith('productCategories')
+        return Product::findVisibleOnSite()->joinWith('productCategories')
             ->andWhere('product_categories.category_id=:category_id', [':category_id' => $id])
             ->addOrderBy('products.popular_weight DESC')
             ->addOrderBy('products.name ASC');
@@ -27,7 +27,7 @@ class ProductGetService
     {
         $category = $product->category;
 
-        $baseQuery = Product::find()->andWhere('category_id=:category_id', [':category_id' => $category->id]);
+        $baseQuery = Product::findVisibleOnSite()->andWhere('category_id=:category_id', [':category_id' => $category->id]);
 
         $query = clone $baseQuery;
 

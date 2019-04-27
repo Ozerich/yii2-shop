@@ -6,8 +6,9 @@
 $this->title = 'Товары';
 
 $categoryFilter = ['' => 'Все категории'];
-foreach ((new \ozerich\shop\services\categories\CategoriesService())->getTreeAsPlainArray() as $id => $item) {
-    $categoryFilter[$id] = $item;
+$tree = (new \ozerich\shop\services\categories\CategoriesService())->getTreeAsPlainArray();
+foreach ($tree as $id => $item) {
+    $categoryFilter[$id] = $item['label'];
 }
 
 $manufactureFilter = ['' => 'Все производители'];

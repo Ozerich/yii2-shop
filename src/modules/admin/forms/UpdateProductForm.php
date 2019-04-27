@@ -30,6 +30,10 @@ class UpdateProductForm extends Product
 
     public $sale_disabled_text;
 
+    public $label;
+
+    public $hidden;
+
     public function rules()
     {
         return [
@@ -40,6 +44,9 @@ class UpdateProductForm extends Product
             [['text', 'sku', 'sale_disabled_text'], 'string'],
             [['url_alias'], 'string', 'max' => 100],
             [['image_id', 'schema_image_id'], 'integer'],
+
+            [['label'], 'string', 'max' => 150],
+            [['hidden'], 'boolean']
         ];
     }
 

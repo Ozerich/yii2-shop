@@ -106,12 +106,22 @@ class ProductFullDTO extends Product implements DTO
         }, $parents));
     }
 
+    private function getSeoDescription()
+    {
+        if (!empty($this->seo_description)) {
+            return $this->seo_description;
+        }
+
+        return $this->name . ' – характеристики, фото, видео. Лучшая цена в Беларуси – ' . (($this->is_price_from || $this->is_prices_extended) ? 'от ' : '') . $this->price . ' руб. в интернет-магазине БелМебель.';
+    }
+
     public function toJSON()
     {
         return [
             'id' => $this->id,
             'url_alias' => $this->url_alias,
             'name' => $this->name,
+            'label' => $this->label,
             'image' => $this->image ? $this->image->getUrl() : null,
             'schema' => $this->schemaImage ? $this->schemaImage->getUrl() : null,
             'video' => $this->video,
@@ -129,8 +139,8 @@ class ProductFullDTO extends Product implements DTO
             }, $this->productImages),
 
             'h1_value' => empty($this->h1_value) ? $this->name : $this->h1_value,
-            'seo_title' => empty($this->seo_title) ? $this->name : $this->seo_title,
-            'seo_description' => $this->seo_description,
+            'seo_title' => empty($this->seo_title) ? 'Купить ' . $this->name . ' недорого – фото, цена, характеристики.' : $this->seo_title,
+            'seo_description' => $this->getSeoDescription(),
             'seo_image' => $this->image ? $this->image->getUrl() : null,
 
             'price' => (new PriceDTO($this))->toJSON(),

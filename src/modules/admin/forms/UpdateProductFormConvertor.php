@@ -27,6 +27,8 @@ class UpdateProductFormConvertor extends Model
         $form->sale_disabled = $product->sale_disabled;
         $form->sale_disabled_text = $product->sale_disabled_text;
         $form->category_id = $product->category_id;
+        $form->hidden = $product->hidden;
+        $form->label = $product->label;
 
         return $form;
     }
@@ -49,6 +51,8 @@ class UpdateProductFormConvertor extends Model
         $model->sku = $form->sku;
         $model->sale_disabled = $form->sale_disabled;
         $model->sale_disabled_text = $form->sale_disabled_text;
+        $model->hidden = $form->hidden;
+        $model->label = $form->label;
 
         if ($model->category_id != $form->category_id) {
             ProductCategory::deleteAll(['product_id' => $model->id, 'category_id' => $form->category_id]);

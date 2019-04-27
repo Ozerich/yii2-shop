@@ -36,6 +36,7 @@ class ProductDTO extends Product implements DTO
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'label' => $this->label,
             'popular_weight' => $this->popular_weight,
             'image' => $this->image ? $this->image->getUrl('preview') : null,
             'url_alias' => $this->url_alias,

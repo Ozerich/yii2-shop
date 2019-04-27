@@ -3,6 +3,7 @@
 namespace ozerich\shop\models;
 
 use himiklab\sitemap\behaviors\SitemapBehavior;
+use yii\db\ActiveQuery;
 use yii\helpers\Url;
 
 /**
@@ -11,6 +12,8 @@ use yii\helpers\Url;
  * @property int $id
  * @property string $url_alias
  * @property string $name
+ * @property string $label
+ * @property boolean $hidden
  * @property int $image_id
  * @property int $schema_image_id
  * @property int $category_id
@@ -69,7 +72,7 @@ class Product extends \yii\db\ActiveRecord
             [['url_alias', 'name'], 'required'],
             [['image_id', 'price', 'popular', 'is_prices_extended', 'manufacture_id'], 'integer'],
             [['text'], 'safe'],
-            [['url_alias', 'name'], 'string', 'max' => 255],
+            [['url_alias', 'name', 'label'], 'string', 'max' => 255],
 
             [['h1_value', 'seo_title'], 'string', 'max' => 255],
             [['seo_description'], 'string'],
@@ -81,7 +84,7 @@ class Product extends \yii\db\ActiveRecord
             [['discount_value'], 'safe'],
 
             [['price_note'], 'string'],
-            [['is_price_from'], 'boolean']
+            [['is_price_from', 'hidden'], 'boolean']
         ];
     }
 
@@ -108,8 +111,18 @@ class Product extends \yii\db\ActiveRecord
             'price_hidden_text' => 'Текст вместо цены',
             'sale_disabled' => 'Заказ товара недоступен',
             'sale_disabled_text' => 'Причина, по которой недоступен заказ',
-            'manufacture_id' => 'Производитель'
+            'manufacture_id' => 'Производитель',
+            'label' => 'Маркировка',
+            'hidden' => 'Не отображать на сайте'
         ];
+    }
+
+    /**
+     * @return ActiveQuery
+     */
+    public static function findVisibleOnSite()
+    {
+        return self::find()->andWhere('hidden = 0');
     }
 
     public function behaviors()
@@ -117,6 +130,9 @@ class Product extends \yii\db\ActiveRecord
         return [
             'sitemap' => [
                 'class' => SitemapBehavior::class,
+                'scope' => function (ActiveQuery $model) {
+                    return self::findVisibleOnSite();
+                },
                 'dataClosure' => function (self $model) {
                     return [
                         'loc' => Url::to($model->getUrl(), true),
