@@ -51,7 +51,7 @@ class ProductsController extends Controller
     public function actionIndex($id)
     {
         /** @var Product $product */
-        $product = Product::find()
+        $product = Product::findVisibleOnSite()
             ->andWhere('products.id=:id', [':id' => $id])
             ->joinWith('productCategories')
             ->joinWith('productFieldValues')
@@ -70,7 +70,7 @@ class ProductsController extends Controller
     public function actionHome()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Product::find()->andWhere('popular=1')
+            'query' => Product::findVisibleOnSite()->andWhere('popular=1')
         ]);
 
         return new CollectionResponse($dataProvider, ProductDTO::class);
@@ -79,7 +79,7 @@ class ProductsController extends Controller
     public function actionPrices($id)
     {
         /** @var Product $model */
-        $model = Product::find()
+        $model = Product::findVisibleOnSite()
             ->andWhere('products.id=:id', [':id' => $id])
             ->joinWith('productPriceParams')
             ->joinWith('productPriceParams.productPriceParamValues')
@@ -105,7 +105,7 @@ class ProductsController extends Controller
     public function actionProductSections($id)
     {
         /** @var Product $product */
-        $product = Product::find()
+        $product = Product::findVisibleOnSite()
             ->andWhere('products.id=:id', [':id' => $id])
             ->joinWith('productCategories')
             ->one();
