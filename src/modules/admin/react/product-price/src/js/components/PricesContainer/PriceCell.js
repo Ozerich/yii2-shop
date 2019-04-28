@@ -14,7 +14,8 @@ class PriceCell extends Component {
                         onChange={value => onDiscountModeChange(value)} />
           </div>
           <div className="price-cell__mode-right">
-            <input type="number" value={discountValue} onChange={e => onDiscountValueChange(parseInt(e.target.value))}
+            <input type="number" step="1.00" value={discountValue}
+                   onChange={e => onDiscountValueChange(parseFloat(e.target.value))}
                    className="form-control" />
           </div>
         </div>
@@ -28,9 +29,9 @@ class PriceCell extends Component {
         <div className="price-cell">
           <div className="price-cell__top">
             <div className="price-cell__price">
-              <input type="number"
+              <input type="number" step="1.00"
                      value={price}
-                     onChange={e => onPriceChange(parseInt(e.target.value))}
+                     onChange={e => onPriceChange(parseFloat(e.target.value))}
                      className="form-control" />
             </div>
 

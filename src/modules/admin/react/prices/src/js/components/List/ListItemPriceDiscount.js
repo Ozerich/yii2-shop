@@ -23,7 +23,7 @@ class ListItemPriceDiscount extends Component {
   }
 
   onDiscountValueChange(value) {
-    this.props.onChange(this.props.discountMode, parseInt(value));
+    this.props.onChange(this.props.discountMode, parseFloat(value));
   }
 
   onDiscountModeChange(value) {

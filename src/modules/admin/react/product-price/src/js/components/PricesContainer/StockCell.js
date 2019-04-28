@@ -15,7 +15,7 @@ class StockCell extends Component {
           {stock === WAITING ? <div className="form-group">
             <label className="control-label" htmlFor={id + '_stock_days'}>макс. кол-во дней</label>
             <input type="text" id={id + '_stock_days'} value={days} className="form-control"
-                   onChange={e => onStockDaysChange(parseInt(e.target.value))} />
+                   onChange={e => onStockDaysChange(parseFloat(e.target.value))} />
           </div> : null}
         </div>
     );

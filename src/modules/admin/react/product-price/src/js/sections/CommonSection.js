@@ -39,7 +39,7 @@ class CommonSection extends Component {
 
   renderPriceInput(values, handleChange) {
     return (
-        <FormInput id="price" label="Цена"
+        <FormInput id="price" type="number" step="1.00" label="Цена"
                    handleChange={handleChange}
                    disabled={values.priceDisabled}
                    value={values.price} />

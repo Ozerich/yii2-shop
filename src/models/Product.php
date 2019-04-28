@@ -18,7 +18,7 @@ use yii\helpers\Url;
  * @property int $schema_image_id
  * @property int $category_id
  * @property int $manufacture_id
- * @property int $price
+ * @property float $price
  * @property string $discount_mode
  * @property float $discount_value
  * @property string $text
@@ -70,7 +70,8 @@ class Product extends \yii\db\ActiveRecord
     {
         return [
             [['url_alias', 'name'], 'required'],
-            [['image_id', 'price', 'popular', 'is_prices_extended', 'manufacture_id'], 'integer'],
+            [['image_id', 'popular', 'is_prices_extended', 'manufacture_id'], 'integer'],
+            [['price'], 'number'],
             [['text'], 'safe'],
             [['url_alias', 'name', 'label'], 'string', 'max' => 255],
 

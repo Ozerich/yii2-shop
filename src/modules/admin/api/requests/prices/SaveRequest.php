@@ -25,9 +25,9 @@ class SaveRequest extends RequestModel
     public function rules()
     {
         return [
-            [['first_param_id', 'second_param_id', 'price'], 'integer'],
+            [['first_param_id', 'second_param_id'], 'integer'],
 
-            [['value'], 'integer'],
+            [['value', 'price'], 'number'],
             [['discount_mode'], 'string'],
             [['discount_value'], 'integer'],
 
