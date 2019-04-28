@@ -174,4 +174,17 @@ class ProductsController extends AdminController
     {
         return $this->render('prices');
     }
+
+    public function actionCopy($id)
+    {
+        /** @var Product $model */
+        $model = Product::findOne($id);
+        if (!$model) {
+            throw new NotFoundHttpException();
+        }
+
+        $copy = $this->productBaseService()->createCopy($model);
+
+        return $this->redirect('/admin/products/update/' . $copy->id);
+    }
 }

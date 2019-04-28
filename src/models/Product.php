@@ -70,7 +70,7 @@ class Product extends \yii\db\ActiveRecord
     {
         return [
             [['url_alias', 'name'], 'required'],
-            [['image_id', 'popular', 'is_prices_extended', 'manufacture_id'], 'integer'],
+            [['image_id', 'popular', 'is_prices_extended', 'manufacture_id', 'category_id'], 'integer'],
             [['price'], 'number'],
             [['text'], 'safe'],
             [['url_alias', 'name', 'label'], 'string', 'max' => 255],

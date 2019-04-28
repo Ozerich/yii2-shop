@@ -84,7 +84,11 @@ $columns = array_merge($columns, [
         ]
     ],
     'columns' => $columns,
-    'actions' => ['edit' => 'update', 'delete' => 'delete']
+    'actions' => [
+        'copy' => 'copy',
+        'edit' => 'update',
+        'delete' => 'delete'
+    ]
 ]); ?>
 
 <script>
