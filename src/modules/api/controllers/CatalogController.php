@@ -146,13 +146,10 @@ class CatalogController extends Controller
     public function actionProducts($id)
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => $this->productGetService()->getSearchByCategoryQuery($id)
+            'query' => $this->productGetService()->getSearchByCategoryQuery($id)->distinct(true)
                 ->joinWith('productFieldValues')
                 ->joinWith('category')
-                ->joinWith('image'),
-            'pagination' => [
-                'pageSize' => 10000
-            ],
+                ->joinWith('image')
         ]);
 
         return new CollectionResponse($dataProvider, ProductDTO::class);
