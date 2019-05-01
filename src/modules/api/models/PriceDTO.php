@@ -26,7 +26,7 @@ class PriceDTO implements DTO
             'hidden_text' => $this->model->price_hidden_text,
 
             'price' => $this->productPricesService()->preparePriceForOutput($this->model->price, $this->model->currency_id),
-            'price_with_discount' => $this->productPricesService()->preparePriceForOutput($this->model->price_with_discount, $this->model->currency_id),
+            'price_with_discount' => $this->productPricesService()->preparePriceForOutput($this->model->price_with_discount ? $this->model->price_with_discount : $this->model->price, $this->model->currency_id),
 
             'original_price' => $this->model->price,
             'original_currency' => $this->model->currency_id,
