@@ -190,7 +190,7 @@ class PricesController extends Controller
         $currency = \Yii::$app->request->post('currency');
 
         $product->currency_id = $currency;
-        $product->save();
+        $product->save(false, ['currency_id']);
 
         \Yii::$app->response->format = Response::FORMAT_JSON;
         return [
@@ -354,8 +354,13 @@ class PricesController extends Controller
         }
 
         if ($request->issetAttribute('price')) {
-            $model->value = $request->price;
+            if($model instanceof ProductPrice) {
+                $model->value = $request->price;
+            } elseif($model instanceof Product){
+                $model->price = $request->price;
+            }
         }
+
         if ($request->issetAttribute('discount_mode')) {
             $model->discount_mode = $request->discount_mode;
         }

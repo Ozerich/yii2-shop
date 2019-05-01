@@ -36,6 +36,8 @@ class ProductPriceDTO implements DTO
     public function toJSON()
     {
         return [
+            'original_price' => $this->model->value,
+            'original_currency' => $this->model->product->currency_id,
             'price' => $this->productPricesService()->preparePriceForOutput($this->model->value, $this->model->product->currency_id),
             'price_with_discount' => $this->productPricesService()->preparePriceForOutput($this->getPriceWithDiscount(), $this->model->product->currency_id),
             'discount_mode' => $this->model->discount_mode,

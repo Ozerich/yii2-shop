@@ -20,7 +20,7 @@ class ProductPriceCommonDTO extends Product implements DTO
             'stock_waiting_days' => $this->stock_waiting_days,
             'price_note' => $this->price_note,
             'is_price_from' => $this->is_price_from ? true : false,
-            'currency_id' => $this->currency_id
+            'currency_id' => $this->currency_id,
         ];
     }
 }

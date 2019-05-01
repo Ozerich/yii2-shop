@@ -15,7 +15,7 @@ class ListItem extends Component {
           <td className="cell-price">
             <div className="price-wrapper">
               <div className="price-input-wrapper">
-                <input type="number" step="1.00" className="price-input" value={price ? price.price : ''}
+                <input type="number" step="1.00" className="price-input" value={price ? price.original_price : ''}
                        onChange={this.onPriceChange.bind(this)} />
               </div>
 
@@ -61,7 +61,8 @@ class ListItem extends Component {
     if (this.props.onChange) {
       const value = parseFloat(e.target.value);
       this.props.onChange(Object.assign(this.props.price || {}, {
-        price: value ? value : null
+        price: value ? value : null,
+        original_price: value ? value : null
       }));
     }
   }

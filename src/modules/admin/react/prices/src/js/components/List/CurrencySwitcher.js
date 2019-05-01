@@ -14,7 +14,7 @@ class CurrencySwitcher extends Component {
 
     return (
         <div className="currency-switcher">
-          <FormSelect options={currencies} defaultValue={model.currency_id}
+          <FormSelect options={currencies} defaultValue={model.price.original_currency}
                       onChange={this.onChangeCurrency.bind(this)} />
         </div>
     );
