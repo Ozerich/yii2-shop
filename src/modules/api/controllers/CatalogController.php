@@ -96,7 +96,7 @@ class CatalogController extends Controller
     public function actionHome()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' =>$this->categoriesService()->getHomeCategoriesQuery()
+            'query' => $this->categoriesService()->getHomeCategoriesQuery()
         ]);
 
         return new CollectionResponse($dataProvider, CategoryDTO::class);
@@ -149,7 +149,10 @@ class CatalogController extends Controller
             'query' => $this->productGetService()->getSearchByCategoryQuery($id)->distinct(true)
                 ->joinWith('productFieldValues')
                 ->joinWith('category')
-                ->joinWith('image')
+                ->joinWith('image'),
+            'pagination' => [
+                'pageSizeLimit' => [0, 100000]
+            ],
         ]);
 
         return new CollectionResponse($dataProvider, ProductDTO::class);
