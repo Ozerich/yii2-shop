@@ -137,6 +137,6 @@ class ProductPricesService
     {
         $rate = $this->getRate($currencyId);
 
-        return $price * $rate;
+        return round($price * $rate, 2);
     }
 }
