@@ -132,7 +132,7 @@ class Product extends \yii\db\ActiveRecord
             'sitemap' => [
                 'class' => SitemapBehavior::class,
                 'scope' => function (ActiveQuery $model) {
-                    return self::findVisibleOnSite();
+                    return $model->andWhere('hidden = 0');
                 },
                 'dataClosure' => function (self $model) {
                     return [
