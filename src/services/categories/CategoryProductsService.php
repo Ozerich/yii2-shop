@@ -14,7 +14,7 @@ use ozerich\shop\traits\ServicesTrait;
 class CategoryProductsService
 {
     use ServicesTrait;
-    
+
     private function checkNumberCondition($productValue, $conditionValue, $compare)
     {
         $productValue = (int)$productValue;
@@ -164,6 +164,8 @@ class CategoryProductsService
                 $model->product_id = $product->id;
                 $model->save();
             }
+
+            $this->categoryManufacturesService()->onUpdateCategory($category->id);
         }
     }
 

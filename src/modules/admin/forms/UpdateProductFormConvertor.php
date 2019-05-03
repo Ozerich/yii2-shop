@@ -36,7 +36,12 @@ class UpdateProductFormConvertor extends Model
     public function saveModelFromForm(Product $model, UpdateProductForm $form)
     {
         $manufactureChanged = false;
+
         if ($model->manufacture_id != $form->manufacture_id) {
+            $manufactureChanged = true;
+        }
+
+        if ($model->hidden != $form->hidden) {
             $manufactureChanged = true;
         }
 
