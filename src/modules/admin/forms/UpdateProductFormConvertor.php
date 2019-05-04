@@ -70,6 +70,9 @@ class UpdateProductFormConvertor extends Model
             $item->category_id = $form->category_id;
             $item->save();
 
+            $model->category_id = $form->category_id;
+            $model->save(false, ['category_id']);
+
             $this->categoryManufacturesService()->onUpdateCategory($model->category_id);
             $this->categoryManufacturesService()->onUpdateCategory($form->category_id);
         }
