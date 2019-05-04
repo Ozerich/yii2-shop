@@ -14,7 +14,6 @@ class BlogPostDTO extends BlogPost implements DTO
             'id' => $this->id,
             'name' => $this->title,
             'excerpt' => $this->excerpt,
-            'url_alias' => $this->url_alias,
             'image' => $this->image ? $this->image->getUrl('preview') : null,
             'url' => $this->getUrl()
         ];

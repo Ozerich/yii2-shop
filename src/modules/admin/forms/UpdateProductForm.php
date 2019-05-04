@@ -34,6 +34,10 @@ class UpdateProductForm extends Product
 
     public $hidden;
 
+    public $is_new;
+
+    public $popular;
+
     public function rules()
     {
         return [
@@ -46,7 +50,7 @@ class UpdateProductForm extends Product
             [['image_id', 'schema_image_id'], 'integer'],
 
             [['label'], 'string', 'max' => 150],
-            [['hidden'], 'boolean']
+            [['hidden', 'popular', 'is_new'], 'boolean']
         ];
     }
 

@@ -13,7 +13,7 @@ class PostStatus extends Enum
     {
         switch ($value) {
             case self::PUBLISHED:
-                return 'Опубликованоо';
+                return 'Опубликовано';
             case self::DRAFT:
                 return 'Черновик';
             default:

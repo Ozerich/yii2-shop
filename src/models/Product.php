@@ -14,6 +14,7 @@ use yii\helpers\Url;
  * @property string $name
  * @property string $label
  * @property boolean $hidden
+ * @property boolean $is_new
  * @property int $image_id
  * @property int $schema_image_id
  * @property int $category_id
@@ -85,7 +86,7 @@ class Product extends \yii\db\ActiveRecord
             [['discount_value'], 'safe'],
 
             [['price_note'], 'string'],
-            [['is_price_from', 'hidden'], 'boolean']
+            [['is_price_from', 'hidden', 'is_new'], 'boolean']
         ];
     }
 
@@ -114,7 +115,8 @@ class Product extends \yii\db\ActiveRecord
             'sale_disabled_text' => 'Причина, по которой недоступен заказ',
             'manufacture_id' => 'Производитель',
             'label' => 'Маркировка',
-            'hidden' => 'Не отображать на сайте'
+            'hidden' => 'Не отображать на сайте',
+            'is_new' => 'Новинка'
         ];
     }
 

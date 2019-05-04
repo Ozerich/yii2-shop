@@ -2,7 +2,10 @@
 
 namespace ozerich\shop\services\blog;
 
+use ozerich\shop\constants\PostStatus;
 use ozerich\shop\models\BlogCategory;
+use ozerich\shop\models\BlogPost;
+use yii\db\ActiveQuery;
 
 class BlogService
 {
@@ -59,5 +62,14 @@ class BlogService
         }
 
         return $result;
+    }
+
+    /**
+     * @param BlogPost $post
+     * @return ActiveQuery
+     */
+    public function getSamePostsQuery(BlogPost $post)
+    {
+        return BlogPost::findByStatus(PostStatus::PUBLISHED)->andWhere('id <> :id', [':id' => $post->id]);
     }
 }

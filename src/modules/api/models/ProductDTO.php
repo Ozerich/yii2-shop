@@ -42,6 +42,9 @@ class ProductDTO extends Product implements DTO
             'url_alias' => $this->url_alias,
             'sku' => $this->sku,
 
+            'is_new' => $this->is_new ? true : false,
+            'is_popular' => $this->popular ? true : false,
+
             'price' => (new PriceDTO($this))->toJSON(),
             'stock' => $this->stock,
             'stock_waiting_days' => $this->stock_waiting_days,

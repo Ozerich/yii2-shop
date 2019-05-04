@@ -5,6 +5,7 @@ namespace ozerich\shop\modules\api\controllers;
 use ozerich\api\controllers\Controller;
 use ozerich\api\filters\AccessControl;
 use ozerich\api\response\ArrayResponse;
+use ozerich\api\response\CollectionResponse;
 use ozerich\api\response\ModelResponse;
 use ozerich\shop\constants\PostStatus;
 use ozerich\shop\constants\SettingOption;
@@ -16,6 +17,7 @@ use ozerich\shop\modules\api\models\BlogPostDTO;
 use ozerich\shop\modules\api\models\BlogPostFullDTO;
 use ozerich\shop\modules\api\responses\blog\SettingsResponse;
 use ozerich\shop\traits\ServicesTrait;
+use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
 
 class BlogController extends Controller
@@ -35,6 +37,10 @@ class BlogController extends Controller
                 ],
                 [
                     'action' => 'categories',
+                    'verbs' => 'GET'
+                ],
+                [
+                    'action' => 'same',
                     'verbs' => 'GET'
                 ],
                 [
@@ -81,14 +87,18 @@ class BlogController extends Controller
         }
 
         if ($parent === null) {
-            $posts = BlogPost::findByStatus(PostStatus::PUBLISHED)->all();
+            $query = BlogPost::findByStatus(PostStatus::PUBLISHED);
         } else if (!$parent) {
-            $posts = BlogPost::findByParent(null, PostStatus::PUBLISHED);
+            $query = BlogPost::findByParent(null, PostStatus::PUBLISHED);
         } else {
-            $posts = BlogPost::findByParent($parent, PostStatus::PUBLISHED);
+            $query = BlogPost::findByParent($parent, PostStatus::PUBLISHED);
         }
 
-        return new ArrayResponse($posts, BlogPostDTO::class);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query
+        ]);
+
+        return new CollectionResponse($dataProvider, BlogPostDTO::class);
     }
 
     public function actionPost($alias)
@@ -128,4 +138,18 @@ class BlogController extends Controller
         return $response;
     }
 
+    public function actionSame($id)
+    {
+        /** @var BlogPost $model */
+        $model = BlogPost::findByStatus(PostStatus::PUBLISHED)->andWhere('id=:id', [':id' => $id])->one();
+        if (!$model) {
+            throw new NotFoundHttpException('Поста не найдено');
+        }
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $this->blogService()->getSamePostsQuery($model)
+        ]);
+
+        return new CollectionResponse($dataProvider, BlogPostDTO::class);
+    }
 }

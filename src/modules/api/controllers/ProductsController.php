@@ -35,7 +35,11 @@ class ProductsController extends Controller
                     'verbs' => 'GET'
                 ],
                 [
-                    'action' => 'home',
+                    'action' => 'popular',
+                    'verbs' => 'GET'
+                ],
+                [
+                    'action' => 'new',
                     'verbs' => 'GET'
                 ],
                 [
@@ -67,10 +71,19 @@ class ProductsController extends Controller
         return new ModelResponse($product, ProductFullDTO::class);
     }
 
-    public function actionHome()
+    public function actionPopular()
     {
         $dataProvider = new ActiveDataProvider([
             'query' => Product::findVisibleOnSite()->andWhere('popular=1')
+        ]);
+
+        return new CollectionResponse($dataProvider, ProductDTO::class);
+    }
+
+    public function actionNew()
+    {
+        $dataProvider = new ActiveDataProvider([
+            'query' => Product::findVisibleOnSite()->andWhere('is_new=1')
         ]);
 
         return new CollectionResponse($dataProvider, ProductDTO::class);

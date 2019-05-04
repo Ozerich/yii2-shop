@@ -52,26 +52,24 @@
 
 <div class="row">
   <div class="col-xs-3">
-    <div style="margin-top: 30px;">
-        <?= $form->field($formModel, 'popular')->checkbox(); ?>
-    </div>
+      <?= $form->field($formModel, 'hidden')->checkbox(); ?>
   </div>
-
   <div class="col-xs-3">
-    <div style="margin-top: 30px;">
-        <?= $form->field($formModel, 'hidden')->checkbox(); ?>
-    </div>
+      <?= $form->field($formModel, 'sale_disabled')->checkbox(); ?>
   </div>
-
-  <div class="col-xs-3">
-    <div style="margin-top: 30px;">
-        <?= $form->field($formModel, 'sale_disabled')->checkbox(); ?>
-    </div>
-  </div>
-
-  <div class="col-xs-12" id="sale-disabled-text_wrapper"
+  <div class="col-xs-6" id="sale-disabled-text_wrapper"
        style="display: <?= $formModel->sale_disabled ? 'block' : 'none' ?>">
       <?= $form->field($formModel, 'sale_disabled_text')->textInput(); ?>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-3">
+      <?= $form->field($formModel, 'popular')->checkbox(); ?>
+  </div>
+
+  <div class="col-xs-3">
+      <?= $form->field($formModel, 'is_new')->checkbox(); ?>
   </div>
 </div>
 
