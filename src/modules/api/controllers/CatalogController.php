@@ -7,6 +7,7 @@ use ozerich\api\filters\AccessControl;
 use ozerich\api\response\CollectionResponse;
 use ozerich\api\response\ModelResponse;
 use ozerich\shop\models\Category;
+use ozerich\shop\models\Field;
 use ozerich\shop\modules\api\models\CategoryDTO;
 use ozerich\shop\modules\api\models\CategoryFullDTO;
 use ozerich\shop\modules\api\models\FilterDTO;
@@ -71,6 +72,7 @@ class CatalogController extends Controller
             $result[] = $filter;
         }
 
+        /** @var Field[] $fields */
         $fields = [];
         foreach ($model->categoryFields as $categoryField) {
             if ($categoryField->field->filter_enabled) {
@@ -79,7 +81,7 @@ class CatalogController extends Controller
         }
 
         foreach ($fields as $field) {
-            $filter = new FilterDTO($field->id, $field->name);
+            $filter = new FilterDTO($field->id, $field->name . (empty($field->value_suffix) ? '' : ', ' . $field->value_suffix));
             $filter->setFilterType($field->type);
             foreach ($field->values as $value) {
                 $filter->addFilterValue(null, $value);
