@@ -123,6 +123,7 @@ class ProductFullDTO extends Product implements DTO
             'name' => $this->name,
             'label' => $this->label,
             'image' => $this->image ? [
+                'small' => $this->image->getUrl('preview'),
                 'big' => $this->image->getUrl('big-preview'),
                 'original' => $this->image->getUrl()
             ] : null,
