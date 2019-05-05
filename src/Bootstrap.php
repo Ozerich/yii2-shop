@@ -162,6 +162,21 @@ class Bootstrap implements BootstrapInterface
                     ],
                     'thumbnails' => [
                         [
+                            'alias' => 'big-preview',
+                            'width' => 850,
+                            'height' => 350
+                        ],
+                        [
+                            'width' => 1200,
+                            'height' => 630,
+                            'crop' => true,
+                            'alias' => 'og'
+                        ],
+                        [
+                            'width' => 1180,
+                            'alias' => 'schema-preview'
+                        ],
+                        [
                             'alias' => 'preview',
                             'width' => 205,
                             'height' => 100

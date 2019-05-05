@@ -122,8 +122,14 @@ class ProductFullDTO extends Product implements DTO
             'url_alias' => $this->url_alias,
             'name' => $this->name,
             'label' => $this->label,
-            'image' => $this->image ? $this->image->getUrl() : null,
-            'schema' => $this->schemaImage ? $this->schemaImage->getUrl() : null,
+            'image' => $this->image ? [
+                'big' => $this->image->getUrl('big-preview'),
+                'original' => $this->image->getUrl()
+            ] : null,
+            'schema' => $this->schemaImage ? [
+                'preview' => $this->schemaImage->getUrl('schema-preview'),
+                'original' => $this->schemaImage->getUrl()
+            ] : null,
             'video' => $this->video,
             'text' => $this->text,
             'params' => $this->getParamsJSON(),
@@ -134,14 +140,15 @@ class ProductFullDTO extends Product implements DTO
                 return [
                     'text' => $image->text,
                     'small' => $image->image->getUrl('gallery-preview'),
-                    'big' => $image->image->getUrl()
+                    'big' => $image->image->getUrl('big-preview'),
+                    'original' => $image->image->getUrl()
                 ];
             }, $this->productImages),
 
             'h1_value' => empty($this->h1_value) ? $this->name : $this->h1_value,
             'seo_title' => empty($this->seo_title) ? 'Купить ' . $this->name . ' недорого – фото, цена, характеристики.' : $this->seo_title,
             'seo_description' => $this->getSeoDescription(),
-            'seo_image' => $this->image ? $this->image->getUrl() : null,
+            'seo_image' => $this->image ? $this->image->getUrl('og') : null,
 
             'price' => (new PriceDTO($this))->toJSON(),
             'stock' => $this->stock,
