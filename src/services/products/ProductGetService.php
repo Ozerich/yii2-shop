@@ -27,7 +27,9 @@ class ProductGetService
     {
         $category = $product->category;
 
-        $baseQuery = Product::findVisibleOnSite()->andWhere('category_id=:category_id', [':category_id' => $category->id]);
+        $baseQuery = Product::findVisibleOnSite()
+            ->andWhere('category_id=:category_id', [':category_id' => $category->id])
+            ->andWhere('products.id <> :id', [':id' => $product->id]);
 
         $query = clone $baseQuery;
 
@@ -47,10 +49,7 @@ class ProductGetService
                 $query->andWhere('id not in (' . implode(',', $ids) . ')');
             }
 
-            $items = array_merge($items, $query
-                ->limit(10 - count($ids))
-                ->all()
-            );
+            $items = array_merge($items, $query->limit(10 - count($ids))->all());
         }
 
         return $items;
