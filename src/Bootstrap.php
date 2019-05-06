@@ -135,6 +135,12 @@ class Bootstrap implements BootstrapInterface
                             'crop' => true,
                             'alias' => 'preview'
                         ],
+                        [
+                            'width' => 350,
+                            'height' => 200,
+                            'crop' => true,
+                            'alias' => 'small-preview'
+                        ],
                     ],
                 ],
                 'field' => [
@@ -204,6 +210,10 @@ class Bootstrap implements BootstrapInterface
                             'alias' => 'preview',
                             'width' => 338,
                             'height' => 190
+                        ], [
+                            'alias' => 'small-preview',
+                            'width' => 268,
+                            'height' => 150
                         ],
                     ],
                 ],
