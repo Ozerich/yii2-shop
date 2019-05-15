@@ -9,6 +9,10 @@ export default class ConditionsService extends BaseService {
     return this.query('/conditional/' + categoryId + '/categories');
   }
 
+  manufacturues(categoryId) {
+    return this.query('/conditional/' + categoryId + '/manufactures');
+  }
+
   save(categoryId, data) {
     return this.post('/conditional/' + categoryId + '/save', data);
   }

@@ -22,6 +22,12 @@ class ConditionRowCompare extends Component {
       ];
     }
 
+    if (filter === 'MANUFACTURE') {
+      return [
+        { id: 'EQUAL', label: 'Равно' }
+      ];
+    }
+
     const filterModel = this.props.filters.find(item => item.id === +filter);
 
     if (!filterModel) {

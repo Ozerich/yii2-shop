@@ -19,6 +19,7 @@ const initialState = {
   error: null,
 
   categories: [],
+  manufactures: [],
   items: [],
 
   saveLoading: false,
@@ -46,6 +47,7 @@ export default function reducer(state = initialState, action = {}) {
         loading: false,
         loaded: true,
         categories: action.payload.categories,
+        manufactures: action.payload.manufactures,
         items: action.payload.data.collection
       });
 
@@ -94,13 +96,26 @@ export function load() {
     });
 
     service.categories(categoryId).then(categories => {
-      service.all(categoryId).then(data => {
+      service.manufacturues(categoryId).then(manufactures => {
+        service.all(categoryId).then(data => {
+          dispatch({
+            type: LOAD + SUCCESS,
+            payload: {
+              categories,
+              manufactures,
+              data
+            }
+          });
+        }).catch(error => {
+          dispatch({
+            type: LOAD + FAILURE,
+            error
+          });
+        });
+      }).catch(error => {
         dispatch({
-          type: LOAD + SUCCESS,
-          payload: {
-            categories,
-            data
-          }
+          type: LOAD + FAILURE,
+          error
         });
       });
     }).catch(error => {
@@ -162,7 +177,7 @@ function getSaveData(state) {
   return {
     conditions: state.conditions.items.filter(item => !!item.filter && !!item.compare).map(item => {
       return {
-        filter: (item.filter === 'PRICE' || item.filter === 'CATEGORY') ? item.filter : +item.filter,
+        filter: (item.filter === 'PRICE' || item.filter === 'CATEGORY' || item.filter === 'MANUFACTURE') ? item.filter : +item.filter,
         compare: item.compare,
         value: item.value
       };

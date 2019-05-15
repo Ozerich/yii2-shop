@@ -18,11 +18,16 @@ class CategoryConditionalDTO extends CategoryCondition implements DTO
             }
         }
 
+        $filter = $this->field_id;
+        if(in_array($this->type, [CategoryConditionType::PRICE, CategoryConditionType::CATEGORY, CategoryConditionType::MANUFACTURE])){
+            $filter = $this->type;
+        }
+
         return [
             'id' => $this->id,
-            'filter' => $this->type == CategoryConditionType::PRICE ? 'PRICE' : ($this->type == CategoryConditionType::CATEGORY ? 'CATEGORY' : $this->field_id),
+            'filter' => $filter,
             'compare' => $this->compare,
-            'value' => $value
+            'value' => $filter == CategoryConditionType::MANUFACTURE ? (int)$value : $value
         ];
     }
 }

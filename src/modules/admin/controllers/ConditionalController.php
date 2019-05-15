@@ -8,6 +8,7 @@ use ozerich\api\response\CollectionResponse;
 use ozerich\shop\constants\CategoryConditionType;
 use ozerich\shop\models\Category;
 use ozerich\shop\models\CategoryCondition;
+use ozerich\shop\models\Manufacture;
 use ozerich\shop\modules\admin\api\models\CategoryConditionalDTO;
 use ozerich\shop\modules\admin\api\requests\conditional\ModelRequest;
 use ozerich\shop\traits\ServicesTrait;
@@ -37,6 +38,10 @@ class ConditionalController extends Controller
                 ],
                 [
                     'action' => 'categories',
+                    'verbs' => ['GET']
+                ],
+                [
+                    'action' => 'manufactures',
                     'verbs' => ['GET']
                 ],
                 [
@@ -71,13 +76,27 @@ class ConditionalController extends Controller
         $categories = $this->categoriesService()->getCatalogCategoriesForConditionalCategory($model);
 
         \Yii::$app->response->format = Response::FORMAT_JSON;
-
         return array_map(function (Category $category) {
             return [
                 'id' => $category->id,
                 'name' => $category->name
             ];
         }, $categories);
+    }
+
+    public function actionManufactures($id)
+    {
+        $model = $this->getCategory($id);
+
+        $manufactures = $this->categoryManufacturesService()->getCategoryManufactures($model);
+
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        return array_map(function (Manufacture $manufacture) {
+            return [
+                'id' => $manufacture->id,
+                'name' => $manufacture->name
+            ];
+        }, $manufactures);
     }
 
     public function actionIndex($id)
@@ -100,10 +119,20 @@ class ConditionalController extends Controller
         $conditions = \Yii::$app->request->post('conditions');
 
         foreach ($conditions as $condition) {
+
+            $type = CategoryConditionType::FIELD;
+            if ($condition['filter'] == 'PRICE') {
+                $type = CategoryConditionType::PRICE;
+            } elseif ($condition['filter'] == 'CATEGORY') {
+                $type = CategoryConditionType::CATEGORY;
+            } elseif ($condition['filter'] == 'MANUFACTURE') {
+                $type = CategoryConditionType::MANUFACTURE;
+            }
+
             $model = new CategoryCondition();
             $model->category_id = $category->id;
             $model->compare = $condition['compare'];
-            $model->type = $condition['filter'] == 'PRICE' ? CategoryConditionType::PRICE : ($condition['filter'] == 'CATEGORY' ? CategoryConditionType::CATEGORY : CategoryConditionType::FIELD);
+            $model->type = $type;
             $model->field_id = $model->type == CategoryConditionType::FIELD ? $condition['filter'] : null;
             $model->value = is_array($condition['value']) ? implode(';', $condition['value']) : $condition['value'];
             $model->save();

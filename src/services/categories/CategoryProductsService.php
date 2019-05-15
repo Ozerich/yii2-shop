@@ -80,6 +80,10 @@ class CategoryProductsService
             return $this->checkNumberCondition($product->price, $condition->value, $condition->compare);
         }
 
+        if ($condition->type == CategoryConditionType::MANUFACTURE) {
+            return $this->checkSelectCondition($product->manufacture_id, $condition->value, $condition->compare);
+        }
+
         if ($condition->type == CategoryConditionType::CATEGORY) {
             return $this->checkSelectCondition($product->category_id, $condition->value, $condition->compare);
         }

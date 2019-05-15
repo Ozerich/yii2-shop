@@ -36,7 +36,7 @@ class ConditionRowValue extends Component {
   }
 
   render() {
-    const { model, categories } = this.props;
+    const { model, categories,manufactures } = this.props;
 
     if (!model.filter || !model.compare) {
       return null;
@@ -52,6 +52,12 @@ class ConditionRowValue extends Component {
           id: item.id, label: item.name
         }
       }), true);
+    } else if (filter === 'MANUFACTURE') {
+      return this.renderSelect(manufactures.map(item => {
+        return {
+          id: item.id, label: item.name
+        }
+      }), false);
     }
 
     const filterModel = this.props.filters.find(item => item.id === +filter);
@@ -86,7 +92,8 @@ function mapStateToProps(state, ownProps) {
   return {
     value: state.conditions.items.find(item => item.id === ownProps.model.id).value,
     filters: state.fields.items,
-    categories: state.conditions.categories
+    categories: state.conditions.categories,
+    manufactures: state.conditions.manufactures,
   };
 }
 
