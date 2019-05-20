@@ -12,7 +12,7 @@ class CollectionDTO extends ProductCollection implements DTO
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'url' => $this->getUrl(true),
+            'url' => $this->getUrl(),
             'image' => $this->image ? $this->image->getUrl('preview') : null
         ];
     }
