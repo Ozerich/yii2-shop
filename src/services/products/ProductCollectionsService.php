@@ -16,6 +16,10 @@ class ProductCollectionsService
         return ProductCollection::findOne($id);
     }
 
+    public function getByAlias($alias)
+    {
+        return ProductCollection::find()->andWhere('url_alias=:alias', [':alias' => $alias])->one();
+    }
 
     /**
      * @param $id

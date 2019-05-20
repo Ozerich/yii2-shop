@@ -186,9 +186,14 @@ class CatalogController extends Controller
         return new CollectionResponse($dataProvider, CollectionDTO::class);
     }
 
-    public function actionCollection($id)
+    public function actionCollection($id = null, $alias = null)
     {
-        $model = $this->productCollectionsService()->getById($id);
+        $model = null;
+        if ($id !== null) {
+            $model = $this->productCollectionsService()->getById($id);
+        } else {
+            $model = $this->productCollectionsService()->getByAlias($alias);
+        }
 
         if (!$model) {
             throw new NotFoundHttpException('Коллекции не найдено');
