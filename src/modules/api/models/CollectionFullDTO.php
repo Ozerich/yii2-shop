@@ -15,7 +15,9 @@ class CollectionFullDTO extends ProductCollection implements DTO
             'url' => $this->getUrl(true),
             'image' => $this->image ? $this->image->getUrl() : null,
             'content' => $this->content,
-            'manufacture' => $this->manufacture ? (new ManufactureDTO($this->manufacture))->toJSON() : null
+            'manufacture' => $this->manufacture ? (new ManufactureDTO($this->manufacture))->toJSON() : null,
+            'seo_title' => $this->seo_title,
+            'seo_description' => $this->seo_description
         ];
     }
 }
