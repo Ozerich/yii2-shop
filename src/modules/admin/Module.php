@@ -54,6 +54,12 @@ class Module extends \ozerich\admin\Module
             'icon' => 'book'
         ],
         [
+            'id' => 'collections',
+            'link' => '/collections',
+            'label' => 'Коллекции',
+            'icon' => 'book'
+        ],
+        [
             'id' => 'manufactures',
             'link' => '/manufactures',
             'label' => 'Производители',

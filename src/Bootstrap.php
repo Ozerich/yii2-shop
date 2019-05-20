@@ -194,6 +194,36 @@ class Bootstrap implements BootstrapInterface
                         ],
                     ],
                 ],
+                'collection' => [
+                    'storage' => [
+                        'type' => 'file',
+                        'uploadDirPath' => __DIR__ . '/../../../../web/uploads/collections',
+                        'uploadDirUrl' => '/uploads/collections',
+                    ],
+                    'validator' => [
+                        'maxSize' => 16 * 1024 * 1024,
+                        'checkExtensionByMimeType' => true,
+                        'extensions' => ['jpg', 'jpeg', 'bmp', 'gif', 'png']
+                    ],
+                    'thumbnails' => [
+                        [
+                            'width' => 1200,
+                            'height' => 630,
+                            'crop' => true,
+                            'alias' => 'og'
+                        ],
+                        [
+                            'alias' => 'preview-small',
+                            'width' => 100,
+                            'height' => 40
+                        ],
+                        [
+                            'alias' => 'preview',
+                            'width' => 205,
+                            'height' => 100
+                        ]
+                    ],
+                ],
                 'category' => [
                     'storage' => [
                         'type' => 'file',

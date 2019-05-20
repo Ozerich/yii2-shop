@@ -16,6 +16,12 @@ foreach (ozerich\shop\models\Manufacture::getList() as $id => $name) {
     $manufactureFilter[$id] = $name;
 }
 
+
+$collectionFilter = ['' => 'Все коллекции'];
+foreach (ozerich\shop\models\ProductCollection::getList() as $id => $name) {
+    $collectionFilter[$id] = $name;
+}
+
 $columns = [
     'name' => [
         'header' => 'Название',
@@ -31,6 +37,15 @@ $columns = [
         'attribute' => 'manufacture.name',
         'format' => 'raw',
         'filter' => \yii\helpers\Html::dropDownList('FilterProduct[manufacture_id]', $filterModel->manufacture_id, $manufactureFilter, ['class' => 'form-control']),
+    ],
+    'collection' => [
+        'header' => 'Коллекция',
+        'attribute' => 'collection.title',
+        'format' => 'raw',
+        'value' => function (\ozerich\shop\models\Product $product) {
+            return $product->collection ? $product->collection->title : '';
+        },
+        'filter' => \yii\helpers\Html::dropDownList('FilterProduct[collection_id]', $filterModel->collection_id, $collectionFilter, ['class' => 'form-control']),
     ],
     'category_id' => [
         'header' => 'Категория',

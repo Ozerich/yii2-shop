@@ -4,14 +4,19 @@ namespace ozerich\shop\modules\api\controllers;
 
 use ozerich\api\controllers\Controller;
 use ozerich\api\filters\AccessControl;
+use ozerich\api\response\ArrayResponse;
 use ozerich\api\response\CollectionResponse;
 use ozerich\api\response\ModelResponse;
 use ozerich\shop\models\Category;
 use ozerich\shop\models\Field;
+use ozerich\shop\models\ProductCollection;
 use ozerich\shop\modules\api\models\CategoryDTO;
 use ozerich\shop\modules\api\models\CategoryFullDTO;
+use ozerich\shop\modules\api\models\CollectionDTO;
+use ozerich\shop\modules\api\models\CollectionFullDTO;
 use ozerich\shop\modules\api\models\FilterDTO;
 use ozerich\shop\modules\api\models\ProductDTO;
+use ozerich\shop\modules\api\models\ProductShortDTO;
 use ozerich\shop\traits\ServicesTrait;
 use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
@@ -46,7 +51,19 @@ class CatalogController extends Controller
                 [
                     'action' => 'filters',
                     'verbs' => 'GET'
-                ]
+                ],
+                [
+                    'action' => 'collections',
+                    'verbs' => 'GET'
+                ],
+                [
+                    'action' => 'collection',
+                    'verbs' => 'GET'
+                ],
+                [
+                    'action' => 'collection-products',
+                    'verbs' => 'GET'
+                ],
             ]
         ];
 
@@ -158,5 +175,37 @@ class CatalogController extends Controller
         ]);
 
         return new CollectionResponse($dataProvider, ProductDTO::class);
+    }
+
+    public function actionCollections()
+    {
+        $dataProvider = new ActiveDataProvider([
+            'query' => $this->productCollectionsService()->getAllQuery()
+        ]);
+
+        return new CollectionResponse($dataProvider, CollectionDTO::class);
+    }
+
+    public function actionCollection($id)
+    {
+        $model = $this->productCollectionsService()->getById($id);
+
+        if (!$model) {
+            throw new NotFoundHttpException('Коллекции не найдено');
+        }
+
+        return new ModelResponse($model, CollectionFullDTO::class);
+    }
+
+    public function actionCollectionProducts($id)
+    {
+        /** @var ProductCollection $model */
+        $model = $this->productCollectionsService()->findById($id)->joinWith('products')->one();
+
+        if (!$model) {
+            throw new NotFoundHttpException('Коллекции не найдено');
+        }
+
+        return new ArrayResponse($this->productCollectionsService()->getProducts($model), ProductShortDTO::class);
     }
 }

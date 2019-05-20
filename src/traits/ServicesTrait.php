@@ -9,6 +9,7 @@ use ozerich\shop\services\categories\CategoryManufacturesService;
 use ozerich\shop\services\categories\CategoryProductsService;
 use ozerich\shop\services\menu\MenuService;
 use ozerich\shop\services\products\ProductBaseService;
+use ozerich\shop\services\products\ProductCollectionsService;
 use ozerich\shop\services\products\ProductFieldsService;
 use ozerich\shop\services\products\ProductGetService;
 use ozerich\shop\services\products\ProductMediaService;
@@ -43,6 +44,20 @@ trait ServicesTrait
     private $settingsService = null;
 
     private $blogService = null;
+
+    private $productCollectionsService = null;
+
+    /**
+     * @return ProductCollectionsService
+     */
+    public function productCollectionsService()
+    {
+        if ($this->productCollectionsService === null) {
+            $this->productCollectionsService = new ProductCollectionsService();
+        }
+
+        return $this->productCollectionsService;
+    }
 
     /**
      * @return ProductFieldsService

@@ -41,8 +41,10 @@ use yii\helpers\Url;
  * @property string $price_note
  * @property boolean $is_price_from
  * @property integer $currency_id
+ * @property integer $collection_id
  *
  * @property Image $image
+ * @property ProductCollection $collection
  * @property Currency $currency
  * @property Manufacture $manufacture
  * @property Image $schemaImage
@@ -61,7 +63,7 @@ class Product extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'products';
+        return '{{%products}}';
     }
 
     /**
@@ -86,7 +88,9 @@ class Product extends \yii\db\ActiveRecord
             [['discount_value'], 'safe'],
 
             [['price_note'], 'string'],
-            [['is_price_from', 'hidden', 'is_new'], 'boolean']
+            [['is_price_from', 'hidden', 'is_new'], 'boolean'],
+
+            [['collection_id'], 'integer']
         ];
     }
 
@@ -116,7 +120,8 @@ class Product extends \yii\db\ActiveRecord
             'manufacture_id' => 'Производитель',
             'label' => 'Маркировка',
             'hidden' => 'Не отображать на сайте',
-            'is_new' => 'Новинка'
+            'is_new' => 'Новинка',
+            'collection_id' => 'Коллекция'
         ];
     }
 
@@ -178,6 +183,14 @@ class Product extends \yii\db\ActiveRecord
     public function getManufacture()
     {
         return $this->hasOne(Manufacture::className(), ['id' => 'manufacture_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCollection()
+    {
+        return $this->hasOne(ProductCollection::className(), ['id' => 'collection_id']);
     }
 
     /**

@@ -38,6 +38,8 @@ class UpdateProductForm extends Product
 
     public $popular;
 
+    public $collection_id;
+
     public function rules()
     {
         return [
@@ -50,7 +52,9 @@ class UpdateProductForm extends Product
             [['image_id', 'schema_image_id'], 'integer'],
 
             [['label'], 'string', 'max' => 150],
-            [['hidden', 'popular', 'is_new'], 'boolean']
+            [['hidden', 'popular', 'is_new'], 'boolean'],
+
+            [['collection_id'], 'integer']
         ];
     }
 

@@ -11,7 +11,7 @@ class FilterProduct extends Product
     public function rules()
     {
         return [
-            [['name', 'category_id', 'manufacture_id', 'hidden'], 'safe']
+            [['name', 'category_id', 'manufacture_id', 'collection_id', 'hidden'], 'safe']
         ];
     }
 
@@ -57,6 +57,10 @@ class FilterProduct extends Product
 
         if (!empty($this->manufacture_id)) {
             $query->andWhere('manufacture_id = :manufacture_id', [':manufacture_id' => $this->manufacture_id]);
+        }
+
+        if (!empty($this->collection_id)) {
+            $query->andWhere('collection_id = :collection_id', [':collection_id' => $this->collection_id]);
         }
 
         return $query;

@@ -161,7 +161,8 @@ class ProductFullDTO extends Product implements DTO
             'is_new' => $this->is_new ? true : false,
             'is_popular' => $this->popular ? true : false,
 
-            'manufacture' => $this->manufacture ? (new ManufactureDTO($this->manufacture))->toJSON() : null
+            'manufacture' => $this->manufacture ? (new ManufactureDTO($this->manufacture))->toJSON() : null,
+            'collection' => $this->collection ? (new CollectionDTO($this->collection))->toJSON() : null
         ];
     }
 }
