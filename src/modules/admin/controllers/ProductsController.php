@@ -11,6 +11,8 @@ use ozerich\shop\models\Product;
 use ozerich\shop\modules\admin\filters\FilterProduct;
 use ozerich\shop\modules\admin\forms\CreateProductForm;
 use ozerich\shop\modules\admin\forms\CreateProductFormConvertor;
+use ozerich\shop\modules\admin\forms\ProductConnectionsForm;
+use ozerich\shop\modules\admin\forms\ProductConnectionsFormConvertor;
 use ozerich\shop\modules\admin\forms\ProductMediaForm;
 use ozerich\shop\modules\admin\forms\ProductMediaFormConvertor;
 use ozerich\shop\modules\admin\forms\ProductSeoForm;
@@ -19,6 +21,7 @@ use ozerich\shop\modules\admin\forms\UpdateProductForm;
 use ozerich\shop\modules\admin\forms\UpdateProductFormConvertor;
 use ozerich\shop\traits\ServicesTrait;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 class ProductsController extends AdminController
 {
@@ -61,7 +64,8 @@ class ProductsController extends AdminController
                     return [
                         'fields' => $this->productFieldsService()->getFieldsForProduct($model),
                         'mediaForm' => (new ProductMediaFormConvertor())->loadFormFromModel($model),
-                        'seoFormModel' => (new ProductSeoFormConvertor())->loadFormFromModel($model)
+                        'seoFormModel' => (new ProductSeoFormConvertor())->loadFormFromModel($model),
+                        'connectionsForm' => (new ProductConnectionsFormConvertor())->loadFormFromModel($model),
                     ];
                 },
             ],
@@ -71,6 +75,16 @@ class ProductsController extends AdminController
                 'modelClass' => Product::class,
                 'formClass' => ProductSeoForm::class,
                 'formConvertor' => ProductSeoFormConvertor::class,
+                'isCreate' => false,
+                'redirectUrl' => '/admin/products',
+                'view' => null
+            ],
+
+            'save-connections' => [
+                'class' => CreateOrUpdateAction::class,
+                'modelClass' => Product::class,
+                'formClass' => ProductConnectionsForm::class,
+                'formConvertor' => ProductConnectionsFormConvertor::class,
                 'isCreate' => false,
                 'redirectUrl' => '/admin/products',
                 'view' => null
@@ -187,4 +201,31 @@ class ProductsController extends AdminController
 
         return $this->redirect('/admin/products/update/' . $copy->id);
     }
+
+    public function actionFindAjax($q, $exclude = null)
+    {
+        $query = Product::find()->andWhere('name LIKE :name', [':name' => '%' . $q . '%']);
+
+        if ($exclude) {
+            $query->andWhere('products.id <> :exclude_id', [':exclude_id' => $exclude]);
+        }
+
+        /** @var Product[] $products */
+        $products = $query->all();
+
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $results = [];
+        foreach ($products as $result) {
+            $results[] = [
+                'id' => $result->id,
+                'text' => $result->getNameWithManufacture()
+            ];
+        }
+
+        return [
+            'results' => $results
+        ];
+    }
+
 }

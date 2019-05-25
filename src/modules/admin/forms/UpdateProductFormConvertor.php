@@ -17,8 +17,6 @@ class UpdateProductFormConvertor extends Model
 
         $form->name = $product->name;
         $form->image_id = $product->image_id;
-        $form->manufacture_id = $product->manufacture_id;
-        $form->collection_id = $product->collection_id;
         $form->schema_image_id = $product->schema_image_id;
         $form->text = $product->text;
         $form->price = $product->price;
@@ -27,7 +25,6 @@ class UpdateProductFormConvertor extends Model
         $form->sku = $product->sku;
         $form->sale_disabled = $product->sale_disabled;
         $form->sale_disabled_text = $product->sale_disabled_text;
-        $form->category_id = $product->category_id;
         $form->hidden = $product->hidden;
         $form->is_new = $product->is_new;
         $form->popular = $product->popular;
@@ -40,18 +37,12 @@ class UpdateProductFormConvertor extends Model
     {
         $manufactureChanged = false;
 
-        if ($model->manufacture_id != $form->manufacture_id) {
-            $manufactureChanged = true;
-        }
-
         if ($model->hidden != $form->hidden) {
             $manufactureChanged = true;
         }
 
         $model->name = $form->name;
         $model->image_id = $form->image_id;
-        $model->manufacture_id = $form->manufacture_id;
-        $model->collection_id = $form->collection_id;
         $model->schema_image_id = $form->schema_image_id;
         $model->text = $form->text;
         $model->price = $form->price;

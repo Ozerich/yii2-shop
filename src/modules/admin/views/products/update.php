@@ -6,6 +6,7 @@
  * @var ozerich\shop\modules\admin\forms\UpdateProductForm $formModel
  * @var ozerich\shop\modules\admin\forms\ProductSeoForm $seoFormModel
  * @var ozerich\shop\modules\admin\forms\ProductMediaForm $mediaForm
+ * @var ozerich\shop\modules\admin\forms\ProductConnectionsForm $connectionsForm
  */
 
 $this->title = 'Редактировать товар - ' . $model->name . ' <span class="content-header__label">' . $model->label . '</span>';
@@ -35,6 +36,7 @@ $this->title = 'Редактировать товар - ' . $model->name . ' <sp
     <li class="active"><a href="#main" data-toggle="tab">Основные параметры</a></li>
     <li><a href="#params" data-toggle="tab">Характеристики</a></li>
     <li><a href="#media" data-toggle="tab">Медиа</a></li>
+    <li><a href="#connections" data-toggle="tab">Связи</a></li>
     <li><a href="#seo" data-toggle="tab">SEO параметры</a></li>
     <li><a href="#prices" data-toggle="tab">Цена</a></li>
   </ul>
@@ -55,6 +57,12 @@ $this->title = 'Редактировать товар - ' . $model->name . ' <sp
         <?= $this->render('update/_tab_media', [
             'model' => $model,
             'formModel' => $mediaForm
+        ]); ?>
+    </div>
+    <div class="tab-pane" id="connections">
+        <?= $this->render('update/_tab_connections', [
+            'model' => $model,
+            'formModel' => $connectionsForm
         ]); ?>
     </div>
     <div class="tab-pane" id="seo">

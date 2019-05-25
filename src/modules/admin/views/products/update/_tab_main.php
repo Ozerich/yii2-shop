@@ -27,23 +27,6 @@
       <?= $form->field($formModel, 'url_alias')->textInput(); ?>
   </div>
 
-  <div class="col-xs-6">
-      <?= $form->field($formModel, 'manufacture_id')->dropDownList(\ozerich\shop\models\Manufacture::getList(), [
-          'prompt' => 'Отсуствует'
-      ]); ?>
-  </div>
-
-  <div class="col-xs-6">
-      <?= $form->field($formModel, 'collection_id')->dropDownList(\ozerich\shop\models\ProductCollection::getList(), [
-          'prompt' => 'Отсуствует'
-      ]); ?>
-  </div>
-
-  <div class="col-xs-12">
-      <?= $form->field($formModel, 'category_id')->widget(\ozerich\shop\modules\admin\widgets\CategoryWidget::class, [
-          'multiple' => false
-      ]); ?>
-  </div>
 
   <div class="col-xs-12">
       <?= $form->field($formModel, 'image_id')->widget(ozerich\shop\modules\admin\widgets\ImageWidget::class, [

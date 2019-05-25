@@ -22,7 +22,8 @@
     "ozerich/yii2-filestorage-db": "^1.0",
     "himiklab/yii2-sitemap-module" : "*",
     "ozerich/yii2-tools": "^1.0",
-    "google/apiclient": "^2.0"
+    "google/apiclient": "^2.0",
+    "kartik-v/yii2-widget-select2": "dev-master"
   },
   "autoload": {
     "psr-4": {

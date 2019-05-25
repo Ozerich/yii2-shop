@@ -8,7 +8,7 @@
 <form action="/admin/products/update-params/<?= $model->id ?>" method="post">
   <div class="row">
       <? foreach ($fields as $category_id => $field): ?>
-        <div class="col-xs-12">
+        <div class="col-sm-6 col-xs-12">
           <div class="form-group">
             <label class="control-label" for="updateproductform-url_alias">
                 <?= $field->getField()->name ?> <?= $field->getField()->group ? ' (' . $field->getField()->group->name . ')' : '' ?>

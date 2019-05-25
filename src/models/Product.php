@@ -55,6 +55,8 @@ use yii\helpers\Url;
  * @property ProductPriceParam[] $productPriceParams
  * @property ProductCategory[] $productCategories
  * @property Category $category
+ * @property ProductSame $productSameProducts
+ * @property ProductSame $sameProducts
  */
 class Product extends \yii\db\ActiveRecord
 {
@@ -249,11 +251,37 @@ class Product extends \yii\db\ActiveRecord
         return $this->hasMany(Image::class, ['id' => 'image_id'])->via('productImages');
     }
 
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProductSameProducts()
+    {
+        return $this->hasMany(ProductSame::className(), ['product_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSameProducts()
+    {
+        return $this->hasMany(Product::class, ['id' => 'product_same_id'])->via('productSameProducts');
+    }
+
+
     /**
      * @return string
      */
     public function getUrl($absolute = false)
     {
         return Url::to('/products/' . $this->id . '-' . $this->url_alias, $absolute);
+    }
+
+    /**
+     * @return string
+     */
+    public function getNameWithManufacture()
+    {
+        return $this->name . ($this->manufacture ? ' (' . $this->manufacture->name . ')' : '');
     }
 }
