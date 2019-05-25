@@ -24,9 +24,6 @@ class FieldForm extends Component {
                              value={values.name} />
                   <FormCheckbox id="filter_enabled" name="filter_enabled" label="Выводить в фильтре" handleChange={handleChange}
                              value={values.filter_enabled} />
-                  <FormSelect id="group_id" name="group_id" items={this.getGroups()} label="Группа полей"
-                              handleChange={handleChange}
-                              value={values.group_id} />
                   <FormSelect id="type" name="type" items={fieldTypeValues()} label="Тип поля"
                               handleChange={handleChange}
                               value={values.type} />
@@ -79,18 +76,6 @@ class FieldForm extends Component {
     }
   }
 
-  getGroups() {
-    const { groups } = this.props;
-
-    const result = [{ id: null, label: 'Без группы' }];
-
-    groups.forEach(group => {
-      result.push({ id: +group.id, label: group.name });
-    });
-
-    return result;
-  }
-
   onCancel() {
     this.props.hideForm();
   }
@@ -103,7 +88,6 @@ class FieldForm extends Component {
     const model = {
       name: values.name,
       type: values.type,
-      group_id: values.group_id ? parseInt(values.group_id) : null,
       value_prefix: values.value_prefix,
       value_suffix: values.value_suffix,
       multiple: !!values.multiple,
@@ -131,7 +115,6 @@ function mapStateToProps(state) {
 
   return {
     modelId: state.fieldForm.modelId,
-    groups: state.groups.entities,
     model: model
   };
 }

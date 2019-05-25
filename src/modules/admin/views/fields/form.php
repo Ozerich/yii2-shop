@@ -23,14 +23,6 @@ $formModel->values = $formModel->values ? implode("\n", $formModel->values) : ''
   </div>
 
   <div class="col-xs-12">
-      <?= $form->field($formModel, 'group_id')->dropDownList(
-          \yii\helpers\ArrayHelper::map(ozerich\shop\models\FieldGroup::find()->all(), 'id', 'name'), [
-              'prompt' => 'Без группы'
-          ]
-      ); ?>
-  </div>
-
-  <div class="col-xs-12">
       <?= $form->field($formModel, 'type')->dropDownList(ozerich\shop\constants\FieldType::getList()); ?>
   </div>
 

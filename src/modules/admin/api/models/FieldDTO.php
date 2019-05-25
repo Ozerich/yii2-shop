@@ -13,8 +13,6 @@ class FieldDTO extends Field implements DTO
             'id' => $this->id,
             'name' => $this->name,
             'type' => $this->type,
-            'group_id' => $this->group_id,
-            'group_name' => $this->group ? $this->group->name : null,
             'value_suffix' => $this->value_suffix,
             'value_prefix' => $this->value_prefix,
             'yes_label' => $this->yes_label,

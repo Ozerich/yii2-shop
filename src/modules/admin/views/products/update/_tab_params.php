@@ -11,7 +11,7 @@
         <div class="col-sm-6 col-xs-12">
           <div class="form-group">
             <label class="control-label" for="updateproductform-url_alias">
-                <?= $field->getField()->name ?> <?= $field->getField()->group ? ' (' . $field->getField()->group->name . ')' : '' ?>
+                <?= $field->getField()->name ?>
             </label><br />
               <? if ($field->getField()->type == ozerich\shop\constants\FieldType::STRING): ?>
                 <input type="text" name="fields[<?= $field->getField()->id ?>]" class="form-control"

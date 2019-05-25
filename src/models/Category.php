@@ -27,7 +27,6 @@ use yii\helpers\Url;
  * @property Category $parent
  * @property Category[] $categories
  * @property Field[] $fields
- * @property FieldGroup[] $fieldGroups
  * @property CategoryCondition[] $conditions
  * @property CategoryField[] $categoryFields
  * @property Category[] $categoryDisplayCategories
@@ -174,14 +173,6 @@ class Category extends \yii\db\ActiveRecord
     public function getFields()
     {
         return $this->hasMany(Field::className(), ['category_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getFieldGroups()
-    {
-        return $this->hasMany(FieldGroup::className(), ['category_id' => 'id']);
     }
 
     /**

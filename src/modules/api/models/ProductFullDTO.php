@@ -26,42 +26,9 @@ class ProductFullDTO extends Product implements DTO
             return in_array($value->field_id, $categoryFieldsIds);
         });
 
-        $groups = [];
-        $no_groups = [];
-
-        foreach ($params as $param) {
-            if ($param->field->group_id !== null) {
-                if (!isset($groups[$param->field->group_id])) {
-                    $groups[$param->field->group_id] = [
-                        'group' => [
-                            'name' => $param->field->group->name,
-                            'image' => $param->field->group->image ? $param->field->group->image->getUrl() : null,
-                        ],
-                        'fields' => []
-                    ];
-                }
-                $groups[$param->field->group_id]['fields'][] = [
-                    'label' => $param->field->name,
-                    'image' => $param->field->image ? $param->field->image->getUrl() : null,
-                    'value' => $this->productFieldsService()->getFieldPlainValue($param)
-                ];
-            } else {
-                $no_groups[] = $param;
-            }
-        }
-
         $result = [];
 
-        $groups = array_values($groups);
-        foreach ($groups as $group) {
-            $result[] = [
-                'type' => 'GROUP',
-                'model' => $group['group'],
-                'fields' => $group['fields']
-            ];
-        }
-
-        foreach ($no_groups as $item) {
+        foreach ($params as $item) {
             $result[] = [
                 'type' => 'FIELD',
                 'model' => [

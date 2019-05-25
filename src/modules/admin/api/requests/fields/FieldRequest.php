@@ -10,8 +10,6 @@ class FieldRequest extends RequestModel
 
     public $type;
 
-    public $group_id;
-
     public $value_suffix;
 
     public $value_prefix;
@@ -30,7 +28,6 @@ class FieldRequest extends RequestModel
     {
         return [
             [['name', 'type'], 'required'],
-            [['group_id'], 'integer'],
             [['multiple', 'filter_enabled'], 'boolean'],
             [['value_suffix', 'value_prefix', 'yes_label', 'no_label'], 'string'],
             ['values', 'safe']

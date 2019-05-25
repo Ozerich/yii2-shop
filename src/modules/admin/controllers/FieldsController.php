@@ -8,12 +8,9 @@ use ozerich\api\response\CollectionResponse;
 use ozerich\api\response\ModelResponse;
 use ozerich\shop\models\Category;
 use ozerich\shop\models\Field;
-use ozerich\shop\models\FieldGroup;
 use ozerich\shop\modules\admin\api\models\CategoryDTO;
 use ozerich\shop\modules\admin\api\models\FieldDTO;
-use ozerich\shop\modules\admin\api\models\FieldGroupDTO;
 use ozerich\shop\modules\admin\api\requests\fields\FieldRequest;
-use ozerich\shop\modules\admin\api\requests\fields\GroupRequest;
 use ozerich\shop\traits\ServicesTrait;
 use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
@@ -189,7 +186,6 @@ class FieldsController extends Controller
         $model->yes_label = $request->yes_label;
         $model->no_label = $request->no_label;
         $model->values = $request->values;
-        $model->group_id = $request->group_id;
         $model->multiple = $request->multiple;
         $model->filter_enabled = $request->filter_enabled ? true : false;
         $model->save();
@@ -215,7 +211,6 @@ class FieldsController extends Controller
         $model->value_suffix = $request->value_suffix;
         $model->value_prefix = $request->value_prefix;
         $model->values = $request->values;
-        $model->group_id = $request->group_id;
         $model->yes_label = $request->yes_label;
         $model->no_label = $request->no_label;
         $model->filter_enabled = $request->filter_enabled ? true : false;
@@ -232,71 +227,6 @@ class FieldsController extends Controller
     {
         /** @var Field $model */
         $model = Field::findOne($id);
-        if (!$model) {
-            throw new NotFoundHttpException();
-        }
-
-        $model->delete();
-
-        return null;
-    }
-
-    public function actionGroups($id)
-    {
-        /** @var Category $category */
-        $category = Category::findOne($id);
-        if (!$category) {
-            throw new NotFoundHttpException('Категории не найдено');
-        }
-
-        $dataProvider = new ActiveDataProvider([
-            'query' => $category->getFieldGroups()
-        ]);
-
-        return new CollectionResponse($dataProvider, FieldGroupDTO::class);
-    }
-
-    public function actionCreateGroup($id)
-    {
-        /** @var Category $category */
-        $category = Category::findOne($id);
-        if (!$category) {
-            throw new NotFoundHttpException('Категории не найдено');
-        }
-
-        $request = new GroupRequest();
-        $request->load();
-
-        $model = new FieldGroup();
-        $model->name = $request->name;
-        $model->category_id = $category->id;
-        $model->save();
-
-        return new ModelResponse($model, FieldGroupDTO::class);
-    }
-
-    public function actionSaveGroup($id)
-    {
-        /** @var FieldGroup $model */
-        $model = FieldGroup::findOne($id);
-        if (!$model) {
-            throw new NotFoundHttpException();
-        }
-
-
-        $request = new GroupRequest();
-        $request->load();
-
-        $model->name = $request->name;
-        $model->save();
-
-        return new ModelResponse($model, FieldGroupDTO::class);
-    }
-
-    public function actionDeleteGroup($id)
-    {
-        /** @var FieldGroup $model */
-        $model = FieldGroup::findOne($id);
         if (!$model) {
             throw new NotFoundHttpException();
         }
