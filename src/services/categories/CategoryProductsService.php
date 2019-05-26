@@ -9,6 +9,7 @@ use ozerich\shop\models\Category;
 use ozerich\shop\models\CategoryCondition;
 use ozerich\shop\models\Product;
 use ozerich\shop\models\ProductCategory;
+use ozerich\shop\models\ProductImage;
 use ozerich\shop\traits\ServicesTrait;
 
 class CategoryProductsService
@@ -71,6 +72,23 @@ class CategoryProductsService
         }
     }
 
+    private function checkColorCondition(Product $product, $value)
+    {
+        $value = is_string($value) ? explode(';', $value) : [$value];
+
+        $colorIds = ProductImage::find()->andWhere('product_id=:product_id', [':product_id' => $product->id])
+            ->andWhere('color_id is not null')
+            ->select('color_id')->column();
+
+        foreach ($colorIds as $colorId) {
+            if (in_array($colorId, $value)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private function checkCondition(Product $product, CategoryCondition $condition)
     {
         if ($condition->type == CategoryConditionType::PRICE) {
@@ -83,7 +101,7 @@ class CategoryProductsService
         } else if ($condition->type == CategoryConditionType::CATEGORY) {
             return $this->checkSelectCondition($product->category_id, $condition->value, $condition->compare);
         } else if ($condition->type == CategoryConditionType::COLOR) {
-            return false;
+            return $this->checkColorCondition($product, $condition->value);
         }
 
         $field = $condition->field;

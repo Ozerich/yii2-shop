@@ -37,7 +37,9 @@ class CategoriesController extends AdminController
                 'modelClass' => Category::class,
                 'isCreate' => true,
                 'view' => 'create',
-                'redirectUrl' => '/admin/categories'
+                'redirectUrl' => function (Category $category) {
+                    return '/admin/categories/update/'.$category->id;
+                },
             ],
             'update' => [
                 'class' => CreateOrUpdateAction::class,
@@ -132,7 +134,7 @@ class CategoriesController extends AdminController
             $item->parent_id = $model->id;
             $item->category_id = $category_id;
             $item->position = isset($position[$category_id]) ? (isset($position[$category_id]) ? $position[$category_id] : 0) : 0;
-            if(!$item->position){
+            if (!$item->position) {
                 $item->position = 0;
             }
             $item->save();

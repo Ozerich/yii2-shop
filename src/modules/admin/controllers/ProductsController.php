@@ -237,6 +237,16 @@ class ProductsController extends AdminController
             throw new NotFoundHttpException();
         }
 
+        $colorIds = $this->productColorsService()->getProductColorIds($model);
+        $deleted = [];
+        foreach ($colorIds as $colorId) {
+            if ($colorId) {
+                $deleted[$colorId] = true;
+            }
+        }
+
+        $added = [];
+
         $colors = \Yii::$app->request->post('color');
         $texts = \Yii::$app->request->post('text');
 
@@ -249,8 +259,28 @@ class ProductsController extends AdminController
             $image->text = $texts[$imageId];
             $image->color_id = $color;
 
+            if ($color) {
+                $deleted[$color] = false;
+            }
+
+            if ($color && !in_array($color, $colorIds)) {
+                $added[] = $color;
+                $deleted[$color] = false;
+            }
+
             $image->save();
         }
+
+        $changed = [];
+        foreach ($deleted as $color_id => $isDeleted) {
+            if ($isDeleted) {
+                $changed[] = $color_id;
+            }
+        }
+        $changed = array_values(array_merge($changed, $added));
+
+        $this->productColorsService()->updateCategoriesWithColorIds($changed);
+
 
         if (isset($_POST['only-save'])) {
             return $this->redirect('/admin/products/' . $model->id);
