@@ -12,8 +12,10 @@ use ozerich\tools\behaviors\PriorityBehavior;
  * @property int $image_id
  * @property string $text
  * @property int $priority
+ * @property int $color_id
  *
  * @property Image $image
+ * @property Color $color
  * @property Product $product
  */
 class ProductImage extends \yii\db\ActiveRecord
@@ -43,6 +45,14 @@ class ProductImage extends \yii\db\ActiveRecord
     public function getImage()
     {
         return $this->hasOne(Image::className(), ['id' => 'image_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getColor()
+    {
+        return $this->hasOne(Image::className(), ['id' => 'color_id']);
     }
 
     /**

@@ -39,6 +39,7 @@ $this->title = 'Редактировать товар - ' . $model->name . ' <sp
     <li><a href="#connections" data-toggle="tab">Связи</a></li>
     <li><a href="#seo" data-toggle="tab">SEO параметры</a></li>
     <li><a href="#prices" data-toggle="tab">Цена</a></li>
+    <li><a href="#colors" data-toggle="tab">Цвета</a></li>
   </ul>
   <div class="tab-content">
     <div class="active tab-pane" id="main">
@@ -73,6 +74,11 @@ $this->title = 'Редактировать товар - ' . $model->name . ' <sp
     </div>
     <div class="tab-pane" id="prices">
         <?= $this->render('update/_tab_prices', [
+            'model' => $model
+        ]); ?>
+    </div>
+    <div class="tab-pane" id="colors">
+        <?= $this->render('update/_tab_colors', [
             'model' => $model
         ]); ?>
     </div>

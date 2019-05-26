@@ -7,7 +7,10 @@ use ozerich\admin\actions\DeleteAction;
 use ozerich\admin\actions\ListAction;
 use ozerich\admin\controllers\base\AdminController;
 use ozerich\shop\models\Category;
+use ozerich\shop\models\Color;
 use ozerich\shop\models\Currency;
+use ozerich\shop\modules\admin\forms\ColorForm;
+use ozerich\shop\modules\admin\forms\ColorFormConvertor;
 use ozerich\shop\modules\admin\forms\settings\BlogSettingsForm;
 use ozerich\shop\modules\admin\forms\settings\BlogSettingsFormConvertor;
 use ozerich\shop\modules\admin\forms\settings\HomeSettingsForm;
@@ -56,6 +59,33 @@ class SettingsController extends AdminController
             'delete-currency' => [
                 'class' => DeleteAction::class,
                 'modelClass' => Currency::class
+            ],
+            'colors' => [
+                'class' => ListAction::class,
+                'query' => Color::find(),
+                'view' => 'colors/index'
+            ],
+            'create-color' => [
+                'class' => CreateOrUpdateAction::class,
+                'modelClass' => Color::class,
+                'formClass' => ColorForm::class,
+                'formConvertor' => ColorFormConvertor::class,
+                'view' => 'colors/form',
+                'isCreate' => true,
+                'redirectUrl' => '/admin/settings/colors'
+            ],
+            'update-color' => [
+                'class' => CreateOrUpdateAction::class,
+                'modelClass' => Color::class,
+                'formClass' => ColorForm::class,
+                'formConvertor' => ColorFormConvertor::class,
+                'view' => 'colors/form',
+                'isCreate' => false,
+                'redirectUrl' => '/admin/settings/colors'
+            ],
+            'delete-color' => [
+                'class' => DeleteAction::class,
+                'modelClass' => Color::class
             ]
         ];
     }

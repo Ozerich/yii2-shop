@@ -8,6 +8,7 @@ use ozerich\admin\actions\ListAction;
 use ozerich\admin\controllers\base\AdminController;
 use ozerich\shop\constants\FieldType;
 use ozerich\shop\models\Product;
+use ozerich\shop\models\ProductImage;
 use ozerich\shop\modules\admin\filters\FilterProduct;
 use ozerich\shop\modules\admin\forms\CreateProductForm;
 use ozerich\shop\modules\admin\forms\CreateProductFormConvertor;
@@ -228,4 +229,33 @@ class ProductsController extends AdminController
         ];
     }
 
+    public function actionSaveColors($id)
+    {
+        /** @var Product $model */
+        $model = Product::findOne($id);
+        if (!$model) {
+            throw new NotFoundHttpException();
+        }
+
+        $colors = \Yii::$app->request->post('color');
+        $texts = \Yii::$app->request->post('text');
+
+        foreach ($colors as $imageId => $color) {
+            $image = ProductImage::findOne($imageId);
+            if (!$image) {
+                continue;
+            }
+
+            $image->text = $texts[$imageId];
+            $image->color_id = $color;
+
+            $image->save();
+        }
+
+        if (isset($_POST['only-save'])) {
+            return $this->redirect('/admin/products/' . $model->id);
+        } else {
+            return $this->redirect('/admin/products');
+        }
+    }
 }

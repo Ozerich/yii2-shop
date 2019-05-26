@@ -128,6 +128,11 @@ class Module extends \ozerich\admin\Module
                     'label' => 'Валюты',
                     'link' => '/settings/currencies',
                 ],
+                [
+                    'id' => 'colors',
+                    'label' => 'Цвета',
+                    'link' => '/settings/colors',
+                ],
             ]
         ],
     ];

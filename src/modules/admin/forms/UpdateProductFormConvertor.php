@@ -56,20 +56,6 @@ class UpdateProductFormConvertor extends Model
         $model->popular = $form->popular;
         $model->label = $form->label;
 
-        if ($model->category_id != $form->category_id) {
-            ProductCategory::deleteAll(['product_id' => $model->id, 'category_id' => $form->category_id]);
-            $item = new ProductCategory();
-            $item->product_id = $model->id;
-            $item->category_id = $form->category_id;
-            $item->save();
-
-            $model->category_id = $form->category_id;
-            $model->save(false, ['category_id']);
-
-            $this->categoryManufacturesService()->onUpdateCategory($model->category_id);
-            $this->categoryManufacturesService()->onUpdateCategory($form->category_id);
-        }
-
         $model->save();
 
         if ($manufactureChanged) {
