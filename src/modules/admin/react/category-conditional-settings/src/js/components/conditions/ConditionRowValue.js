@@ -31,12 +31,15 @@ class ConditionRowValue extends Component {
       return { id: item, label: item }
     }) : items;
 
-    return <FormSelect items={selectOptions} value={value} multiple={isMultiple}
+    const resultFilteredOptions = isMultiple ? [] : [{ id: null, label: 'Не выбрано' }];
+    selectOptions.forEach(item => resultFilteredOptions.push(item));
+
+    return <FormSelect items={resultFilteredOptions} value={value} multiple={isMultiple}
                        onChange={this.handleChange.bind(this)} />
   }
 
   render() {
-    const { model, categories,manufactures } = this.props;
+    const { model, categories, manufactures, colors } = this.props;
 
     if (!model.filter || !model.compare) {
       return null;
@@ -58,6 +61,12 @@ class ConditionRowValue extends Component {
           id: item.id, label: item.name
         }
       }), false);
+    } else if (filter === 'COLOR') {
+      return this.renderSelect(colors.map(item => {
+        return {
+          id: item.id, label: item.name
+        }
+      }), compare === 'ONE');
     }
 
     const filterModel = this.props.filters.find(item => item.id === +filter);
@@ -94,6 +103,7 @@ function mapStateToProps(state, ownProps) {
     filters: state.fields.items,
     categories: state.conditions.categories,
     manufactures: state.conditions.manufactures,
+    colors: state.conditions.colors,
   };
 }
 

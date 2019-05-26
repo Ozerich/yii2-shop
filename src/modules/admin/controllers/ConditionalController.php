@@ -8,6 +8,7 @@ use ozerich\api\response\CollectionResponse;
 use ozerich\shop\constants\CategoryConditionType;
 use ozerich\shop\models\Category;
 use ozerich\shop\models\CategoryCondition;
+use ozerich\shop\models\Color;
 use ozerich\shop\models\Manufacture;
 use ozerich\shop\modules\admin\api\models\CategoryConditionalDTO;
 use ozerich\shop\modules\admin\api\requests\conditional\ModelRequest;
@@ -42,6 +43,10 @@ class ConditionalController extends Controller
                 ],
                 [
                     'action' => 'manufactures',
+                    'verbs' => ['GET']
+                ],
+                [
+                    'action' => 'colors',
                     'verbs' => ['GET']
                 ],
                 [
@@ -99,6 +104,18 @@ class ConditionalController extends Controller
         }, $manufactures);
     }
 
+
+    public function actionColors()
+    {
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        return array_map(function (Color $color) {
+            return [
+                'id' => $color->id,
+                'name' => $color->name
+            ];
+        }, Color::find()->all());
+    }
+
     public function actionIndex($id)
     {
         $model = $this->getCategory($id);
@@ -127,6 +144,8 @@ class ConditionalController extends Controller
                 $type = CategoryConditionType::CATEGORY;
             } elseif ($condition['filter'] == 'MANUFACTURE') {
                 $type = CategoryConditionType::MANUFACTURE;
+            } elseif ($condition['filter'] == 'COLOR') {
+                $type = CategoryConditionType::COLOR;
             }
 
             $model = new CategoryCondition();

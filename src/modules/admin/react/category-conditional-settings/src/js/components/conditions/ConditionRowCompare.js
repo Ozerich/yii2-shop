@@ -28,6 +28,13 @@ class ConditionRowCompare extends Component {
       ];
     }
 
+    if (filter === 'COLOR') {
+      return [
+        { id: 'EQUAL', label: 'Равно' },
+        { id: 'ONE', label: 'Одна из' }
+      ];
+    }
+
     const filterModel = this.props.filters.find(item => item.id === +filter);
 
     if (!filterModel) {

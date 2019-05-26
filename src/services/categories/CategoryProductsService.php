@@ -78,14 +78,12 @@ class CategoryProductsService
                 return false;
             }
             return $this->checkNumberCondition($product->price, $condition->value, $condition->compare);
-        }
-
-        if ($condition->type == CategoryConditionType::MANUFACTURE) {
+        } else if ($condition->type == CategoryConditionType::MANUFACTURE) {
             return $this->checkSelectCondition($product->manufacture_id, $condition->value, $condition->compare);
-        }
-
-        if ($condition->type == CategoryConditionType::CATEGORY) {
+        } else if ($condition->type == CategoryConditionType::CATEGORY) {
             return $this->checkSelectCondition($product->category_id, $condition->value, $condition->compare);
+        } else if ($condition->type == CategoryConditionType::COLOR) {
+            return false;
         }
 
         $field = $condition->field;

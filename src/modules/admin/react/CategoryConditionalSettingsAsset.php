@@ -9,7 +9,7 @@ class CategoryConditionalSettingsAsset extends AssetBundle
     public $sourcePath = '@vendor/ozerich/yii2-shop/src/modules/admin/react/category-conditional-settings/build';
 
     public $js = [
-        'build.js?v=3',
+        'build.js?v=4',
     ];
 
     public $css = [

@@ -10,6 +10,7 @@ class ConditionRowFilter extends Component {
       { id: 'PRICE', type: 'PRICE', label: 'Цена' },
       { id: 'CATEGORY', type: 'CATEGORY', label: 'Категория' },
       { id: 'MANUFACTURE', type: 'MANUFACTURE', label: 'Производитель' },
+      { id: 'COLOR', type: 'COLOR', label: 'Цвет' },
     ];
 
     this.props.filters.filter(item => item.type !== 'STRING').forEach(item => items.push({

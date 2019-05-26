@@ -13,13 +13,13 @@ class CategoryConditionalDTO extends CategoryCondition implements DTO
         $value = $this->value;
         if ($this->compare == 'ONE') {
             $value = explode(';', $this->value);
-            if($this->type == CategoryConditionType::CATEGORY){
+            if ($this->type == CategoryConditionType::CATEGORY || $this->type == CategoryConditionType::COLOR) {
                 $value = array_map('intval', $value);
             }
         }
 
         $filter = $this->field_id;
-        if(in_array($this->type, [CategoryConditionType::PRICE, CategoryConditionType::CATEGORY, CategoryConditionType::MANUFACTURE])){
+        if (in_array($this->type, [CategoryConditionType::PRICE, CategoryConditionType::CATEGORY, CategoryConditionType::MANUFACTURE, CategoryConditionType::COLOR])) {
             $filter = $this->type;
         }
 
@@ -27,7 +27,7 @@ class CategoryConditionalDTO extends CategoryCondition implements DTO
             'id' => $this->id,
             'filter' => $filter,
             'compare' => $this->compare,
-            'value' => $filter == CategoryConditionType::MANUFACTURE ? (int)$value : $value
+            'value' => in_array($filter, [CategoryConditionType::MANUFACTURE]) ? (int)$value : $value
         ];
     }
 }
