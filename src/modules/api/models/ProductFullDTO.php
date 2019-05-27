@@ -109,7 +109,8 @@ class ProductFullDTO extends Product implements DTO
                     'text' => $image->text,
                     'small' => $image->image->getUrl('gallery-preview'),
                     'big' => $image->image->getUrl('big-preview'),
-                    'original' => $image->image->getUrl()
+                    'original' => $image->image->getUrl(),
+                    'color' => $image->color_id
                 ];
             }, $this->productImages),
 

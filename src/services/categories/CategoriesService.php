@@ -4,6 +4,7 @@ namespace ozerich\shop\services\categories;
 
 use ozerich\shop\constants\CategoryType;
 use ozerich\shop\models\Category;
+use ozerich\shop\models\CategoryCondition;
 use yii\db\ActiveQuery;
 
 class CategoriesService
@@ -141,6 +142,15 @@ class CategoriesService
     }
 
     /**
+     * @param $id
+     * @return Category|null
+     */
+    public function getCategoryById($id)
+    {
+        return Category::findOne($id);
+    }
+
+    /**
      * @param Category $category
      * @return Category[]
      */
@@ -179,5 +189,18 @@ class CategoriesService
     public function getHomeCategoriesQuery()
     {
         return Category::find()->andWhere('home_display = 1')->addOrderBy('home_position ASC');
+    }
+
+    public function isColorCategory(Category $category)
+    {
+        if ($category->type != CategoryType::CONDITIONAL) {
+            return null;
+        }
+
+        /** @var CategoryCondition $conditional */
+        return CategoryCondition::find()
+            ->andWhere('category_id=:category_id', [':category_id' => $category->id])
+            ->andWhere('type=:type', [':type' => 'COLOR'])
+            ->exists();
     }
 }

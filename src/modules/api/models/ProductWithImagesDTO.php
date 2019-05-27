@@ -8,7 +8,7 @@ use ozerich\shop\models\Product;
 use ozerich\shop\models\ProductImage;
 use ozerich\shop\traits\ServicesTrait;
 
-class ProductDTO extends Product implements DTO
+class ProductWithImagesDTO extends ProductDTO
 {
     use ServicesTrait;
 
@@ -55,6 +55,14 @@ class ProductDTO extends Product implements DTO
 
             'params' => $this->getParamsJSON(),
             'manufacture_id' => $this->manufacture_id,
+
+            'images' => array_map(function (ProductImage $image) {
+                return [
+                    'image' => $image->image->getUrl('gallery-preview'),
+                    'color' => $image->color_id
+                ];
+            }, $this->productImages),
+
         ];
     }
 }

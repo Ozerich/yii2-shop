@@ -17,6 +17,7 @@ use ozerich\shop\modules\api\models\CollectionFullDTO;
 use ozerich\shop\modules\api\models\FilterDTO;
 use ozerich\shop\modules\api\models\ProductDTO;
 use ozerich\shop\modules\api\models\ProductShortDTO;
+use ozerich\shop\modules\api\models\ProductWithImagesDTO;
 use ozerich\shop\traits\ServicesTrait;
 use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
@@ -164,6 +165,11 @@ class CatalogController extends Controller
 
     public function actionProducts($id)
     {
+        $category = $this->categoriesService()->getCategoryById($id);
+        if (!$category) {
+            throw new NotFoundHttpException('Категории не найдено');
+        }
+
         $dataProvider = new ActiveDataProvider([
             'query' => $this->productGetService()->getSearchByCategoryQuery($id)->distinct(true)
                 ->joinWith('productFieldValues')
@@ -174,7 +180,10 @@ class CatalogController extends Controller
             ],
         ]);
 
-        return new CollectionResponse($dataProvider, ProductDTO::class);
+        return new CollectionResponse(
+            $dataProvider,
+            $this->categoriesService()->isColorCategory($category) ? ProductWithImagesDTO::class : ProductDTO::class
+        );
     }
 
     public function actionCollections()
