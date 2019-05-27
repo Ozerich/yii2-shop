@@ -26,7 +26,7 @@ class CategoryFullDTO extends Category implements DTO
             return null;
         }
 
-        return $conditional->value ? array_map('intval', explode(',', $conditional->value)) : null;
+        return $conditional->value ? array_map('intval', explode(';', $conditional->value)) : null;
     }
 
     public function toJSON()
