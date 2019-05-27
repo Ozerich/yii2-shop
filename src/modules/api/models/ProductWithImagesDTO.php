@@ -58,7 +58,7 @@ class ProductWithImagesDTO extends ProductDTO
 
             'images' => array_map(function (ProductImage $image) {
                 return [
-                    'image' => $image->image->getUrl('gallery-preview'),
+                    'image' => $image->image->getUrl('preview'),
                     'color' => $image->color_id
                 ];
             }, $this->productImages),
