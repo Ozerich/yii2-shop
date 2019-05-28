@@ -55,18 +55,20 @@ class ProductConnectionsFormConvertor
 
         ProductSame::deleteAll('product_id=:product_id OR product_same_id=:product_id', [':product_id' => $product->id]);
 
-        foreach ($form->same as $productId) {
-            $model = new ProductSame();
-            $model->product_id = $product->id;
-            $model->product_same_id = $productId;
-            $model->save();
+        if ($form->same) {
+            foreach ($form->same as $productId) {
+                $sameModel = new ProductSame();
+                $sameModel->product_id = $product->id;
+                $sameModel->product_same_id = $productId;
+                $sameModel->save();
 
-            $model = new ProductSame();
-            $model->product_id = $productId;
-            $model->product_same_id = $product->id;
-            $model->save();
+                $sameModel = new ProductSame();
+                $sameModel->product_id = $productId;
+                $sameModel->product_same_id = $product->id;
+                $sameModel->save();
+            }
         }
 
-        return $model;
+        return $product;
     }
 }
