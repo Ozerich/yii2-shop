@@ -21,6 +21,8 @@ class FilterProductColor extends Model
 
     public function search(ActiveQuery $query)
     {
+        $query->distinct();
+
         if (!empty($this->category_id)) {
             if ($this->category_id === 'empty') {
                 // TODO: Fetch products without category
@@ -36,8 +38,8 @@ class FilterProductColor extends Model
             }
         }
 
-        if (!empty($this->color_id)) {
-            if ($this->color_id == '') {
+        if ($this->color_id !== null && $this->color_id !== '') {
+            if ($this->color_id == '0') {
                 $query->andWhere('color_id is null');
             } else {
                 $query->andWhere('color_id=:color_id', [':color_id' => $this->color_id]);

@@ -46,7 +46,7 @@ class ProductsController extends AdminController
                 'class' => ListAction::class,
                 'query' => ProductImage::find(),
                 'view' => 'colors',
-                'pageSize' => 100,
+                'pageSize' => 200,
                 'filterModel' => new FilterProductColor(),
             ],
             'create' => [
