@@ -89,6 +89,7 @@ class CategoriesService
             }
             $result[] = [
                 'id' => $item['model']['id'],
+                'parent_id' => $item['model']['parent_id'],
                 'label' => $item['plain_label']
             ];
         }

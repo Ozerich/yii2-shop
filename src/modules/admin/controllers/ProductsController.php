@@ -21,6 +21,7 @@ use ozerich\shop\modules\admin\forms\ProductSeoFormConvertor;
 use ozerich\shop\modules\admin\forms\UpdateProductForm;
 use ozerich\shop\modules\admin\forms\UpdateProductFormConvertor;
 use ozerich\shop\traits\ServicesTrait;
+use yii\filters\Cors;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
@@ -188,6 +189,11 @@ class ProductsController extends AdminController
     public function actionPrices()
     {
         return $this->render('prices');
+    }
+
+    public function actionParams()
+    {
+        return $this->render('params');
     }
 
     public function actionCopy($id)

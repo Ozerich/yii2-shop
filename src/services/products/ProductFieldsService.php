@@ -48,7 +48,7 @@ class ProductFieldsService
         $model = new ProductFieldValue();
         $model->product_id = $product->id;
         $model->field_id = $field->id;
-        $model->value = $value;
+        $model->value = is_array($value) ? implode(';',$value) : $value;
         $model->save();
     }
 
@@ -67,5 +67,16 @@ class ProductFieldsService
         }
 
         return $result;
+    }
+
+    public function getFieldValue(Product $product, Field $field)
+    {
+        foreach ($product->productFieldValues as $productFieldValue) {
+            if ($productFieldValue->field_id == $field->id) {
+                return $productFieldValue->value;
+            }
+        }
+
+        return null;
     }
 }

@@ -15,6 +15,7 @@ use ozerich\shop\modules\admin\forms\CategoryChangeTypeToConditionalForm;
 use ozerich\shop\modules\admin\forms\CategorySeoForm;
 use ozerich\shop\modules\admin\forms\CategorySeoFormConvertor;
 use ozerich\shop\traits\ServicesTrait;
+use yii\filters\Cors;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
@@ -38,7 +39,7 @@ class CategoriesController extends AdminController
                 'isCreate' => true,
                 'view' => 'create',
                 'redirectUrl' => function (Category $category) {
-                    return '/admin/categories/update/'.$category->id;
+                    return '/admin/categories/update/' . $category->id;
                 },
             ],
             'update' => [
@@ -142,5 +143,4 @@ class CategoriesController extends AdminController
 
         return $this->redirect('/admin/categories/update/' . $model->id);
     }
-
 }

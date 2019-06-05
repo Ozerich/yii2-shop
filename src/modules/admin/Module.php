@@ -45,6 +45,11 @@ class Module extends \ozerich\admin\Module
                     'label' => 'Спрятанные товары',
                     'link' => '/products/?FilterProduct[hidden]=1',
                 ],
+                [
+                    'id' => 'product-params',
+                    'label' => 'Характеристики',
+                    'link' => '/products/params',
+                ],
             ]
         ],
         [
