@@ -7,9 +7,11 @@ use ozerich\admin\actions\DeleteAction;
 use ozerich\admin\actions\ListAction;
 use ozerich\admin\controllers\base\AdminController;
 use ozerich\shop\constants\FieldType;
+use ozerich\shop\models\Color;
 use ozerich\shop\models\Product;
 use ozerich\shop\models\ProductImage;
 use ozerich\shop\modules\admin\filters\FilterProduct;
+use ozerich\shop\modules\admin\filters\FilterProductColor;
 use ozerich\shop\modules\admin\forms\CreateProductForm;
 use ozerich\shop\modules\admin\forms\CreateProductFormConvertor;
 use ozerich\shop\modules\admin\forms\ProductConnectionsForm;
@@ -21,7 +23,6 @@ use ozerich\shop\modules\admin\forms\ProductSeoFormConvertor;
 use ozerich\shop\modules\admin\forms\UpdateProductForm;
 use ozerich\shop\modules\admin\forms\UpdateProductFormConvertor;
 use ozerich\shop\traits\ServicesTrait;
-use yii\filters\Cors;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
@@ -40,6 +41,13 @@ class ProductsController extends AdminController
                 'view' => 'index',
                 'pageSize' => 100,
                 'filterModel' => new FilterProduct(),
+            ],
+            'colors' => [
+                'class' => ListAction::class,
+                'query' => ProductImage::find(),
+                'view' => 'colors',
+                'pageSize' => 100,
+                'filterModel' => new FilterProductColor(),
             ],
             'create' => [
                 'class' => CreateOrUpdateAction::class,
@@ -287,11 +295,43 @@ class ProductsController extends AdminController
 
         $this->productColorsService()->updateCategoriesWithColorIds($changed);
 
-
         if (isset($_POST['only-save'])) {
             return $this->redirect('/admin/products/' . $model->id);
         } else {
             return $this->redirect('/admin/products');
         }
+    }
+
+    public function actionChangeColor()
+    {
+        $imageId = \Yii::$app->request->post('image_id');
+
+        $productImage = ProductImage::findOne($imageId);
+        if (!$productImage) {
+            throw new NotFoundHttpException('Картинки не найдено');
+        }
+
+        $oldColor = $productImage->color_id;
+
+        $colorId = \Yii::$app->request->post('color_id');
+        if ($colorId == $oldColor) {
+            return;
+        }
+
+        if($colorId) {
+            $color = Color::findOne($colorId);
+            if (!$color) {
+                throw new NotFoundHttpException('Цвета не найдено');
+            }
+
+            $productImage->color_id = $color->id;
+        } else{
+            $productImage->color_id = null;
+        }
+
+        $productImage->save(false, ['color_id']);
+
+        $this->productColorsService()->updateCategoriesWithColorIds([$oldColor]);
+        $this->productColorsService()->updateCategoriesWithColorIds([$color->id]);
     }
 }

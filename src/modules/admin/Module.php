@@ -50,6 +50,11 @@ class Module extends \ozerich\admin\Module
                     'label' => 'Характеристики',
                     'link' => '/products/params',
                 ],
+                [
+                    'id' => 'product-colors',
+                    'label' => 'Цвета',
+                    'link' => '/products/colors',
+                ],
             ]
         ],
         [
