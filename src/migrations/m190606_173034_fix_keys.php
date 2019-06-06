@@ -5,9 +5,9 @@ namespace ozerich\shop\migrations;
 use yii\db\Migration;
 
 /**
- * Class m190520_173034_collections
+ * Class m190606_173034_fix_keys
  */
-class m190526_173034_colors extends Migration
+class m190606_173034_fix_keys extends Migration
 {
     /**
      * {@inheritdoc}
