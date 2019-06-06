@@ -97,6 +97,8 @@ class ProductsApiController extends Controller
 
         $this->productFieldsService()->setProductFieldValue($product, $field, $request->value);
 
+        $this->categoryProductsService()->afterProductParamsChanged($product);
+
         return null;
     }
 }

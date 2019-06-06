@@ -4,6 +4,7 @@ namespace ozerich\shop\models;
 
 use himiklab\sitemap\behaviors\SitemapBehavior;
 use ozerich\shop\traits\ServicesTrait;
+use ozerich\tools\utils\Translit;
 use yii\helpers\Url;
 
 /**
@@ -173,6 +174,16 @@ class Category extends \yii\db\ActiveRecord
     public function getFields()
     {
         return $this->hasMany(Field::className(), ['category_id' => 'id']);
+    }
+
+
+    public function beforeValidate()
+    {
+        if (empty($this->url_alias)) {
+            $this->url_alias = Translit::convert($this->name);
+        }
+
+        return parent::beforeValidate();
     }
 
     /**

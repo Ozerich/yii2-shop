@@ -16,7 +16,8 @@ class CollectionsController extends AdminController
             'index' => [
                 'class' => ListAction::class,
                 'query' => ProductCollection::find(),
-                'view' => 'index'
+                'view' => 'index',
+                'pageSize' => 500
             ],
             'create' => [
                 'class' => CreateOrUpdateAction::class,

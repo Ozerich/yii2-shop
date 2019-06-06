@@ -24,6 +24,11 @@ class CategoriesService
             if ($b->type == CategoryType::CONDITIONAL && $a->type == CategoryType::CATALOG) {
                 return -1;
             }
+
+            if($a->type == $b->type && $a->type == CategoryType::CONDITIONAL){
+                return strcasecmp($a->name, $b->name);
+            }
+
             return 0;
         });
 

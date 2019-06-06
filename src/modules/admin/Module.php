@@ -27,7 +27,19 @@ class Module extends \ozerich\admin\Module
             'id' => 'categories',
             'link' => '/categories',
             'label' => 'Категории',
-            'icon' => 'book'
+            'icon' => 'book',
+            'submenu' => [
+                [
+                    'id' => 'posts',
+                    'label' => 'Категории',
+                    'link' => '/categories',
+                ],
+                [
+                    'id' => 'posts',
+                    'label' => 'SEO теги',
+                    'link' => '/categories/seo',
+                ],
+            ]
         ],
         [
             'id' => 'products',
@@ -46,6 +58,11 @@ class Module extends \ozerich\admin\Module
                     'link' => '/products/?FilterProduct[hidden]=1',
                 ],
                 [
+                    'id' => 'product-prices',
+                    'link' => '/products/prices',
+                    'label' => 'Цены и наличие'
+                ],
+                [
                     'id' => 'product-params',
                     'label' => 'Характеристики',
                     'link' => '/products/params',
@@ -56,12 +73,6 @@ class Module extends \ozerich\admin\Module
                     'link' => '/products/colors',
                 ],
             ]
-        ],
-        [
-            'id' => 'prices',
-            'link' => '/products/prices',
-            'label' => 'Цены и наличие',
-            'icon' => 'book'
         ],
         [
             'id' => 'collections',

@@ -15,7 +15,6 @@ use ozerich\shop\modules\admin\forms\CategoryChangeTypeToConditionalForm;
 use ozerich\shop\modules\admin\forms\CategorySeoForm;
 use ozerich\shop\modules\admin\forms\CategorySeoFormConvertor;
 use ozerich\shop\traits\ServicesTrait;
-use yii\filters\Cors;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
@@ -32,6 +31,12 @@ class CategoriesController extends AdminController
                 'models' => $this->categoriesService()->getTreeAsArray(),
                 'pageSize' => -1,
                 'view' => 'index'
+            ],
+            'seo' => [
+                'class' => ListAction::class,
+                'models' => $this->categoriesService()->getTreeAsArray(),
+                'pageSize' => -1,
+                'view' => 'seo'
             ],
             'create' => [
                 'class' => CreateOrUpdateAction::class,
@@ -142,5 +147,18 @@ class CategoriesController extends AdminController
         }
 
         return $this->redirect('/admin/categories/update/' . $model->id);
+    }
+
+    public function actionUpdateSeo($id)
+    {
+        $model = Category::findOne($id);
+        if (!$model) {
+            throw new NotFoundHttpException();
+        }
+
+        $model->seo_title = \Yii::$app->request->post('title');
+        $model->seo_description = \Yii::$app->request->post('description');
+
+        $model->save(false, ['seo_title', 'seo_description']);
     }
 }
