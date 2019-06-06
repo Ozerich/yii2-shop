@@ -11,6 +11,7 @@ use yii\helpers\Url;
  *
  * @property int $id
  * @property string $url_alias
+ * @property string $type
  * @property string $name
  * @property string $label
  * @property boolean $hidden
@@ -51,12 +52,12 @@ use yii\helpers\Url;
  * @property Image[] $images
  * @property ProductImage[] $productImages
  * @property ProductPrice[] $prices
+ * @property ProductModule[] $modules
  * @property ProductFieldValue[] $productFieldValues
  * @property ProductPriceParam[] $productPriceParams
  * @property ProductCategory[] $productCategories
  * @property Category $category
  * @property ProductSame $productSameProducts
- * @property ProductSame $sameProducts
  */
 class Product extends \yii\db\ActiveRecord
 {
@@ -217,6 +218,14 @@ class Product extends \yii\db\ActiveRecord
     public function getPrices()
     {
         return $this->hasMany(ProductPrice::className(), ['product_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getModules()
+    {
+        return $this->hasMany(ProductModule::className(), ['product_id' => 'id']);
     }
 
     /**

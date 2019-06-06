@@ -11,6 +11,7 @@
 ]); ?>
 
 <div class="row">
+
   <div class="col-xs-6">
       <?= $form->field($formModel, 'name')->textInput(); ?>
   </div>
@@ -27,7 +28,6 @@
       <?= $form->field($formModel, 'url_alias')->textInput(); ?>
   </div>
 
-
   <div class="col-xs-12">
       <?= $form->field($formModel, 'image_id')->widget(ozerich\shop\modules\admin\widgets\ImageWidget::class, [
           'scenario' => 'product'
@@ -35,7 +35,7 @@
   </div>
 
   <div class="col-xs-12">
-      <?= $form->field($formModel, 'text')->widget(\ozerich\admin\widgets\TinyMce::class, ['options' => ['rows' => 35]]); ?>
+      <?= $form->field($formModel, 'text')->widget(\ozerich\admin\widgets\TinyMce::class); ?>
   </div>
 </div>
 

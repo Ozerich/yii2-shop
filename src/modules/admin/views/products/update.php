@@ -38,8 +38,12 @@ $this->title = 'Редактировать товар - ' . $model->name . ' <sp
     <li><a href="#media" data-toggle="tab">Медиа</a></li>
     <li><a href="#connections" data-toggle="tab">Связи</a></li>
     <li><a href="#seo" data-toggle="tab">SEO параметры</a></li>
-    <li><a href="#prices" data-toggle="tab">Цена</a></li>
-    <li><a href="#colors" data-toggle="tab">Цвета</a></li>
+      <? if ($model->type == \ozerich\shop\constants\ProductType::SIMPLE): ?>
+        <li><a href="#prices" data-toggle="tab">Цена</a></li>
+        <li><a href="#colors" data-toggle="tab">Цвета</a></li>
+      <? else: ?>
+        <li><a href="#modules" data-toggle="tab">Модули</a></li>
+      <? endif; ?>
   </ul>
   <div class="tab-content">
     <div class="active tab-pane" id="main">
@@ -72,15 +76,24 @@ $this->title = 'Редактировать товар - ' . $model->name . ' <sp
             'formModel' => $seoFormModel
         ]); ?>
     </div>
-    <div class="tab-pane" id="prices">
-        <?= $this->render('update/_tab_prices', [
-            'model' => $model
-        ]); ?>
-    </div>
-    <div class="tab-pane" id="colors">
-        <?= $this->render('update/_tab_colors', [
-            'model' => $model
-        ]); ?>
-    </div>
+
+      <? if ($model->type == \ozerich\shop\constants\ProductType::SIMPLE): ?>
+        <div class="tab-pane" id="prices">
+            <?= $this->render('update/_tab_prices', [
+                'model' => $model
+            ]); ?>
+        </div>
+        <div class="tab-pane" id="colors">
+            <?= $this->render('update/_tab_colors', [
+                'model' => $model
+            ]); ?>
+        </div>
+      <? else: ?>
+        <div class="tab-pane" id="modules">
+            <?= $this->render('update/_tab_modules', [
+                'model' => $model
+            ]); ?>
+        </div>
+      <? endif; ?>
   </div>
 </div>

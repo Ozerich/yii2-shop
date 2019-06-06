@@ -8,6 +8,8 @@ class CreateProductForm extends Model
 {
     public $name;
 
+    public $type;
+
     public $manufacture_id;
 
     public $category_id;
@@ -21,7 +23,7 @@ class CreateProductForm extends Model
     public function rules()
     {
         return [
-            [['name', 'category_id'], 'required'],
+            [['name', 'category_id', 'type'], 'required'],
             [['image_id', 'manufacture_id'], 'integer'],
             [['name', 'sku', 'label'], 'string', 'max' => 150],
         ];
@@ -32,10 +34,11 @@ class CreateProductForm extends Model
         return [
             'name' => 'Название',
             'manufacture_id' => 'Производитель',
-            'category_id' => 'Категории',
+            'category_id' => 'Категория',
             'image_id' => 'Картинка',
             'sku' => 'Артикул',
             'label' => 'Маркировка',
+            'type' => 'Тип товара'
         ];
     }
 }

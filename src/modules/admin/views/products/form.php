@@ -18,32 +18,34 @@ $this->title = 'Создать товар';
     'isCreate' => true
 ]); ?>
 
+  <div class="col-xs-12">
+      <?= $form->field($formModel, 'type')->dropDownList(\ozerich\shop\constants\ProductType::list()); ?>
+  </div>
+
   <div class="col-xs-6">
       <?= $form->field($formModel, 'name')->textInput(); ?>
   </div>
 
   <div class="col-xs-3">
-      <?= $form->field($formModel, 'sku')->textInput(); ?>
+      <?= $form->field($formModel, 'label')->textInput(); ?>
   </div>
 
   <div class="col-xs-3">
       <?= $form->field($formModel, 'sku')->textInput(); ?>
   </div>
 
-  <div class="col-xs-12">
-      <?= $form->field($formModel, 'manufacture_id')->dropDownList(\ozerich\shop\models\Manufacture::getList(), [
-          'prompt' => 'Отсуствует'
-      ]); ?>
-  </div>
-
-<? if ($model->isNewRecord): ?>
-  <div class="col-xs-12">
+  <div class="col-xs-6">
       <?= $form->field($formModel, 'category_id')->widget(\ozerich\shop\modules\admin\widgets\CategoryWidget::class, [
           'placeholder' => true,
           'multiple' => false
       ]) ?>
   </div>
-<? endif; ?>
+
+  <div class="col-xs-6">
+      <?= $form->field($formModel, 'manufacture_id')->dropDownList(\ozerich\shop\models\Manufacture::getList(), [
+          'prompt' => 'Отсуствует'
+      ]); ?>
+  </div>
 
   <div class="col-xs-12">
       <?= $form->field($formModel, 'image_id')->widget(ozerich\shop\modules\admin\widgets\ImageWidget::class, [

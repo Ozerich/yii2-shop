@@ -1,0 +1,144 @@
+.app {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.table-list {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-size: 12px;
+
+  td, th {
+    padding: 5px 5px;
+    border: 1px solid #eee;
+    vertical-align: top;
+  }
+
+  tr:nth-child(2n) td {
+    background: #efefef;
+  }
+
+  .product-row {
+    // font-size: 14px;
+    // font-weight: bold;
+  }
+
+  .input[type=number], input[type=text] {
+    text-align: center;
+    padding: 3px 0;
+  }
+
+  .cell-name {
+    vertical-align: middle;
+  }
+
+  .cell-price {
+    width: 150px;
+    max-width: 150px;
+    vertical-align: middle;
+  }
+
+  .cell-discount {
+    width: 150px;
+    max-width: 150px;
+  }
+
+  .cell-stock {
+    width: 250px;
+    max-width: 250px;
+    vertical-align: middle;
+    .form-group {
+      margin-bottom: 0;
+    }
+  }
+
+  select {
+    width: 100%;
+  }
+
+  input, select {
+    font-size: 12px;
+  }
+
+  .price {
+    input[type=number] {
+      text-align: center;
+      width: 100%;
+    }
+    &-discount {
+
+      .form-group {
+        margin-bottom: 0 !important;
+      }
+
+      select {
+        margin-bottom: 5px;
+      }
+    }
+  }
+
+  .stock {
+    label {
+      display: block;
+      margin-top: 8px;
+      margin-bottom: 3px;
+    }
+    input {
+      text-align: center;
+      width: 100%;
+    }
+  }
+
+  .row-child {
+    .cell-name {
+      padding-left: 50px;
+      font-style: italic;
+    }
+  }
+
+  a {
+    color: #333333;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 100px;
+
+  .fa {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -15px;
+    margin-top: -15px;
+    color: #000;
+    font-size: 30px;
+  }
+}
+
+.product-extended-header, .price-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .price-input-wrapper {
+    flex: 1;
+    text-align: center;
+    input {
+      max-width: 80px;
+    }
+  }
+  .currency-switcher {
+    flex-basis: 50px;
+    min-width: 50px;
+    margin-left: 5px;
+  }
+}
