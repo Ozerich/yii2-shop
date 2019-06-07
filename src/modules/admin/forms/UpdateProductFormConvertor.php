@@ -15,6 +15,7 @@ class UpdateProductFormConvertor extends Model
     {
         $form = new UpdateProductForm();
 
+        $form->type = $product->type;
         $form->name = $product->name;
         $form->image_id = $product->image_id;
         $form->schema_image_id = $product->schema_image_id;
@@ -41,6 +42,7 @@ class UpdateProductFormConvertor extends Model
             $manufactureChanged = true;
         }
 
+        $model->type = $form->type;
         $model->name = $form->name;
         $model->image_id = $form->image_id;
         $model->schema_image_id = $form->schema_image_id;

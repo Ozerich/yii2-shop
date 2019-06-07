@@ -104,6 +104,7 @@ class Product extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'type' => 'Тип товара',
             'url_alias' => 'URL алиас',
             'name' => 'Название',
             'image_id' => 'Картинка',

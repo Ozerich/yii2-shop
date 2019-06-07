@@ -12,6 +12,10 @@
 
 <div class="row">
 
+  <div class="col-xs-12">
+      <?= $form->field($formModel, 'type')->dropDownList(\ozerich\shop\constants\ProductType::list()); ?>
+  </div>
+
   <div class="col-xs-6">
       <?= $form->field($formModel, 'name')->textInput(); ?>
   </div>

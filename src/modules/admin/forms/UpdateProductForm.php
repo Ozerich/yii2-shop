@@ -34,6 +34,8 @@ class UpdateProductForm extends Product
 
     public $popular;
 
+    public $type;
+
     public function rules()
     {
         return [
@@ -46,6 +48,8 @@ class UpdateProductForm extends Product
 
             [['label'], 'string', 'max' => 150],
             [['hidden', 'popular', 'is_new'], 'boolean'],
+
+            [['type'], 'safe']
         ];
     }
 }
