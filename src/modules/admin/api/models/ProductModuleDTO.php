@@ -24,7 +24,8 @@ class ProductModuleDTO implements DTO
             'image' => $this->model->image ? $this->model->image->getUrl() : null,
             'price' => $this->model->price,
             'price_with_discount' => $this->model->price_with_discount,
-            'quantity' => $this->model->default_quantity
+            'quantity' => $this->model->default_quantity,
+            'params' => $this->model->params ? json_decode($this->model->params, true) : []
         ];
     }
 }

@@ -1,7 +1,7 @@
 import { MODULE_MODE_SIMPLE } from "../constants/ModuleMode";
 import CommonService from '../services/common';
 
-import {load} from "./list";
+import { load } from "./list";
 
 const service = new CommonService;
 
@@ -77,6 +77,18 @@ export function create(formData) {
       type: CREATE + _REQUEST
     });
 
+    const params = [];
+
+    if (formData.width) {
+      params.push({ param: 'Ширина', value: formData.width });
+    }
+    if (formData.height) {
+      params.push({ param: 'Высота', value: formData.height });
+    }
+    if (formData.depth) {
+      params.push({ param: 'Глубина', value: formData.depth });
+    }
+
     service.createModule(
         getState().common.productId,
         formData.name,
@@ -85,7 +97,8 @@ export function create(formData) {
         parseFloat(formData.price),
         formData.discount,
         parseFloat(formData.discount_value),
-        formData.images
+        formData.images,
+        params
     ).then(data => {
       dispatch({
         type: CREATE + _SUCCESS

@@ -20,12 +20,14 @@ class ModelRequest extends RequestModel
 
     public $images;
 
+    public $params;
+
     public function rules()
     {
         return [
             [['name', 'price'], 'required'],
             [['sku', 'comment', 'discount_mode', 'discount_value'], 'safe'],
-            [['images'], 'safe']
+            [['images', 'params'], 'safe']
         ];
     }
 }

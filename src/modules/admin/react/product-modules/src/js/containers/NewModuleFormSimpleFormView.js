@@ -32,10 +32,23 @@ class NewModuleFormSimpleFormView extends Component {
           </div>
 
           <div className="row">
+            <div className="col-xs-4">
+              <FormInput label="Ширина, см." id="width" value={values.width} handleChange={handleChange} />
+            </div>
+            <div className="col-xs-4">
+              <FormInput label="Высота, см." id="height" value={values.height} handleChange={handleChange} />
+            </div>
+            <div className="col-xs-4">
+              <FormInput label="Глубина, см." id="depth" value={values.depth} handleChange={handleChange} />
+            </div>
+          </div>
+
+          <div className="row">
             <div className="col-xs-12">
               <FormInput label="Комментарий" id="note" value={values.note} handleChange={handleChange} />
             </div>
           </div>
+
           <NewModuleFormSimpleFormPrices {...this.props} />
         </>
     );

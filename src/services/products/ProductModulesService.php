@@ -27,7 +27,7 @@ class ProductModulesService
         return ProductModule::findOne($id);
     }
 
-    public function createModule(Product $product, $name, $sku, $comment, $price, $discountMode, $discountValue, $imageIds)
+    public function createModule(Product $product, $name, $sku, $comment, $price, $discountMode, $discountValue, $imageIds, $params)
     {
         $model = new ProductModule();
 
@@ -38,6 +38,7 @@ class ProductModulesService
         $model->price = $price;
         $model->discount_mode = $discountMode;
         $model->discount_value = $discountValue;
+        $model->params = $params ? json_encode($params) : null;
 
         if (!$model->save()) {
             return false;

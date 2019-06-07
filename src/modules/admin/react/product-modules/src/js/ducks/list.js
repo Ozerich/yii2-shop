@@ -17,6 +17,38 @@ const initialState = {
   entities: [],
 };
 
+function stateMove(entities, id, direction) {
+  let p = -1;
+  for (let i = 0; i < entities.length; i++) {
+    if (entities[i].id === id) {
+      p = i;
+      break;
+    }
+  }
+
+  if (p === -1) {
+    return entities;
+  }
+
+  if (p === 0 && direction === 'up') {
+    return entities;
+  }
+
+  if (p === entities.length - 1 && direction === 'down') {
+    return entities;
+  }
+
+  if (direction === 'up') {
+    const start = entities.slice(0, p - 1);
+    const items = start.concat(entities[p]).concat(entities[p - 1]);
+    return items.concat(entities.slice(p + 1));
+  } else {
+    const start = entities.slice(0, p);
+    const items = start.concat(entities[p + 1]).concat(entities[p]);
+    return items.concat(entities.slice(p + 2));
+  }
+}
+
 // Reducer
 export default function reducer(state = initialState, action = {}) {
   const payload = action.payload || {};
@@ -42,7 +74,10 @@ export default function reducer(state = initialState, action = {}) {
           }
           return { ...item, quantity: payload.value };
         })
-      }
+      };
+
+    case MOVE:
+      return { ...state, entities: stateMove(state.entities, payload.id, payload.direction) }
 
     default:
       return state;

@@ -1,12 +1,12 @@
 import BaseService from './base';
 
 export default class CommonService extends BaseService {
-  createModule(productId, name, sku, comment, price, discountMode, discountValue, images) {
+  createModule(productId, name, sku, comment, price, discountMode, discountValue, images, params) {
     return this.post('/product-modules-api/' + productId + '/create', {
       name, sku, comment, price,
       discount_mode: discountMode,
       discount_value: discountValue,
-      images
+      images, params
     })
   }
 

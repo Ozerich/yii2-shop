@@ -88,7 +88,7 @@ class ProductModulesApiController extends Controller
         $request = new ModelRequest();
         $request->load();
 
-        $this->productModulesService()->createModule($product, $request->name, $request->sku, $request->comment, $request->price, $request->discount_mode, $request->discount_value, $request->images);
+        $this->productModulesService()->createModule($product, $request->name, $request->sku, $request->comment, $request->price, $request->discount_mode, $request->discount_value, $request->images, $request->params);
     }
 
     public function actionDelete($id)
