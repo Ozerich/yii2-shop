@@ -4,8 +4,9 @@ namespace ozerich\shop\modules\api\models;
 
 use ozerich\api\interfaces\DTO;
 use ozerich\shop\constants\FieldType;
+use ozerich\shop\constants\ProductType;
 use ozerich\shop\models\Product;
-use ozerich\shop\models\ProductImage;
+use ozerich\shop\models\ProductModule;
 use ozerich\shop\traits\ServicesTrait;
 
 class ProductDTO extends Product implements DTO

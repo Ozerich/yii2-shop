@@ -3,11 +3,13 @@
 namespace ozerich\shop\modules\api\models;
 
 use ozerich\api\interfaces\DTO;
+use ozerich\shop\constants\ProductType;
 use ozerich\shop\models\Category;
 use ozerich\shop\models\CategoryField;
 use ozerich\shop\models\Product;
 use ozerich\shop\models\ProductFieldValue;
 use ozerich\shop\models\ProductImage;
+use ozerich\shop\models\ProductModule;
 use ozerich\shop\traits\ServicesTrait;
 
 class ProductFullDTO extends Product implements DTO
@@ -86,6 +88,7 @@ class ProductFullDTO extends Product implements DTO
     {
         return [
             'id' => $this->id,
+            'type' => $this->type,
             'url_alias' => $this->url_alias,
             'name' => $this->name,
             'label' => $this->label,
@@ -130,7 +133,12 @@ class ProductFullDTO extends Product implements DTO
             'is_popular' => $this->popular ? true : false,
 
             'manufacture' => $this->manufacture ? (new ManufactureDTO($this->manufacture))->toJSON() : null,
-            'collection' => $this->collection ? (new CollectionDTO($this->collection))->toJSON() : null
+            'collection' => $this->collection ? (new CollectionDTO($this->collection))->toJSON() : null,
+
+
+            'modules' => $this->type == ProductType::MODULAR ? array_map(function (ProductModule $module) {
+                return (new ProductModuleDTO($module))->toJSON();
+            }, $this->modules) : []
         ];
     }
 }
