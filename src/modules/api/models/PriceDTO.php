@@ -35,7 +35,10 @@ class PriceDTO implements DTO
             'discount_value' => $this->model->discount_value,
 
             'is_from' => $this->model->is_price_from,
-            'note' => $this->model->price_note
+            'note' => $this->model->price_note,
+
+            'stock' => $this->model->stock,
+            'stock_waiting_days' => $this->model->stock_waiting_days,
         ];
     }
 }
