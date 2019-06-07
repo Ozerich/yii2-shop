@@ -19,7 +19,8 @@ class List extends Component {
             <table className="table-list">
               <thead>
               <tr>
-                <th className="cell-name">Модуль</th>
+                <th className="cell-image">Картинка</th>
+                <th className="cell-name">Название</th>
                 <th className="cell-price">Цена</th>
                 <th className="cell-quantity">Количество в<br />стандартном наборе</th>
                 <th className="cell-actions">Действия</th>

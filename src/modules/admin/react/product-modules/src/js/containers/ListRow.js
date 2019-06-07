@@ -11,6 +11,13 @@ class ListRow extends Component {
     const { model } = this.props;
     return (
         <tr>
+          <td className="cell-image">
+            {
+              model.image ? <div className="list-row__item-image">
+                <img src={model.image} />
+              </div> : null
+            }
+          </td>
           <td className="cell-name"><ListRowModule model={model} /></td>
           <td className="cell-price"><ListRowModulePrice model={model} /></td>
           <td className="cell-quantity"><ListRowQuantity onChange={this.onQuantityChange.bind(this)} model={model} />

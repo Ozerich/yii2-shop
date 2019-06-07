@@ -81,9 +81,22 @@
     border: 0 none;
     margin-right: 10px;
     color: #3c8dbc;
+    outline: none;
 
     &:last-child {
       margin-right: 0;
+    }
+  }
+
+  .cell-image {
+    width: 200px;
+    max-width: 200px;
+    text-align: center;
+    vertical-align: middle;
+
+    img {
+      max-height: 180px;
+      max-width: 100%;
     }
   }
 
