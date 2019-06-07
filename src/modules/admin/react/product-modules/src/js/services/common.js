@@ -8,4 +8,16 @@ export default class CommonService extends BaseService {
       discount_value: discountValue
     })
   }
+
+  list(productId) {
+    return this.query('/product-modules-api/' + productId);
+  }
+
+  move(moduleId, direction) {
+    return this.post('/product-modules-api/move/?id=' + moduleId + '&mode=' + direction);
+  }
+
+  remove(moduleId) {
+    return this.post('/product-modules-api/delete/' + moduleId);
+  }
 }

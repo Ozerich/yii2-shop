@@ -22,6 +22,10 @@
   }
 }
 
+.list {
+  padding: 20px;
+}
+
 .new-module {
   padding: 20px;
   border-top: 1px solid #eee;
@@ -49,6 +53,34 @@
           margin-right: 0;
         }
       }
+    }
+  }
+}
+
+.table-list {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-size: 12px;
+
+  th {
+    text-align: center;
+  }
+
+  td, th {
+    padding: 5px 5px;
+    border: 1px solid #eee;
+    vertical-align: top;
+  }
+
+  .grid-icon {
+    background: transparent;
+    border: 0 none;
+    margin-right: 10px;
+    color: #3c8dbc;
+
+    &:last-child {
+      margin-right: 0;
     }
   }
 }

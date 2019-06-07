@@ -1,6 +1,8 @@
 import { MODULE_MODE_SIMPLE } from "../constants/ModuleMode";
 import CommonService from '../services/common';
 
+import {load} from "./list";
+
 const service = new CommonService;
 
 const _REQUEST = '_REQUEST';
@@ -87,6 +89,7 @@ export function create(formData) {
       dispatch({
         type: CREATE + _SUCCESS
       });
+      dispatch(load());
     }).catch(error => {
       dispatch({
         type: CREATE + _FAILURE,

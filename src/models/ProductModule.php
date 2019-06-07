@@ -79,4 +79,12 @@ class ProductModule extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Product::className(), ['id' => 'product_value_id']);
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public static function find()
+    {
+        return parent::find()->addOrderBy('priority ASC');
+    }
 }

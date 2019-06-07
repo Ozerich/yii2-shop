@@ -48,6 +48,7 @@
     width: 250px;
     max-width: 250px;
     vertical-align: middle;
+
     .form-group {
       margin-bottom: 0;
     }
@@ -66,6 +67,7 @@
       text-align: center;
       width: 100%;
     }
+
     &-discount {
 
       .form-group {
@@ -84,6 +86,7 @@
       margin-top: 8px;
       margin-bottom: 3px;
     }
+
     input {
       text-align: center;
       width: 100%;
@@ -99,6 +102,7 @@
 
   a {
     color: #333333;
+
     &:hover {
       text-decoration: underline;
     }
@@ -132,10 +136,12 @@
   .price-input-wrapper {
     flex: 1;
     text-align: center;
+
     input {
       max-width: 80px;
     }
   }
+
   .currency-switcher {
     flex-basis: 50px;
     min-width: 50px;

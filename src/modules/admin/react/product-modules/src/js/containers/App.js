@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import NewModule from './NewModule';
 
 import { init } from "../ducks/common";
+import List from "./List";
 
 class App extends Component {
   componentWillMount() {
@@ -12,6 +13,7 @@ class App extends Component {
   render() {
     return (
         <>
+          <List />
           <NewModule />
         </>
     );
