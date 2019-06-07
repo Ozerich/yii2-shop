@@ -14,6 +14,7 @@ use ozerich\shop\services\products\ProductColorsService;
 use ozerich\shop\services\products\ProductFieldsService;
 use ozerich\shop\services\products\ProductGetService;
 use ozerich\shop\services\products\ProductMediaService;
+use ozerich\shop\services\products\ProductModulesService;
 use ozerich\shop\services\products\ProductPricesService;
 use ozerich\shop\services\search\SearchService;
 use ozerich\shop\services\settings\SettingsService;
@@ -49,6 +50,20 @@ trait ServicesTrait
     private $blogService = null;
 
     private $productCollectionsService = null;
+
+    private $productModulesService = null;
+
+    /**
+     * @return ProductModulesService
+     */
+    public function productModulesService()
+    {
+        if ($this->productModulesService === null) {
+            $this->productModulesService = new ProductModulesService();
+        }
+
+        return $this->productModulesService;
+    }
 
     /**
      * @return ProductCollectionsService

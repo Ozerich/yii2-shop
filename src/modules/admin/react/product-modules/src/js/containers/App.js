@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
-
-import Form from './Form';
-import List from './List';
+import NewModule from './NewModule';
 
 class App extends Component {
   render() {
     return (
         <>
-          <Form />
-          <br />
-          <List />
+
+          <NewModule/>
         </>
     );
   }

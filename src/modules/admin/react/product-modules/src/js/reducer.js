@@ -1,11 +1,9 @@
 import { combineReducers } from 'redux';
 
-import form from './ducks/form';
-import list from './ducks/list';
+import newModule from './ducks/new';
 
 const rootReducer = combineReducers({
-  form,
-  list
+  'new': newModule
 });
 
 export default rootReducer;

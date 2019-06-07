@@ -1,0 +1,2 @@
+export const MODULE_MODE_SIMPLE = 'SIMPLE';
+export const MODULE_MODE_CATALOG = 'CATALOG';
