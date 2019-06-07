@@ -5,11 +5,6 @@ class ListRowModule extends Component {
     const { model } = this.props;
     return (
         <div className="list-row__item">
-          {
-            model.image ? <div className="list-row__item-image">
-              <img src={model.image} />
-            </div> : null
-          }
           <span className="list-row__item-name">{model.name}</span>
 
           {model.params && model.params.length > 0 ? (
