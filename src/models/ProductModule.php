@@ -2,6 +2,7 @@
 
 namespace ozerich\shop\models;
 
+use ozerich\shop\constants\DiscountType;
 use ozerich\tools\behaviors\PriorityBehavior;
 
 /**

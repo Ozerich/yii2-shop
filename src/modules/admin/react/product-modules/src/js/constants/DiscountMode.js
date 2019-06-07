@@ -1,6 +1,6 @@
 export const DISCOUNT_MODE_PERCENT = 'PERCENT';
-export const DISCOUNT_MODE_MONEY = 'MONEY';
-export const DISCOUNT_MODE_VALUE = 'VALUE';
+export const DISCOUNT_MODE_MONEY = 'AMOUNT';
+export const DISCOUNT_MODE_VALUE = 'FIXED';
 
 export function label(value) {
   switch (value) {
