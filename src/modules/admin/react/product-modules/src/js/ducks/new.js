@@ -85,6 +85,7 @@ export function create(formData) {
         parseFloat(formData.price),
         formData.discount,
         parseFloat(formData.discount_value),
+        formData.images
     ).then(data => {
       dispatch({
         type: CREATE + _SUCCESS

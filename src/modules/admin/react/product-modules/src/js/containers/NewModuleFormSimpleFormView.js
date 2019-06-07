@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
 import FormInput from "../components/form/FormInput";
 import NewModuleFormSimpleFormPrices from "./NewModuleFormSimpleFormPrices";
+import FormImages from "../components/form/FormImages/FormImages";
+
+import CommonService from '../services/common';
+
+const service = new CommonService;
 
 class NewModuleFormSimpleFormView extends Component {
   render() {
-    const { handleChange, values } = this.props;
+    const { handleChange, values, setFieldValue } = this.props;
 
     return (
         <>
@@ -16,6 +21,16 @@ class NewModuleFormSimpleFormView extends Component {
               <FormInput label="Артикул" id="sku" value={values.sku} handleChange={handleChange} />
             </div>
           </div>
+
+          <div className="row">
+            <div className="col-xs-12">
+              <FormImages label="Картинки" id="images" value={values.images}
+                          setFieldValue={setFieldValue}
+                          onUpload={file => service.upload(file)}
+              />
+            </div>
+          </div>
+
           <div className="row">
             <div className="col-xs-12">
               <FormInput label="Комментарий" id="note" value={values.note} handleChange={handleChange} />

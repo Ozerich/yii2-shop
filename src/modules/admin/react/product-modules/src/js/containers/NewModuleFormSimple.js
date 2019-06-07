@@ -11,12 +11,12 @@ class NewModuleFormSimple extends Component {
 
     return (
         <Formik initialValues={{ name: '' }} onSubmit={this.onSubmit.bind(this)}>
-          {({ values, handleChange, handleSubmit, submitForm }) => {
+          {({ values, handleChange, handleSubmit, submitForm, setFieldValue }) => {
             bindSubmitForm(submitForm);
 
             return (
                 <form noValidate onSubmit={handleSubmit}>
-                  <NewModuleFormSimpleFormView values={values} handleChange={handleChange} />
+                  <NewModuleFormSimpleFormView values={values} setFieldValue={setFieldValue} handleChange={handleChange} />
                 </form>
             )
           }}

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 const axios = require('axios');
 
@@ -25,5 +25,18 @@ export default class BaseService {
 
   post(url, data) {
     return api.post(url, data).then(resolve).catch(reject);
+  }
+
+  multipart(url, data) {
+    const formData = new FormData();
+    Object.keys(data).forEach(field => formData.append(field, data[field]));
+
+    const config = {
+      headers: {
+        'content-type': 'multipart/form-data'
+      }
+    };
+
+    return api.post(url, formData, config).then(resolve).catch(reject);
   }
 }

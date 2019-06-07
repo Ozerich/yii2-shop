@@ -6,7 +6,6 @@ use ozerich\api\request\RequestModel;
 
 class ModelRequest extends RequestModel
 {
-
     public $name;
 
     public $sku;
@@ -19,11 +18,14 @@ class ModelRequest extends RequestModel
 
     public $discount_value;
 
+    public $images;
+
     public function rules()
     {
         return [
             [['name', 'price'], 'required'],
-            [['sku', 'comment', 'discount_mode', 'discount_value'], 'safe']
+            [['sku', 'comment', 'discount_mode', 'discount_value'], 'safe'],
+            [['images'], 'safe']
         ];
     }
 }

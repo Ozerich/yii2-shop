@@ -71,6 +71,9 @@
     padding: 5px 5px;
     border: 1px solid #eee;
     vertical-align: top;
+    text-align: center;
+
+    vertical-align: middle;
   }
 
   .grid-icon {
@@ -82,5 +85,36 @@
     &:last-child {
       margin-right: 0;
     }
+  }
+
+  .cell-price {
+    width: 150px;
+    max-width: 150px;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  .cell-actions {
+    width: 150px;
+    max-width: 150px;
+    text-align: center;
+    vertical-align: middle;
+  }
+}
+
+.list-row__item {
+  &-image {
+    margin-bottom: 5px;
+  }
+
+  &-name {
+  }
+}
+
+.list-row__price {
+  &-old {
+    text-decoration: line-through;
+    display: block;
+    margin-bottom: 5px;
   }
 }

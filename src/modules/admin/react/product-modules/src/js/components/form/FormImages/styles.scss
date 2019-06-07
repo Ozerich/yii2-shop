@@ -1,0 +1,54 @@
+.form-images {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: -20px;
+  margin-left: -20px;
+
+  .dropzone {
+    font-size: 1.25rem;
+    position: relative;
+    border: 2px dashed #a1afb3;
+    cursor: pointer;
+    margin: 20px 0 0 20px;
+    width: 200px;
+    height: 200px;
+
+    input[type=file] {
+      width: 0.1px;
+      height: 0.1px;
+      opacity: 0;
+      overflow: hidden;
+      position: absolute;
+      z-index: -1;
+    }
+
+    &__icon {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      fill: #92b0b3;
+      z-index: 0;
+    }
+  }
+
+  &__file {
+    width: 200px;
+    height: 200px;
+    border: 1px solid #eee;
+    margin: 20px 0 0 20px;
+    position: relative;
+
+    &--loading {
+      &:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.2);
+      }
+    }
+  }
+}

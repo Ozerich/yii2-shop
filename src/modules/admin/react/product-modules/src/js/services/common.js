@@ -1,11 +1,12 @@
 import BaseService from './base';
 
 export default class CommonService extends BaseService {
-  createModule(productId, name, sku, comment, price, discountMode, discountValue) {
+  createModule(productId, name, sku, comment, price, discountMode, discountValue, images) {
     return this.post('/product-modules-api/' + productId + '/create', {
       name, sku, comment, price,
       discount_mode: discountMode,
-      discount_value: discountValue
+      discount_value: discountValue,
+      images
     })
   }
 
@@ -19,5 +20,9 @@ export default class CommonService extends BaseService {
 
   remove(moduleId) {
     return this.post('/product-modules-api/delete/' + moduleId);
+  }
+
+  upload(file) {
+    return this.multipart('/product-modules-api/upload/?scenario=product', { file: file });
   }
 }

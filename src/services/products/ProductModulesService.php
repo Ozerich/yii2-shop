@@ -5,6 +5,7 @@ namespace ozerich\shop\services\products;
 use ozerich\shop\constants\ProductType;
 use ozerich\shop\models\Product;
 use ozerich\shop\models\ProductModule;
+use ozerich\shop\models\ProductModuleImage;
 
 class ProductModulesService
 {
@@ -26,7 +27,7 @@ class ProductModulesService
         return ProductModule::findOne($id);
     }
 
-    public function createModule(Product $product, $name, $sku, $comment, $price, $discountMode, $discountValue)
+    public function createModule(Product $product, $name, $sku, $comment, $price, $discountMode, $discountValue, $imageIds)
     {
         $model = new ProductModule();
 
@@ -38,7 +39,26 @@ class ProductModulesService
         $model->discount_mode = $discountMode;
         $model->discount_value = $discountValue;
 
-        return $model->save();
+        if (!$model->save()) {
+            return false;
+        }
+
+        if ($imageIds && is_array($imageIds)) {
+            foreach ($imageIds as $ind => $imageId) {
+                $imageModel = new ProductModuleImage();
+                $imageModel->product_module_id = $model->id;
+                $imageModel->image_id = $imageId;
+                $imageModel->save();
+
+                if ($ind == 0) {
+                    $model->image_id = $imageId;
+                    $model->save(false, ['image_id']);
+                }
+            }
+        }
+
+
+        return true;
     }
 
     public function deleteModule(ProductModule $module)

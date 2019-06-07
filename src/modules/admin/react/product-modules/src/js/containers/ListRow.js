@@ -2,14 +2,17 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { move, remove } from "../ducks/list";
+import ListRowModule from "./ListRowModule";
+import ListRowModulePrice from "./ListRowModulePrice";
 
 class ListRow extends Component {
   render() {
     const { model } = this.props;
     return (
         <tr>
-          <td>{model.name}</td>
-          <td>
+          <td className="cell-name"><ListRowModule model={model} /></td>
+          <td className="cell-price"><ListRowModulePrice model={model} /></td>
+          <td className="cell-actions">
             <button className="grid-icon" onClick={this.onMoveUpClick.bind(this)}>
               <span className="glyphicon glyphicon-arrow-up" />
             </button>

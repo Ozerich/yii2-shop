@@ -20,7 +20,10 @@ class ProductModuleDTO implements DTO
         return [
             'id' => $this->model->id,
             'name' => $this->model->name,
-            'sku' => $this->model->sku
+            'sku' => $this->model->sku,
+            'image' => $this->model->image ? $this->model->image->getUrl() : null,
+            'price' => $this->model->price,
+            'price_with_discount' => $this->model->price_with_discount
         ];
     }
 }

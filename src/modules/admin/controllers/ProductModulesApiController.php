@@ -6,6 +6,7 @@ use ozerich\admin\actions\MoveAction;
 use ozerich\api\controllers\Controller;
 use ozerich\api\filters\AccessControl;
 use ozerich\api\response\ArrayResponse;
+use ozerich\filestorage\actions\UploadAction;
 use ozerich\shop\models\ProductModule;
 use ozerich\shop\modules\admin\api\models\ProductModuleDTO;
 use ozerich\shop\modules\admin\api\requests\modules\ModelRequest;
@@ -23,7 +24,10 @@ class ProductModulesApiController extends Controller
                 'class' => MoveAction::class,
                 'modelClass' => ProductModule::class,
                 'conditionAttribute' => 'product_id'
-            ]
+            ],
+            'upload' => [
+                'class' => UploadAction::class,
+            ],
         ];
     }
 
@@ -37,6 +41,10 @@ class ProductModulesApiController extends Controller
                 [
                     'action' => 'index',
                     'verbs' => ['GET']
+                ],
+                [
+                    'action' => 'upload',
+                    'verbs' => ['POST']
                 ],
                 [
                     'action' => 'create',
@@ -76,7 +84,7 @@ class ProductModulesApiController extends Controller
         $request = new ModelRequest();
         $request->load();
 
-        $this->productModulesService()->createModule($product, $request->name, $request->sku, $request->comment, $request->price, $request->discount_mode, $request->discount_value);
+        $this->productModulesService()->createModule($product, $request->name, $request->sku, $request->comment, $request->price, $request->discount_mode, $request->discount_value, $request->images);
     }
 
     public function actionDelete($id)

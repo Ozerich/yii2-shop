@@ -38,6 +38,15 @@ class m190606_210000_product_modules extends Migration
         $this->addForeignKey('product_modules_value_product', '{{%product_modules}}', 'product_value_id', '{{%products}}', 'id', 'CASCADE');
         $this->addForeignKey('product_modules_image', '{{%product_modules}}', 'image_id', '{{%files}}', 'id', 'SET NULL');
         $this->addForeignKey('product_modules_currency', '{{%product_modules}}', 'currency_id', '{{%currencies}}', 'id', 'SET NULL');
+
+        $this->createTable('{{%product_module_images}}', [
+            'id' => $this->primaryKey(),
+            'product_module_id' => $this->integer()->notNull(),
+            'image_id' => $this->integer()->notNull()
+        ]);
+
+        $this->addForeignKey('product_module_images_product_image', '{{%product_module_images}}', 'product_module_id', '{{%product_modules}}', 'id', 'CASCADE');
+        $this->addForeignKey('product_module_images_image', '{{%product_module_images}}', 'image_id', '{{%files}}', 'id', 'CASCADE');
     }
 
     /**
@@ -45,6 +54,10 @@ class m190606_210000_product_modules extends Migration
      */
     public function safeDown()
     {
+        $this->dropForeignKey('product_module_images_product_image', '{{%product_module_images}}');
+        $this->dropForeignKey('product_module_images_image', '{{%product_module_images}}');
+        $this->dropTable('{{%product_module_images}}');
+
         $this->dropForeignKey('product_modules_product', '{{%product_modules}}');
         $this->dropForeignKey('product_modules_value_product', '{{%product_modules}}');
         $this->dropForeignKey('product_modules_image', '{{%product_modules}}');

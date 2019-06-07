@@ -19,8 +19,9 @@ class List extends Component {
             <table className="table-list">
               <thead>
               <tr>
-                <th>Модуль</th>
-                <th>Действия</th>
+                <th className="cell-name">Модуль</th>
+                <th className="cell-price">Цена</th>
+                <th className="cell-actions">Действия</th>
               </tr>
               </thead>
               <tbody>
