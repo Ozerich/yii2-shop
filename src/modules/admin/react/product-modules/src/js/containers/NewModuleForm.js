@@ -27,19 +27,31 @@ class NewModuleForm extends Component {
           <div className="box-footer">
             <div className="new-module__form-footer">
               <RedButton onClick={() => close()}>Отмена</RedButton>
-              <Button>Добавить</Button>
+              <Button onClick={this.handleSubmitMyForm}>Добавить</Button>
             </div>
           </div>
         </div>
     );
   }
 
+  submitMyForm = null;
+
+  handleSubmitMyForm = (e) => {
+    if (this.submitMyForm) {
+      this.submitMyForm(e);
+    }
+  };
+
+  bindSubmitForm = (submitForm) => {
+    this.submitMyForm = submitForm;
+  };
+
   renderModeInner() {
     const { value } = this.props;
 
     switch (value) {
       case MODULE_MODE_SIMPLE:
-        return <NewModuleFormSimple />;
+        return <NewModuleFormSimple bindSubmitForm={this.bindSubmitForm} />;
       case MODULE_MODE_CATALOG:
         return <NewModuleFormCatalog />;
       default:
