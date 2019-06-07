@@ -23,7 +23,8 @@ class ProductModuleDTO implements DTO
             'sku' => $this->model->sku,
             'image' => $this->model->image ? $this->model->image->getUrl() : null,
             'price' => $this->model->price,
-            'price_with_discount' => $this->model->price_with_discount
+            'price_with_discount' => $this->model->price_with_discount,
+            'quantity' => $this->model->default_quantity
         ];
     }
 }

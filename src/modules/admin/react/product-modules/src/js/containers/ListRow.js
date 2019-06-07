@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { move, remove } from "../ducks/list";
+import { move, quantityChange, remove } from "../ducks/list";
 import ListRowModule from "./ListRowModule";
 import ListRowModulePrice from "./ListRowModulePrice";
+import ListRowQuantity from "./ListRowQuantity";
 
 class ListRow extends Component {
   render() {
@@ -12,6 +13,8 @@ class ListRow extends Component {
         <tr>
           <td className="cell-name"><ListRowModule model={model} /></td>
           <td className="cell-price"><ListRowModulePrice model={model} /></td>
+          <td className="cell-quantity"><ListRowQuantity onChange={this.onQuantityChange.bind(this)} model={model} />
+          </td>
           <td className="cell-actions">
             <button className="grid-icon" onClick={this.onMoveUpClick.bind(this)}>
               <span className="glyphicon glyphicon-arrow-up" />
@@ -51,6 +54,12 @@ class ListRow extends Component {
 
     this.props.remove(model.id);
   }
+
+  onQuantityChange(value) {
+    const { model } = this.props;
+
+    this.props.quantityChange(model.id, value);
+  }
 }
 
-export default connect(null, { remove, move })(ListRow);
+export default connect(null, { remove, move, quantityChange })(ListRow);

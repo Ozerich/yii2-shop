@@ -65,4 +65,10 @@ class ProductModulesService
     {
         $module->delete();
     }
+
+    public function setQuantity(ProductModule $module, $value)
+    {
+        $module->default_quantity = $value;
+        $module->save(false, ['default_quantity']);
+    }
 }

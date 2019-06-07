@@ -9,13 +9,12 @@ const _FAILURE = '_FAILURE';
 const LOAD = 'list:LOAD';
 const MOVE = 'list:MOVE';
 const REMOVE = 'list:REMOVE';
+const QUANTITY_CHANGED = 'list:QUANTITY_CHANGED';
 
 const initialState = {
   loading: false,
   error: null,
   entities: [],
-
-
 };
 
 // Reducer
@@ -32,9 +31,18 @@ export default function reducer(state = initialState, action = {}) {
     case LOAD + _FAILURE:
       return { ...state, loading: false, error: error };
 
-
     case REMOVE + _SUCCESS:
       return { ...state, entities: state.entities.filter(model => payload.id !== model.id) };
+
+    case QUANTITY_CHANGED:
+      return {
+        ...state, entities: state.entities.map(item => {
+          if (item.id !== payload.id) {
+            return item;
+          }
+          return { ...item, quantity: payload.value };
+        })
+      }
 
     default:
       return state;
@@ -99,5 +107,19 @@ export function move(id, direction) {
     });
 
     service.move(id, direction);
+  };
+}
+
+
+export function quantityChange(id, value) {
+  return dispatch => {
+    dispatch({
+      type: QUANTITY_CHANGED,
+      payload: {
+        id, value
+      }
+    });
+
+    service.quantity(id, value);
   };
 }

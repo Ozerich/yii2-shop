@@ -18,6 +18,10 @@ export default class CommonService extends BaseService {
     return this.post('/product-modules-api/move/?id=' + moduleId + '&mode=' + direction);
   }
 
+  quantity(moduleId, value) {
+    return this.post('/product-modules-api/quantity/' + moduleId, { value });
+  }
+
   remove(moduleId) {
     return this.post('/product-modules-api/delete/' + moduleId);
   }

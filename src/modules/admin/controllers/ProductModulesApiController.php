@@ -58,6 +58,10 @@ class ProductModulesApiController extends Controller
                     'action' => 'move',
                     'verbs' => ['POST']
                 ],
+                [
+                    'action' => 'quantity',
+                    'verbs' => ['POST']
+                ],
             ]
         ];
 
@@ -95,5 +99,15 @@ class ProductModulesApiController extends Controller
         }
 
         $this->productModulesService()->deleteModule($module);
+    }
+
+    public function actionQuantity($id)
+    {
+        $module = $this->productModulesService()->getModuleById($id);
+        if (!$module) {
+            throw new NotFoundHttpException();
+        }
+
+        $this->productModulesService()->setQuantity($module, \Yii::$app->request->post('value'));
     }
 }

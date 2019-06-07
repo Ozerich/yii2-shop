@@ -21,6 +21,7 @@ class List extends Component {
               <tr>
                 <th className="cell-name">Модуль</th>
                 <th className="cell-price">Цена</th>
+                <th className="cell-quantity">Количество в<br />стандартном наборе</th>
                 <th className="cell-actions">Действия</th>
               </tr>
               </thead>

@@ -61,7 +61,7 @@
   width: 100%;
   border-collapse: collapse;
   border-spacing: 0;
-  font-size: 12px;
+  font-size: 13px;
 
   th {
     text-align: center;
@@ -87,7 +87,7 @@
     }
   }
 
-  .cell-price {
+  .cell-price, .cell-quantity {
     width: 150px;
     max-width: 150px;
     text-align: center;
@@ -116,5 +116,35 @@
     text-decoration: line-through;
     display: block;
     margin-bottom: 5px;
+  }
+}
+
+.list-row__quantity {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  button {
+    background: #00a65a;
+    line-height: 26px;
+    width: 30px;
+    font-weight: bold;
+    text-align: center;
+    color: #fff;
+    font-size: 17px;
+    margin: 0 5px;
+    border: 0 none;
+    cursor: pointer;
+
+    &.hidden {
+      display: block !important;
+      visibility: hidden;
+    }
+  }
+
+  span {
+    margin: 0 5px;
+    display: block;
+    font-size: 20px;
   }
 }
