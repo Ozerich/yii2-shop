@@ -12,6 +12,14 @@ class ProductModuleDTO extends ProductModule implements DTO
 
     public function toJSON()
     {
+        if ($this->product_value_id) {
+            return [
+                'id' => $this->id,
+                'quantity' => $this->default_quantity,
+                'product' => (new ProductShortDTO($this->productValue))->toJSON()
+            ];
+        }
+
         return [
             'id' => $this->id,
             'name' => $this->name,

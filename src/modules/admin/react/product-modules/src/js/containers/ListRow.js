@@ -29,9 +29,6 @@ class ListRow extends Component {
             <button className="grid-icon" onClick={this.onMoveDownClick.bind(this)}>
               <span className="glyphicon glyphicon-arrow-down" />
             </button>
-            <button className="grid-icon">
-              <span className="glyphicon glyphicon-pencil" />
-            </button>
             <button className="grid-icon" onClick={this.onRemoveClick.bind(this)}>
               <span className="glyphicon glyphicon-trash" />
             </button>

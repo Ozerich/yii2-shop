@@ -7,6 +7,7 @@ use ozerich\api\controllers\Controller;
 use ozerich\api\filters\AccessControl;
 use ozerich\api\response\ArrayResponse;
 use ozerich\filestorage\actions\UploadAction;
+use ozerich\shop\models\Product;
 use ozerich\shop\models\ProductModule;
 use ozerich\shop\modules\admin\api\models\ProductModuleDTO;
 use ozerich\shop\modules\admin\api\requests\modules\ModelRequest;
@@ -51,6 +52,10 @@ class ProductModulesApiController extends Controller
                     'verbs' => ['POST']
                 ],
                 [
+                    'action' => 'create-catalog',
+                    'verbs' => ['POST']
+                ],
+                [
                     'action' => 'delete',
                     'verbs' => ['POST']
                 ],
@@ -89,6 +94,21 @@ class ProductModulesApiController extends Controller
         $request->load();
 
         $this->productModulesService()->createModule($product, $request->name, $request->sku, $request->comment, $request->price, $request->discount_mode, $request->discount_value, $request->images, $request->params);
+    }
+
+    public function actionCreateCatalog($id)
+    {
+        $product = $this->productModulesService()->getModuleProductById($id);
+        if (!$product) {
+            throw new NotFoundHttpException();
+        }
+
+        $moduleProduct = Product::findOne(\Yii::$app->request->post('product_id'));
+        if (!$moduleProduct) {
+            throw new NotFoundHttpException('2');
+        }
+
+        $this->productModulesService()->createModuleFromCatalog($product, $moduleProduct);
     }
 
     public function actionDelete($id)

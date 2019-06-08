@@ -15,8 +15,26 @@ class ProductModuleDTO implements DTO
         $this->model = $module;
     }
 
+    private function toJSONFromCatalog()
+    {
+        return [
+            'id' => $this->model->id,
+            'name' => $this->model->productValue->name,
+            'sku' => $this->model->productValue->sku,
+            'image' => $this->model->productValue->image ? $this->model->productValue->image->getUrl() : null,
+            'price' => $this->model->productValue->price,
+            'price_with_discount' => $this->model->productValue->price_with_discount,
+            'quantity' => $this->model->default_quantity,
+            'params' => []
+        ];
+    }
+
     public function toJSON()
     {
+        if ($this->model->product_value_id) {
+            return $this->toJSONFromCatalog();
+        }
+
         return [
             'id' => $this->model->id,
             'name' => $this->model->name,

@@ -4,12 +4,14 @@ namespace ozerich\shop\modules\admin\controllers;
 
 use ozerich\api\controllers\Controller;
 use ozerich\api\filters\AccessControl;
+use ozerich\api\response\ArrayResponse;
 use ozerich\shop\models\Category;
 use ozerich\shop\models\Field;
 use ozerich\shop\models\Product;
 use ozerich\shop\modules\admin\api\requests\products\ParamsRequest;
 use ozerich\shop\modules\admin\api\requests\products\UpdateParamRequest;
 use ozerich\shop\modules\admin\forms\CategoryChangeTypeToCatalogForm;
+use ozerich\shop\modules\api\models\ProductShortDTO;
 use ozerich\shop\traits\ServicesTrait;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
@@ -28,9 +30,14 @@ class ProductsApiController extends Controller
                 [
                     'action' => 'product-params',
                     'verbs' => ['POST']
-                ], [
+                ],
+                [
                     'action' => 'update-param',
                     'verbs' => ['POST']
+                ],
+                [
+                    'action' => 'search',
+                    'verbs' => ['GET']
                 ],
             ]
         ];
@@ -100,5 +107,18 @@ class ProductsApiController extends Controller
         $this->categoryProductsService()->afterProductParamsChanged($product);
 
         return null;
+    }
+
+    public function actionSearch($query)
+    {
+        $query = trim($query);
+
+        if (empty($query)) {
+            return [];
+        }
+
+        $products = $this->searchService()->adminSearchProducts($query, 20);
+
+        return new ArrayResponse($products, ProductShortDTO::class);
     }
 }

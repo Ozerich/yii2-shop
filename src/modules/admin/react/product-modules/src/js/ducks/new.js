@@ -14,11 +14,17 @@ const CLOSE = 'new:CLOSE';
 const CHANGE_MODE = 'new:CHANGE_MODE';
 
 const CREATE = 'new:CREATE';
+const CREATE_FROM_CATALOG = 'new:CREATE_FROM_CATALOG';
+
+const SELECT_CATALOG_PRODUCT = 'new:SELECT_CATALOG_PRODUCT';
+const RESET_CATALOG_PRODUCT = 'new:RESET_CATALOG_PRODUCT';
 
 const initialState = {
   opened: false,
   mode: MODULE_MODE_SIMPLE,
   loading: false,
+
+  catalogSelectedProduct: null,
 };
 
 // Reducer
@@ -35,7 +41,7 @@ export default function reducer(state = initialState, action = {}) {
       return { ...state, opened: false };
 
     case CHANGE_MODE:
-      return { ...state, mode: payload.value };
+      return { ...state, mode: payload.value, catalogSelectedProduct: null };
 
 
     case CREATE + _REQUEST:
@@ -44,6 +50,12 @@ export default function reducer(state = initialState, action = {}) {
       return { ...state, loading: false, opened: false };
     case CREATE + _FAILURE:
       return { ...state, loading: false };
+
+
+    case SELECT_CATALOG_PRODUCT:
+      return { ...state, catalogSelectedProduct: payload.model };
+    case RESET_CATALOG_PRODUCT:
+      return { ...state, catalogSelectedProduct: null };
 
     default:
       return state;
@@ -111,4 +123,39 @@ export function create(formData) {
       });
     });
   };
+}
+
+export function createFromCatalog(productId) {
+  return (dispatch, getState) => {
+    dispatch({
+      type: CREATE + _REQUEST
+    });
+
+    service.createModuleFromCatalog(getState().common.productId, productId).then(data => {
+      dispatch({
+        type: CREATE + _SUCCESS
+      });
+      dispatch(load());
+    }).catch(error => {
+      dispatch({
+        type: CREATE + _FAILURE,
+        error
+      });
+    });
+  };
+}
+
+export function selectCatalogProduct(model) {
+  return {
+    type: SELECT_CATALOG_PRODUCT,
+    payload: {
+      model
+    }
+  }
+}
+
+export function resetCatalogProduct() {
+  return {
+    type: RESET_CATALOG_PRODUCT
+  }
 }

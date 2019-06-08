@@ -8,7 +8,7 @@ import NewModuleFormModeSelect from "./NewModuleFormModeSelect";
 import NewModuleFormSimple from "./NewModuleFormSimple";
 
 import { MODULE_MODE_CATALOG, MODULE_MODE_SIMPLE } from "../constants/ModuleMode";
-import { close } from "../ducks/new";
+import { close, createFromCatalog } from "../ducks/new";
 import NewModuleFormCatalog from "./NewModuleFormCatalog";
 
 class NewModuleForm extends Component {
@@ -27,18 +27,40 @@ class NewModuleForm extends Component {
           <div className="box-footer">
             <div className="new-module__form-footer">
               <RedButton onClick={() => close()}>Отмена</RedButton>
-              <Button onClick={this.handleSubmitMyForm}>Добавить</Button>
+              {this.isSubmitVisible() ? <Button onClick={this.handleSubmitMyForm}>Добавить</Button> : null}
             </div>
           </div>
         </div>
     );
   }
 
+  isSubmitVisible() {
+    const { value } = this.props;
+
+    if (value === MODULE_MODE_SIMPLE) {
+      return true;
+    } else if (value === MODULE_MODE_CATALOG) {
+      return this.props.selected !== null;
+    }
+  }
+
+  submitCatalogMode() {
+    const { selected } = this.props;
+
+    this.props.createFromCatalog(selected.id);
+  }
+
   submitMyForm = null;
 
   handleSubmitMyForm = (e) => {
-    if (this.submitMyForm) {
-      this.submitMyForm(e);
+    const { value } = this.props;
+
+    if (value === MODULE_MODE_SIMPLE) {
+      if (this.submitMyForm) {
+        this.submitMyForm(e);
+      }
+    } else {
+      this.submitCatalogMode();
     }
   };
 
@@ -62,8 +84,9 @@ class NewModuleForm extends Component {
 
 function mapStateToProps(state) {
   return {
-    value: state.new.mode
+    value: state.new.mode,
+    selected: state.new.catalogSelectedProduct,
   };
 }
 
-export default connect(mapStateToProps, { close })(NewModuleForm);
+export default connect(mapStateToProps, { close, createFromCatalog })(NewModuleForm);

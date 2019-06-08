@@ -10,6 +10,12 @@ export default class CommonService extends BaseService {
     })
   }
 
+  createModuleFromCatalog(productId, moduleProductId) {
+    return this.post('/product-modules-api/' + productId + '/create-catalog', {
+      product_id: moduleProductId
+    });
+  }
+
   list(productId) {
     return this.query('/product-modules-api/' + productId);
   }
@@ -28,5 +34,9 @@ export default class CommonService extends BaseService {
 
   upload(file) {
     return this.multipart('/product-modules-api/upload/?scenario=product', { file: file });
+  }
+
+  search(query) {
+    return this.query('/products-api/search?query=' + query);
   }
 }

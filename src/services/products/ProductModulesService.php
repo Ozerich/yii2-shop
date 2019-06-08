@@ -53,6 +53,20 @@ class ProductModulesService
         return $module;
     }
 
+    public function createModuleFromCatalog(Product $product, Product $moduleProduct)
+    {
+        $model = new ProductModule();
+
+        $model->product_id = $product->id;
+        $model->product_value_id = $moduleProduct->id;
+
+        $model->save();
+
+        $this->updateProductPrice($product);
+
+        return true;
+    }
+
     public function createModule(Product $product, $name, $sku, $comment, $price, $discountMode, $discountValue, $imageIds, $params)
     {
         $model = new ProductModule();

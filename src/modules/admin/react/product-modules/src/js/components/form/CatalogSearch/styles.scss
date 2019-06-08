@@ -1,0 +1,44 @@
+.search-results {
+  margin-top: 15px;
+
+  &__empty {
+    text-align: center;
+    font-size: 24px;
+    line-height: 48px;
+  }
+
+  &__item {
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+    display: flex;
+
+    &:first-child {
+      padding-top: 0;
+    }
+
+    &:last-child {
+      padding-bottom: 0;
+      border-bottom: 0 none;
+    }
+
+    &-select {
+      margin-left: auto;
+    }
+
+    &-image {
+      flex-basis: 200px;
+      margin-right: 50px;
+
+      img {
+        max-width: 100%;
+      }
+    }
+  }
+}
+
+.catalog-search__selected {
+  &-name {
+    display: block;
+    margin-bottom: 4px;
+  }
+}
