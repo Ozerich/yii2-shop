@@ -8,10 +8,12 @@ use ozerich\api\filters\AccessControl;
 use ozerich\api\request\InvalidRequestException;
 use ozerich\api\response\CollectionResponse;
 use ozerich\api\response\ModelResponse;
+use ozerich\shop\constants\ProductType;
 use ozerich\shop\models\Category;
 use ozerich\shop\models\Currency;
 use ozerich\shop\models\Manufacture;
 use ozerich\shop\models\Product;
+use ozerich\shop\models\ProductModule;
 use ozerich\shop\models\ProductPrice;
 use ozerich\shop\models\ProductPriceParam;
 use ozerich\shop\models\ProductPriceParamValue;
@@ -354,9 +356,9 @@ class PricesController extends Controller
         }
 
         if ($request->issetAttribute('price')) {
-            if($model instanceof ProductPrice) {
+            if ($model instanceof ProductPrice) {
                 $model->value = $request->price;
-            } elseif($model instanceof Product){
+            } elseif ($model instanceof Product) {
                 $model->price = $request->price;
             }
         }
@@ -419,6 +421,7 @@ class PricesController extends Controller
             $query->andWhere('category_id in (' . implode(',', $ids) . ')');
         }
 
+        /** @var Product[] $products */
         $products = $query->all();
 
         $result = [];
@@ -426,6 +429,7 @@ class PricesController extends Controller
         foreach ($products as $product) {
             $model = [
                 'id' => $product->id,
+                'type' => $product->type,
                 'name' => $product->name,
                 'price' => (new PriceDTO($product))->toJSON(),
                 'currency_id' => $product->currency_id,
@@ -471,6 +475,23 @@ class PricesController extends Controller
                         }
                     }
                 }
+            }
+
+            if ($product->type == ProductType::MODULAR) {
+                $model['modules'] = array_map(function (ProductModule $productModule) {
+                    return [
+                        'id' => $productModule->id,
+                        'name' => $productModule->productValue ? $productModule->productValue->name : $productModule->name,
+                        'sku' => $productModule->sku,
+                        'is_catalog' => $productModule->product_value_id != null,
+                        'price' => [
+                            'price' => $productModule->price,
+                            'discount_mode' => $productModule->discount_mode,
+                            'discount_value' => $productModule->discount_value,
+                            'price_with_discount' => $productModule->price_with_discount
+                        ]
+                    ];
+                }, $product->modules);
             }
 
             $result[] = $model;
