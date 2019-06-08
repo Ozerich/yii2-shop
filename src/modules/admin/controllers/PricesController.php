@@ -26,6 +26,7 @@ use ozerich\shop\modules\admin\api\requests\prices\CommonRequest;
 use ozerich\shop\modules\admin\api\requests\prices\ParamItemRequest;
 use ozerich\shop\modules\admin\api\requests\prices\ParamRequest;
 use ozerich\shop\modules\admin\api\requests\prices\PricesRequest;
+use ozerich\shop\modules\admin\api\requests\prices\SaveModuleRequest;
 use ozerich\shop\modules\admin\api\requests\prices\SaveRequest;
 use ozerich\shop\modules\api\models\PriceDTO;
 use ozerich\shop\traits\ServicesTrait;
@@ -96,6 +97,10 @@ class PricesController extends Controller
                 ],
                 [
                     'action' => 'save',
+                    'verbs' => ['POST']
+                ],
+                [
+                    'action' => 'save-module',
                     'verbs' => ['POST']
                 ],
                 [
@@ -387,6 +392,18 @@ class PricesController extends Controller
         return null;
     }
 
+    public function actionSaveModule($id)
+    {
+        $request = new SaveModuleRequest();
+        $request->load();
+
+        $module = $this->productModulesService()->getModuleById($id);
+        if (!$module) {
+            throw new NotFoundHttpException();
+        }
+
+        $this->productModulesService()->updateModulePrice($module, $request->price, $request->discount_mode, $request->discount_value);
+    }
 
     private function getProductPriceJSON($prices, $first_param_id, $second_param_id = null)
     {

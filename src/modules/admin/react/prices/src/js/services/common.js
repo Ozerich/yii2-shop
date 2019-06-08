@@ -23,4 +23,12 @@ export default class CommonService extends BaseService {
       second_param_id: secondParamValueId,
     }, data));
   }
+
+  saveModule(moduleId, price, discountMode, discountValue) {
+    return this.post('/prices/save-module/' + moduleId, {
+      price: price,
+      discount_mode: discountMode,
+      discount_value: discountValue
+    });
+  }
 }

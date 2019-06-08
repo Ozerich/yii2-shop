@@ -154,4 +154,23 @@ class ProductModulesService
 
         $product->save(false, ['discount_mode', 'discount_value', 'price_with_discount', 'price']);
     }
+
+    public function updateModulePrice(ProductModule $module, $price, $discountMode, $discountValue)
+    {
+        $module->price = $price;
+
+        if ($discountMode) {
+            $module->discount_mode = $discountMode;
+            $module->discount_value = $discountValue;
+        } else {
+            $module->discount_mode = null;
+            $module->discount_value = null;
+        }
+
+        $module = $this->updatePriceDiscount($module);
+
+        $module->save();
+
+        $this->updateProductPrice($module->product);
+    }
 }

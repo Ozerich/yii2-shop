@@ -29,16 +29,37 @@ class ListItemModuleRow extends Component {
             <div className="price-wrapper">
               <div className="price-input-wrapper">
                 <input type="number" step="1.00" className="price-input"
+                       onChange={this.onPriceChange.bind(this)}
                        value={model.price.price ? model.price.price : ''} />
               </div>
             </div>
           </td>
           <td className="cell-price" colSpan={2}>
             <ListItemPriceDiscount discountMode={price ? price.discount_mode : null}
-                                   discountValue={price ? price.discount_value : null} />
+                                   discountValue={price ? price.discount_value : null}
+                                   onChange={this.onDiscountChange.bind(this)}
+            />
           </td>
         </tr>
     );
+  }
+
+  onDiscountChange(discountMode, discountValue) {
+    if (this.props.onChange) {
+      this.props.onChange(Object.assign(this.props.model.price || {}, {
+        discount_mode: discountMode,
+        discount_value: discountValue
+      }));
+    }
+  }
+
+  onPriceChange(e) {
+    if (this.props.onChange) {
+      const value = parseFloat(e.target.value);
+      this.props.onChange(Object.assign(this.props.model.price || {}, {
+        price: value ? value : null
+      }));
+    }
   }
 }
 

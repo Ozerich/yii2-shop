@@ -4,6 +4,7 @@ const service = new CommonService;
 
 // Actions
 const CHANGE = 'CHANGE';
+const CHANGE_MODULE = 'CHANGE_MODULE';
 
 const _START = '_START';
 const _SUCCESS = '_SUCCESS';
@@ -60,6 +61,19 @@ export function change(productId, paramIds, data) {
   };
 }
 
+export function changeModule(productId, moduleId, data) {
+  return dispatch => {
+    dispatch({
+      type: CHANGE_MODULE,
+      payload: {
+        productId, moduleId, data
+      }
+    });
+
+    service.saveModule(moduleId, data.price, data.discount_mode, data.discount_value);
+  };
+}
+
 
 // Reducer
 export default function reducer(state = initialState, action = {}) {
@@ -108,6 +122,25 @@ export default function reducer(state = initialState, action = {}) {
           }
 
           return item;
+        })
+      });
+
+    case CHANGE_MODULE:
+      return Object.assign({}, state, {
+        items: state.items.map(item => {
+          if (item.id !== action.payload.productId) {
+            return item;
+          }
+
+          return Object.assign({}, item, {
+            modules: item.modules.map(module => {
+              if (module.id !== action.payload.moduleId) {
+                return module;
+              }
+
+              return Object.assign({}, module, { price: action.payload.data });
+            })
+          });
         })
       });
 

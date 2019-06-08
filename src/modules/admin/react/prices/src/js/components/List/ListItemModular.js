@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import ListItemProductHeader from "./ListItemProductHeader";
 
-import { change } from "../../ducks/list";
+import { changeModule } from "../../ducks/list";
 import ListItemModuleRow from "./ListItemModuleRow";
 
 class ListItemModular extends Component {
@@ -13,10 +13,15 @@ class ListItemModular extends Component {
     return (
         <>
           <ListItemProductHeader model={model} />
-          {model.modules.map(item => <ListItemModuleRow key={item.id} isChild={true} model={item} />)}
+          {model.modules.map(item => <ListItemModuleRow key={item.id} isChild={true} model={item}
+                                                        onChange={values => this.onModuleChange(item, values)} />)}
         </>
     );
   }
+
+  onModuleChange(module, data) {
+    this.props.changeModule(this.props.model.id, module.id, data);
+  }
 }
 
-export default connect(null, { change })(ListItemModular);
+export default connect(null, { changeModule })(ListItemModular);
