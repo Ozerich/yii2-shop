@@ -15,4 +15,7 @@ class SettingOption extends Enum
     const BLOG_TITLE = 'blog_title';
     const BLOG_DESCRIPTION = 'blog_description';
     const BLOG_IMAGE_ID = 'blog_image_id';
+
+    const SEO_TITLE_TEMPLATE = 'seo_title_template';
+    const SEO_DESCRIPTION_TEMPLATE = 'seo_description_template';
 }

@@ -154,6 +154,11 @@ class Module extends \ozerich\admin\Module
                     'label' => 'Цвета',
                     'link' => '/settings/colors',
                 ],
+                [
+                    'id' => 'seo',
+                    'label' => 'SEO настройки',
+                    'link' => '/settings/seo',
+                ],
             ]
         ],
     ];

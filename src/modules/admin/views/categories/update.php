@@ -101,6 +101,16 @@ $this->title = 'Редактировать категорию - ' . $model->name
         <div class="col-xs-12">
             <?= $form->field($seoFormModel, 'seo_description')->textarea(); ?>
         </div>
+
+          <? if ($model->type == \ozerich\shop\constants\CategoryType::CATALOG): ?>
+            <div class="col-xs-12">
+                <?= $form->field($seoFormModel, 'seo_title_products_template')->textInput(); ?>
+            </div>
+
+            <div class="col-xs-12">
+                <?= $form->field($seoFormModel, 'seo_description_products_template')->textarea(); ?>
+            </div>
+          <? endif; ?>
       </div>
 
       <div class="box-footer">

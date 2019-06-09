@@ -23,6 +23,8 @@ use yii\helpers\Url;
  * @property string $type
  * @property boolean $home_display
  * @property integer $home_position
+ * @property string $seo_title_products_template
+ * @property string $seo_description_products_template
  *
  * @property Image $image
  * @property Category $parent
@@ -62,7 +64,9 @@ class Category extends \yii\db\ActiveRecord
             [['url_alias'], 'filter', 'filter' => 'trim'],
 
             [['h1_value', 'seo_title', 'type'], 'string', 'max' => 255],
-            [['seo_description'], 'string']
+            [['seo_description'], 'string'],
+
+            [['seo_description_products_template', 'seo_title_products_template'], 'string']
         ];
     }
 
@@ -83,6 +87,8 @@ class Category extends \yii\db\ActiveRecord
             'h1_value' => 'Значение H1',
             'seo_title' => 'Заголовок страницы',
             'seo_description' => 'META описание',
+            'seo_description_products_template' => 'Шаблон SEO Description для товаров',
+            'seo_title_products_template' => 'Шаблон заголовка страниц для товаров',
         ];
     }
 

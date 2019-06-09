@@ -16,6 +16,7 @@ use ozerich\shop\services\products\ProductGetService;
 use ozerich\shop\services\products\ProductMediaService;
 use ozerich\shop\services\products\ProductModulesService;
 use ozerich\shop\services\products\ProductPricesService;
+use ozerich\shop\services\products\ProductSeoService;
 use ozerich\shop\services\search\SearchService;
 use ozerich\shop\services\settings\SettingsService;
 
@@ -52,6 +53,20 @@ trait ServicesTrait
     private $productCollectionsService = null;
 
     private $productModulesService = null;
+
+    private $productSeoService = null;
+
+    /**
+     * @return ProductSeoService
+     */
+    public function productSeoService()
+    {
+        if ($this->productSeoService === null) {
+            $this->productSeoService = new ProductSeoService();
+        }
+
+        return $this->productSeoService;
+    }
 
     /**
      * @return ProductModulesService

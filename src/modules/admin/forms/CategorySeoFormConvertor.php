@@ -2,6 +2,7 @@
 
 namespace ozerich\shop\modules\admin\forms;
 
+use ozerich\shop\constants\CategoryType;
 use ozerich\shop\models\Category;
 use ozerich\shop\traits\ServicesTrait;
 use yii\base\Model;
@@ -17,6 +18,8 @@ class CategorySeoFormConvertor extends Model
         $form->h1_value = $category->h1_value;
         $form->seo_title = $category->seo_title;
         $form->seo_description = $category->seo_description;
+        $form->seo_description_products_template = $category->seo_description_products_template;
+        $form->seo_title_products_template = $category->seo_title_products_template;
 
         return $form;
     }
@@ -28,6 +31,12 @@ class CategorySeoFormConvertor extends Model
         $model->seo_description = $form->seo_description;
 
         $model->save(false, ['h1_value', 'seo_title', 'seo_description']);
+
+        if ($model->type == CategoryType::CATALOG) {
+            $model->seo_title_products_template = $form->seo_title_products_template;
+            $model->seo_description_products_template = $form->seo_description_products_template;
+            $model->save(false, ['seo_title_products_template', 'seo_description_products_template']);
+        }
 
         return true;
     }

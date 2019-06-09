@@ -12,8 +12,12 @@ class CategorySeoForm extends Category
 
     public $seo_description;
 
+    public $seo_description_products_template;
+
+    public $seo_title_products_template;
+
     public function activeAttributes()
     {
-        return ['h1_value', 'seo_title', 'seo_description'];
+        return ['h1_value', 'seo_title', 'seo_description', 'seo_title_products_template', 'seo_description_products_template'];
     }
 }

@@ -75,15 +75,6 @@ class ProductFullDTO extends Product implements DTO
         }, $parents));
     }
 
-    private function getSeoDescription()
-    {
-        if (!empty($this->seo_description)) {
-            return $this->seo_description;
-        }
-
-        return $this->name . ' – характеристики, фото, видео. Лучшая цена в Беларуси – ' . (($this->is_price_from || $this->is_prices_extended) ? 'от ' : '') . $this->price . ' руб. в интернет-магазине БелМебель.';
-    }
-
     public function toJSON()
     {
         return [
@@ -118,9 +109,9 @@ class ProductFullDTO extends Product implements DTO
             }, $this->productImages),
 
             'h1_value' => empty($this->h1_value) ? $this->name : $this->h1_value,
-            'seo_title' => empty($this->seo_title) ? 'Купить ' . $this->name . ' недорого – фото, цена, характеристики.' : $this->seo_title,
-            'seo_description' => $this->getSeoDescription(),
-            'seo_image' => $this->image ? $this->image->getUrl('og') : null,
+            'seo_title' => $this->productSeoService()->getPageTitle($this),
+            'seo_description' => $this->productSeoService()->getMetaDescription($this),
+            'seo_image' => $this->productSeoService()->getOgImageUrl($this),
 
             'price' => (new PriceDTO($this))->toJSON(),
             'stock' => $this->stock,
@@ -134,7 +125,6 @@ class ProductFullDTO extends Product implements DTO
 
             'manufacture' => $this->manufacture ? (new ManufactureDTO($this->manufacture))->toJSON() : null,
             'collection' => $this->collection ? (new CollectionDTO($this->collection))->toJSON() : null,
-
 
             'modules' => $this->type == ProductType::MODULAR ? array_map(function (ProductModule $module) {
                 return (new ProductModuleDTO($module))->toJSON();

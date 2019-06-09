@@ -15,6 +15,8 @@ use ozerich\shop\modules\admin\forms\settings\BlogSettingsForm;
 use ozerich\shop\modules\admin\forms\settings\BlogSettingsFormConvertor;
 use ozerich\shop\modules\admin\forms\settings\HomeSettingsForm;
 use ozerich\shop\modules\admin\forms\settings\HomeSettingsFormConvertor;
+use ozerich\shop\modules\admin\forms\settings\SeoSettingsForm;
+use ozerich\shop\modules\admin\forms\settings\SeoSettingsFormConvertor;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
@@ -36,6 +38,13 @@ class SettingsController extends AdminController
                 'formConvertor' => BlogSettingsFormConvertor::class,
                 'view' => 'blog',
                 'redirectUrl' => '/admin/settings/blog'
+            ],
+            'seo' => [
+                'class' => CreateOrUpdateAction::class,
+                'formClass' => SeoSettingsForm::class,
+                'formConvertor' => SeoSettingsFormConvertor::class,
+                'view' => 'seo',
+                'redirectUrl' => '/admin/settings/seo'
             ],
             'currencies' => [
                 'class' => ListAction::class,
