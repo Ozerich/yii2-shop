@@ -39,7 +39,7 @@
   </div>
 
   <div class="col-xs-12">
-      <?= $form->field($formModel, 'text')->widget(\ozerich\admin\widgets\TinyMce::class); ?>
+      <?= $form->field($formModel, 'text')->widget(\ozerich\shop\modules\admin\widgets\TinyMceWidget::class); ?>
   </div>
 </div>
 

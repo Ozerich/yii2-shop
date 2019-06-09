@@ -35,7 +35,7 @@ $this->title = 'Настройки главной страницы';
     </div>
 
     <div class="col-xs-12">
-        <?= $form->field($formModel, 'content')->widget(\ozerich\admin\widgets\TinyMce::class, [
+        <?= $form->field($formModel, 'content')->widget(\ozerich\shop\modules\admin\widgets\TinyMceWidget::class, [
             'options' => [
                 'rows' => 30
             ]

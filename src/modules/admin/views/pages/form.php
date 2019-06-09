@@ -28,7 +28,7 @@ $this->title = $model->isNewRecord ? 'Создать категорию' : 'Ре
   </div>
 
   <div class="col-xs-12">
-      <?= $form->field($formModel, 'content')->widget(\ozerich\admin\widgets\TinyMce::class); ?>
+      <?= $form->field($formModel, 'content')->widget(\ozerich\shop\modules\admin\widgets\TinyMceWidget::class); ?>
   </div>
 
   <div class="col-xs-12">
