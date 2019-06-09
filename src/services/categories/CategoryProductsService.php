@@ -238,6 +238,10 @@ class CategoryProductsService
 
         foreach ($products as $product) {
             $p = $product->price_with_discount ? $product->price_with_discount : $product->price;
+            if (!$p) {
+                continue;
+            }
+
             if ($min_price === null || $min_price > $p) {
                 $min_price = $p;
             }
