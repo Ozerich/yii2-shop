@@ -98,6 +98,10 @@ class ProductPricesService
         }
 
         $this->categoryProductsService()->afterProductParamsChanged($product);
+
+        if ($product->category) {
+            $this->categoryProductsService()->updateCategoryStats($product->category);
+        }
     }
 
     private $cachePrimaryCurrencyId = 0;

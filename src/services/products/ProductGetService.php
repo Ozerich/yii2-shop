@@ -2,6 +2,7 @@
 
 namespace ozerich\shop\services\products;
 
+use ozerich\shop\models\Category;
 use ozerich\shop\models\Product;
 use yii\db\ActiveQuery;
 
@@ -17,6 +18,15 @@ class ProductGetService
             ->andWhere('product_categories.category_id=:category_id', [':category_id' => $id])
             ->addOrderBy('products.popular_weight DESC')
             ->addOrderBy('products.name ASC');
+    }
+
+    /**
+     * @param Category $category
+     * @return Product[]
+     */
+    public function getAllVisibleProductsInCategory(Category $category)
+    {
+        return $this->getSearchByCategoryQuery($category->id)->distinct(true)->all();
     }
 
     /**

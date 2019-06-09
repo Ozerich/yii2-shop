@@ -25,6 +25,9 @@ use yii\helpers\Url;
  * @property integer $home_position
  * @property string $seo_title_products_template
  * @property string $seo_description_products_template
+ * @property integer $products_count
+ * @property float $min_price
+ * @property float $max_price
  *
  * @property Image $image
  * @property Category $parent

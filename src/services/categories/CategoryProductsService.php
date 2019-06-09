@@ -186,6 +186,8 @@ class CategoryProductsService
             }
 
             $this->categoryManufacturesService()->onUpdateCategory($category->id);
+
+            $this->updateCategoryStats($category);
         }
     }
 
@@ -223,5 +225,31 @@ class CategoryProductsService
         }
 
         $this->categoryManufacturesService()->onUpdateCategory($category->id);
+
+        $this->updateCategoryStats($category);
+    }
+
+    public function updateCategoryStats(Category $category)
+    {
+        $products = $this->productGetService()->getAllVisibleProductsInCategory($category);
+
+        $min_price = null;
+        $max_price = null;
+
+        foreach ($products as $product) {
+            $p = $product->price_with_discount ? $product->price_with_discount : $product->price;
+            if ($min_price === null || $min_price > $p) {
+                $min_price = $p;
+            }
+            if ($max_price === null || $max_price < $p) {
+                $max_price = $p;
+            }
+        }
+
+        $category->max_price = $max_price;
+        $category->min_price = $min_price;
+        $category->products_count = count($products);
+
+        $category->save(false, ['max_price', 'min_price', 'products_count']);
     }
 }

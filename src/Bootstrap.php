@@ -2,8 +2,6 @@
 
 namespace ozerich\shop;
 
-use ozerich\shop\components\Google\Spreadsheets\GoogleSpreadsheets;
-use ozerich\shop\components\Google\Spreadsheets\GoogleSpreadsheetsSync;
 use ozerich\shop\constants\SettingOption;
 use ozerich\shop\constants\SettingValueType;
 use ozerich\shop\models\Category;
@@ -26,20 +24,6 @@ class Bootstrap implements BootstrapInterface
                     'ozerich\filestorage\migrations',
                 ],
             ];
-
-            $app->setComponents([
-                'spreadsheets' => [
-                    'class' => GoogleSpreadsheets::class,
-                    'credentials_file' => getenv('GOOGLE_SPREADSHEETS_CREDENTIALS_FILE')
-                ],
-                'spreadsheetsSync' => [
-                    'class' => GoogleSpreadsheetsSync::class,
-                    'spreadsheet_id' => getenv('GOOGLE_SPREADSHEET_ID')
-                ],
-                'cache' => [
-                    'class' => 'yii\caching\FileCache',
-                ],
-            ]);
         }
     }
 

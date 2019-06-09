@@ -67,7 +67,13 @@ class CategoryFullDTO extends Category implements DTO
             'seo_description' => $this->seo_description,
             'seo_image' => $this->image ? $this->image->getUrl() : null,
 
-            'colors' => $this->getColor()
+            'colors' => $this->getColor(),
+
+            'products_stats' => [
+                'count' => $this->products_count,
+                'min_price' => $this->min_price,
+                'max_price' => $this->max_price
+            ]
         ];
     }
 }
