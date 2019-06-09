@@ -17,6 +17,7 @@ class ProductSeoService
         return [
             'name' => $product->name,
             'plain_price' => $plainPrice,
+            'manufacture' => $product->manufacture ? $product->manufacture->name : ''
         ];
     }
 
