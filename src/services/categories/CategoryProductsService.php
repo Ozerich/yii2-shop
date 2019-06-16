@@ -256,4 +256,33 @@ class CategoryProductsService
 
         $category->save(false, ['max_price', 'min_price', 'products_count']);
     }
+
+    public function setProductCategory(Product $product, Category $category)
+    {
+        if (!$product->category_id || $product->category_id != $category->id) {
+
+            if ($product->category_id) {
+                ProductCategory::deleteAll(['product_id' => $product->id, 'category_id' => $product->category_id]);
+            }
+
+            $item = new ProductCategory();
+            $item->product_id = $product->id;
+            $item->category_id = $category->id;
+            $item->save();
+
+            $this->categoryManufacturesService()->onUpdateCategory($product->category_id);
+            $this->categoryManufacturesService()->onUpdateCategory($category->id);
+
+            if ($product->category_id) {
+                $this->categoryProductsService()->updateCategoryStats(Category::findOne($product->category_id));
+            }
+
+            $this->categoryProductsService()->updateCategoryStats(Category::findOne($category->id));
+
+            $product->category_id = $category->id;
+            $product->save(false, ['category_id']);
+        }
+
+        return $product;
+    }
 }

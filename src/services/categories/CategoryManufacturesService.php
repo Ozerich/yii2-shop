@@ -6,6 +6,7 @@ use ozerich\shop\constants\CategoryType;
 use ozerich\shop\models\Category;
 use ozerich\shop\models\CategoryManufacture;
 use ozerich\shop\models\Manufacture;
+use ozerich\shop\models\Product;
 use ozerich\shop\traits\ServicesTrait;
 
 class CategoryManufacturesService
@@ -60,5 +61,23 @@ class CategoryManufacturesService
         }
 
         return Manufacture::find()->andWhere('id IN (' . implode(',', $ids) . ')')->all();
+    }
+
+    public function setProductManufacture(Product $product, ?Manufacture $manufacture)
+    {
+        $newManufactureId = $manufacture ? $manufacture->id : null;
+
+        if ($newManufactureId == $product->manufacture_id) {
+            return $product;
+        }
+
+        $product->manufacture_id = $newManufactureId;
+        $product->save(false, ['manufacture_id']);
+
+        if ($product->category) {
+            $this->onUpdateCategory($product->category);
+        }
+
+        return $product;
     }
 }

@@ -2,6 +2,8 @@
 
 namespace ozerich\shop\traits;
 
+use ozerich\shop\import\ImportProductService;
+use ozerich\shop\import\ImportService;
 use ozerich\shop\services\blog\BlogService;
 use ozerich\shop\services\categories\CategoriesService;
 use ozerich\shop\services\categories\CategoryFieldsService;
@@ -55,6 +57,20 @@ trait ServicesTrait
     private $productModulesService = null;
 
     private $productSeoService = null;
+
+    private $importProductService = null;
+
+    /**
+     * @return ImportProductService
+     */
+    public function importProductService()
+    {
+        if ($this->importProductService === null) {
+            $this->importProductService = new ImportProductService();
+        }
+
+        return $this->importProductService;
+    }
 
     /**
      * @return ProductSeoService

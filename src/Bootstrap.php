@@ -12,6 +12,8 @@ use yii\base\BootstrapInterface;
 
 class Bootstrap implements BootstrapInterface
 {
+    public $importProductStrategies = [];
+
     use ServicesTrait;
 
     private function bootstrapConsole(\yii\console\Application $app)
@@ -36,7 +38,8 @@ class Bootstrap implements BootstrapInterface
         $blogEnabled = $this->settingsService()->get(SettingOption::BLOG_ENABLED, false, SettingValueType::BOOLEAN);
 
         \Yii::$app->setModule('admin', [
-            'class' => 'ozerich\shop\modules\admin\Module'
+            'class' => 'ozerich\shop\modules\admin\Module',
+            'importProductStrategies' => $this->importProductStrategies
         ]);
 
         \Yii::$app->setModule('api', [
@@ -277,6 +280,6 @@ class Bootstrap implements BootstrapInterface
             ],
         ]);
 
-        $app->bootstrap = array_unique(array_merge($app->bootstrap ? $app->bootstrap : [], ['log', 'media']));
+        \Yii::createObject($mediaConfig);
     }
 }

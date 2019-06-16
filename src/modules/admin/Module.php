@@ -22,6 +22,8 @@ class Module extends \ozerich\admin\Module
 
     public $loginDuration = 99999999;
 
+    public $importProductStrategies = [];
+
     public $menu = [
         [
             'id' => 'categories',
@@ -71,6 +73,11 @@ class Module extends \ozerich\admin\Module
                     'id' => 'product-colors',
                     'label' => 'Цвета',
                     'link' => '/products/colors',
+                ],
+                [
+                    'id' => 'import',
+                    'label' => 'Импорт по URL',
+                    'link' => '/products/import-by-url'
                 ],
             ]
         ],

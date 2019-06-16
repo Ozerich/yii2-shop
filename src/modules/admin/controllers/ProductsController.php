@@ -7,6 +7,7 @@ use ozerich\admin\actions\DeleteAction;
 use ozerich\admin\actions\ListAction;
 use ozerich\admin\controllers\base\AdminController;
 use ozerich\shop\constants\FieldType;
+use ozerich\shop\import\ImportProductAdminForm;
 use ozerich\shop\models\Color;
 use ozerich\shop\models\Product;
 use ozerich\shop\models\ProductImage;
@@ -25,6 +26,7 @@ use ozerich\shop\modules\admin\forms\UpdateProductFormConvertor;
 use ozerich\shop\traits\ServicesTrait;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
+use yii\widgets\ActiveForm;
 
 class ProductsController extends AdminController
 {
@@ -318,14 +320,14 @@ class ProductsController extends AdminController
             return;
         }
 
-        if($colorId) {
+        if ($colorId) {
             $color = Color::findOne($colorId);
             if (!$color) {
                 throw new NotFoundHttpException('Цвета не найдено');
             }
 
             $productImage->color_id = $color->id;
-        } else{
+        } else {
             $productImage->color_id = null;
         }
 
@@ -333,5 +335,41 @@ class ProductsController extends AdminController
 
         $this->productColorsService()->updateCategoriesWithColorIds([$oldColor]);
         $this->productColorsService()->updateCategoriesWithColorIds([$color->id]);
+    }
+
+
+    public function actionImportByUrl()
+    {
+        $domains = $this->importProductService()->allowedDomains();
+
+        $form = new ImportProductAdminForm();
+
+        $error = null;
+
+        if ($form->load(\Yii::$app->request->post())) {
+            if (\Yii::$app->request->isAjax) {
+                \Yii::$app->response->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($form);
+            }
+
+            try {
+                $model = $this->importProductService()->import($form->url, $form->getCategory());
+
+                if (!$model) {
+                    $error = 'Ошибка импорта - товар не создался';
+                } else {
+                    return $this->redirect('/admin/products/update/' . $model->id);
+                }
+
+            } catch (\Exception $exception) {
+                $error = $exception->getMessage();
+            }
+        }
+
+        return $this->render('import-by-url', [
+            'domains' => $domains,
+            'formModel' => $form,
+            'error' => $error
+        ]);
     }
 }

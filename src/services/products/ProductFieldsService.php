@@ -45,10 +45,26 @@ class ProductFieldsService
             return;
         }
 
+        if ($field->type == FieldType::INTEGER) {
+            $value = intval($value);
+        } else if ($field->type == FieldType::SELECT) {
+            $value = is_array($value) ? array_values(array_unique($value)) : [$value];
+
+            $fieldValues = $field->values ? $field->values : [];
+            foreach ($value as $val) {
+                if (!in_array($val, $fieldValues)) {
+                    $fieldValues[] = $val;
+                }
+            }
+
+            $field->values = implode(';', $fieldValues);
+            $field->save(false, ['values']);
+        }
+
         $model = new ProductFieldValue();
         $model->product_id = $product->id;
         $model->field_id = $field->id;
-        $model->value = is_array($value) ? implode(';',$value) : $value;
+        $model->value = is_array($value) ? implode(';', $value) : $value;
         $model->save();
     }
 
