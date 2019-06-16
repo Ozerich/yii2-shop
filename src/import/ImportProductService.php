@@ -178,8 +178,6 @@ class ImportProductService
             $this->productFieldsService()->setProductFieldValue($model, $field, $value);
         }
 
-        $this->categoryProductsService()->afterProductParamsChanged($model);
-
 
         foreach ($importProduct->getImages() as $image) {
             $productImage = new ProductImage();
@@ -252,6 +250,8 @@ class ImportProductService
         if ($category) {
             $model = $this->categoryProductsService()->setProductCategory($model, $category);
         }
+
+        $this->categoryProductsService()->afterProductParamsChanged($model);
 
         return $model;
     }
