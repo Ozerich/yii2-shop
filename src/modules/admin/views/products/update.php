@@ -1,6 +1,7 @@
 <? /**
  * @var \yii\web\View $this
  *
+ * @var array $tabs
  * @var ozerich\shop\structures\ProductField[] $fields
  * @var ozerich\shop\models\Product $model
  * @var ozerich\shop\modules\admin\forms\UpdateProductForm $formModel
@@ -44,6 +45,9 @@ $this->title = 'Редактировать товар - ' . $model->name . ' <sp
       <? else: ?>
         <li><a href="#modules" data-toggle="tab">Модули</a></li>
       <? endif; ?>
+      <? foreach ($tabs as $ind => $tab): ?>
+        <li><a href="#custom_tab_<?= $ind ?>" data-toggle="tab"><?= $tab['label'] ?></a></li>
+      <? endforeach; ?>
   </ul>
   <div class="tab-content">
     <div class="active tab-pane" id="main">
@@ -95,5 +99,10 @@ $this->title = 'Редактировать товар - ' . $model->name . ' <sp
             ]); ?>
         </div>
       <? endif; ?>
+
+      <? foreach ($tabs as $ind => $tab): ?>
+        <div class="tab-pane" id="custom_tab_<?= $ind ?>"><?= $tab['content'] ?></div>
+      <? endforeach; ?>
+
   </div>
 </div>

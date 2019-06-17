@@ -23,6 +23,8 @@ use ozerich\shop\modules\admin\forms\ProductSeoForm;
 use ozerich\shop\modules\admin\forms\ProductSeoFormConvertor;
 use ozerich\shop\modules\admin\forms\UpdateProductForm;
 use ozerich\shop\modules\admin\forms\UpdateProductFormConvertor;
+use ozerich\shop\plugins\PluginsStorage;
+use ozerich\shop\plugins\ProductTabsStorage;
 use ozerich\shop\traits\ServicesTrait;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
@@ -73,11 +75,15 @@ class ProductsController extends AdminController
                 'viewParams' => function ($params) {
                     $model = Product::findOne($params['id']);
 
+                    $tabs = ProductTabsStorage::getProductTabs($model);
+
                     return [
                         'fields' => $this->productFieldsService()->getFieldsForProduct($model),
                         'mediaForm' => (new ProductMediaFormConvertor())->loadFormFromModel($model),
                         'seoFormModel' => (new ProductSeoFormConvertor())->loadFormFromModel($model),
                         'connectionsForm' => (new ProductConnectionsFormConvertor())->loadFormFromModel($model),
+
+                        'tabs' => $tabs
                     ];
                 },
             ],

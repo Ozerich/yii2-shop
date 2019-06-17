@@ -7,12 +7,15 @@ use ozerich\shop\constants\SettingValueType;
 use ozerich\shop\models\Category;
 use ozerich\shop\models\Page;
 use ozerich\shop\models\Product;
+use ozerich\shop\plugins\BasePlugin;
 use ozerich\shop\traits\ServicesTrait;
 use yii\base\BootstrapInterface;
 
 class Bootstrap implements BootstrapInterface
 {
     public $importProductStrategies = [];
+
+    public $plugins = [];
 
     use ServicesTrait;
 
@@ -29,6 +32,17 @@ class Bootstrap implements BootstrapInterface
         }
     }
 
+    private function bootstrapPlugins($app)
+    {
+        foreach ($this->plugins as $pluginClass) {
+            $plugin = \Yii::createObject($pluginClass);
+
+            if ($plugin instanceof BasePlugin) {
+                $plugin->bootstrap();
+            }
+        }
+    }
+
     public function bootstrap($app)
     {
         if ($app instanceof \yii\console\Application) {
@@ -39,7 +53,7 @@ class Bootstrap implements BootstrapInterface
 
         \Yii::$app->setModule('admin', [
             'class' => 'ozerich\shop\modules\admin\Module',
-            'importProductStrategies' => $this->importProductStrategies
+            'importProductStrategies' => $this->importProductStrategies,
         ]);
 
         \Yii::$app->setModule('api', [
@@ -281,5 +295,7 @@ class Bootstrap implements BootstrapInterface
         ]);
 
         \Yii::createObject($mediaConfig);
+
+        $this->bootstrapPlugins($app);
     }
 }
