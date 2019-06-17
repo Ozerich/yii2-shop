@@ -38,4 +38,9 @@ abstract class BasePlugin implements IPlugin
     {
         ActionsStorage::register($this, $action, $actionHandlerClass);
     }
+
+    protected function registerPage($urlAlias, IPage $page)
+    {
+        PagesStorage::register($this, $urlAlias, $page);
+    }
 }

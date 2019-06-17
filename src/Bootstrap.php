@@ -286,6 +286,7 @@ class Bootstrap implements BootstrapInterface
                 'showScriptName' => false,
                 'enableStrictParsing' => false,
                 'rules' => [
+                    'admin/plugin/page/<plugin>/<alias>' => 'admin/plugin/page',
                     'admin/plugin/<plugin>/<action>' => 'admin/plugin/index',
                     '<module>/<controller>/<id:\d+>/<action>' => '<module>/<controller>/<action>',
                     '<module>/<controller>/<action>/<id:\d+>' => '<module>/<controller>/<action>',
