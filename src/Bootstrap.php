@@ -30,6 +30,8 @@ class Bootstrap implements BootstrapInterface
                 ],
             ];
         }
+
+        $this->bootstrapPlugins($app);
     }
 
     private function bootstrapPlugins($app)
@@ -284,6 +286,7 @@ class Bootstrap implements BootstrapInterface
                 'showScriptName' => false,
                 'enableStrictParsing' => false,
                 'rules' => [
+                    'admin/plugin/<plugin>/<action>' => 'admin/plugin/index',
                     '<module>/<controller>/<id:\d+>/<action>' => '<module>/<controller>/<action>',
                     '<module>/<controller>/<action>/<id:\d+>' => '<module>/<controller>/<action>',
                     '<controller>/<action>/<id:\d+>' => '<controller>/<action>',
