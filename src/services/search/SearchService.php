@@ -40,7 +40,7 @@ class SearchService
      */
     public function searchPosts($query, $limit = 5)
     {
-        return BlogPost::find()
+        return BlogPost::findPublished()
             ->orWhere('title LIKE :query1', [':query1' => '%' . $query . '%'])
             ->orWhere('excerpt LIKE :query2', [':query2' => '%' . $query . '%'])
             ->orWhere('content LIKE :query3', [':query3' => '%' . $query . '%'])

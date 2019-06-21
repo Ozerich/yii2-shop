@@ -3,6 +3,7 @@
 namespace ozerich\shop\models;
 
 use himiklab\sitemap\behaviors\SitemapBehavior;
+use ozerich\shop\constants\PostStatus;
 use ozerich\shop\constants\SettingOption;
 use ozerich\shop\constants\SettingValueType;
 use ozerich\shop\traits\ServicesTrait;
@@ -147,6 +148,14 @@ class BlogPost extends \yii\db\ActiveRecord
     public static function findByStatus($status)
     {
         return self::find()->andWhere('status=:status', [':status' => $status]);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public static function findPublished()
+    {
+        return self::findByStatus(PostStatus::PUBLISHED);
     }
 
     public function getUrl($absolute = false)
