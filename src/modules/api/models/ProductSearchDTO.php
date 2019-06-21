@@ -3,11 +3,32 @@
 namespace ozerich\shop\modules\api\models;
 
 use ozerich\api\interfaces\DTO;
+use ozerich\shop\constants\FieldType;
 use ozerich\shop\models\Category;
 use ozerich\shop\models\Product;
 
 class ProductSearchDTO extends Product implements DTO
 {
+    private function getParamsJSON()
+    {
+        $categoryFields = $this->category->categoryFields;
+
+        $field_ids = [];
+        foreach ($categoryFields as $categoryField) {
+            $field_ids[] = $categoryField->field_id;
+        }
+
+        $result = [];
+
+        foreach ($this->productFieldValues as $productFieldValue) {
+            if (in_array($productFieldValue->field_id, $field_ids)) {
+                $result[$productFieldValue->field_id] = $productFieldValue->field->type == FieldType::SELECT ? explode(';', $productFieldValue->value) : $productFieldValue->value;
+            }
+        }
+
+        return $result;
+    }
+
     public function getPath()
     {
         $categories = [$this->category];
@@ -39,7 +60,6 @@ class ProductSearchDTO extends Product implements DTO
         }, $parents));
     }
 
-
     public function toJSON()
     {
         return [
@@ -56,6 +76,8 @@ class ProductSearchDTO extends Product implements DTO
             'sale_disabled_text' => $this->sale_disabled ? $this->sale_disabled_text : null,
 
             'path' => $this->getPath(),
+
+            'params' => $this->getParamsJSON(),
         ];
     }
 }

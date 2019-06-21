@@ -6,11 +6,29 @@ use ozerich\admin\controllers\base\AdminController;
 use ozerich\shop\plugins\ActionsStorage;
 use ozerich\shop\plugins\PagesStorage;
 use yii\base\Action;
+use yii\filters\Cors;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
 class PluginController extends AdminController
 {
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => Cors::class,
+                'cors' => [
+                    'Origin' => ['*'],
+                    'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
+                    'Access-Control-Request-Headers' => ['*'],
+                    'Access-Control-Allow-Credentials' => null,
+                    'Access-Control-Max-Age' => 86400,
+                    'Access-Control-Expose-Headers' => [],
+                ]
+            ],
+        ];
+    }
+
     public function actionIndex($plugin, $action)
     {
         /** @var Action $actionHandler */
@@ -44,7 +62,7 @@ class PluginController extends AdminController
             return $content;
         }
 
-        if($content instanceof Response){
+        if ($content instanceof Response) {
             return $content;
         }
 

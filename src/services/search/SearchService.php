@@ -2,6 +2,9 @@
 
 namespace ozerich\shop\services\search;
 
+use ozerich\shop\constants\CategoryType;
+use ozerich\shop\models\BlogPost;
+use ozerich\shop\models\Category;
 use ozerich\shop\models\Product;
 
 class SearchService
@@ -15,6 +18,32 @@ class SearchService
         return Product::findVisibleOnSite()
             ->andWhere('name LIKE :name', [':name' => '%' . $query . '%'])
             ->addOrderBy('popular_weight DESC')
+            ->limit($limit)
+            ->all();
+    }
+
+    /**
+     * @param string $query
+     * @return Category[]
+     */
+    public function searchCategories($query, $limit = 5)
+    {
+        return Category::find()->andWhere('type=:type', [':type' => CategoryType::CATALOG])
+            ->andWhere('name LIKE :name', [':name' => '%' . $query . '%'])
+            ->limit($limit)
+            ->all();
+    }
+
+    /**
+     * @param string $query
+     * @return Category[]
+     */
+    public function searchPosts($query, $limit = 5)
+    {
+        return BlogPost::find()
+            ->orWhere('title LIKE :query1', [':query1' => '%' . $query . '%'])
+            ->orWhere('excerpt LIKE :query2', [':query2' => '%' . $query . '%'])
+            ->orWhere('content LIKE :query3', [':query3' => '%' . $query . '%'])
             ->limit($limit)
             ->all();
     }

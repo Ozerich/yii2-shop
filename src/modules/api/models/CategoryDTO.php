@@ -17,7 +17,10 @@ class CategoryDTO extends Category implements DTO
                 'middle' => $this->image->getUrl('preview'),
                 'small' => $this->image->getUrl('small-preview')
             ] : null,
-            'url' => $this->getUrl()
+            'url' => $this->getUrl(),
+            'products_count' => $this->products_count,
+            'min_price' => $this->min_price,
+            'max_price' => $this->max_price,
         ];
     }
 }
