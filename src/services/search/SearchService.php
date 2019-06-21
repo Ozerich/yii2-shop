@@ -28,7 +28,7 @@ class SearchService
      */
     public function searchCategories($query, $limit = 5)
     {
-        return Category::find()->andWhere('type=:type', [':type' => CategoryType::CATALOG])
+        return Category::find()
             ->andWhere('name LIKE :name', [':name' => '%' . $query . '%'])
             ->limit($limit)
             ->all();
