@@ -186,7 +186,7 @@ function getSaveData(state) {
   return {
     conditions: state.conditions.items.filter(item => !!item.filter && !!item.compare && !!item.value).map(item => {
       return {
-        filter: (item.filter === 'PRICE' || item.filter === 'CATEGORY' || item.filter === 'MANUFACTURE' || item.filter === 'COLOR') ? item.filter : +item.filter,
+        filter: (item.filter === 'PRICE' ||item.filter === 'DISCOUNT' || item.filter === 'CATEGORY' || item.filter === 'MANUFACTURE' || item.filter === 'COLOR') ? item.filter : +item.filter,
         compare: item.compare,
         value: item.value
       };

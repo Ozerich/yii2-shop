@@ -146,6 +146,8 @@ class ConditionalController extends Controller
                 $type = CategoryConditionType::MANUFACTURE;
             } elseif ($condition['filter'] == 'COLOR') {
                 $type = CategoryConditionType::COLOR;
+            } elseif ($condition['filter'] == 'DISCOUNT') {
+                $type = CategoryConditionType::DISCOUNT;
             }
 
             $model = new CategoryCondition();

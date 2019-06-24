@@ -22,7 +22,7 @@ class ConditionRowCompare extends Component {
       ];
     }
 
-    if (filter === 'MANUFACTURE') {
+    if (filter === 'MANUFACTURE' || filter === 'DISCOUNT') {
       return [
         { id: 'EQUAL', label: 'Равно' }
       ];

@@ -47,6 +47,10 @@ class ConditionRowValue extends Component {
 
     const { filter, compare } = this.props.model;
 
+    if (filter === 'DISCOUNT') {
+      return this.renderCheckbox();
+    }
+
     if (filter === 'PRICE') {
       return this.renderNumberInput();
     } else if (filter === 'CATEGORY') {

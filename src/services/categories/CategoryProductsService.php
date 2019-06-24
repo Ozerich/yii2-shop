@@ -102,6 +102,8 @@ class CategoryProductsService
             return $this->checkSelectCondition($product->category_id, $condition->value, $condition->compare);
         } else if ($condition->type == CategoryConditionType::COLOR) {
             return $this->checkColorCondition($product, $condition->value);
+        } else if ($condition->type == CategoryConditionType::DISCOUNT) {
+            return $product->discount_mode != null;
         }
 
         $field = $condition->field;

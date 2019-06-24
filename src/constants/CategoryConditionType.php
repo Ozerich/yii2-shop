@@ -11,4 +11,5 @@ class CategoryConditionType extends Enum
     const CATEGORY = 'CATEGORY';
     const MANUFACTURE = 'MANUFACTURE';
     const COLOR = 'COLOR';
+    const DISCOUNT = 'DISCOUNT';
 }
