@@ -52,7 +52,7 @@ class ProductImage extends \yii\db\ActiveRecord
      */
     public function getColor()
     {
-        return $this->hasOne(Image::className(), ['id' => 'color_id']);
+        return $this->hasOne(Color::className(), ['id' => 'color_id']);
     }
 
     /**
