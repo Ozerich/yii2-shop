@@ -33,6 +33,11 @@ class AdminUser extends BaseObject implements IAdminUser, IdentityInterface
         return null;
     }
 
+    public function checkAdminAccess()
+    {
+        return true;
+    }
+
     public function getDashboardName()
     {
         return 'admin';
