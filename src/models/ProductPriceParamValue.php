@@ -42,7 +42,7 @@ class ProductPriceParamValue extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        return parent::find()->addOrderBy('priority ASC');
+        return parent::find()->addOrderBy('product_price_param_values.priority ASC');
     }
 
     /**

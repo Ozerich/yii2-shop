@@ -11,6 +11,7 @@ const CREATE_PARAM = 'params/CREATE_PARAM';
 const OPEN_UPDATE_FORM = 'params/OPEN_UPDATE_FORM';
 const CLOSE_UPDATE_FORM = 'params/CLOSE_UPDATE_FORM';
 const DELETE_PARAM = 'params/DELETE_PARAM';
+const MOVE_PARAM = 'params/MOVE_PARAM';
 const SAVE_PARAM = 'params/SAVE_PARAM';
 
 const GET_PARAM_ITEMS = 'params/GET_PARAM_ITEMS';
@@ -316,6 +317,36 @@ export default function reducer(state = initialState, action = {}) {
         })
       });
 
+    case MOVE_PARAM:
+      let replaceWithParamId = null;
+
+      for (let i = 0; i < state.params.length; i++) {
+        if (state.params[i].id === action.payload.id) {
+          if (action.payload.direction === -1 && i > 0) {
+            replaceWithParamId = state.params[i - 1].id;
+          } else if (action.payload.direction === 1 && i < state.params.length - 1) {
+            replaceWithParamId = state.params[i + 1].id;
+          }
+        }
+      }
+
+      if (!replaceWithParamId) {
+        return state;
+      }
+
+      const paramItem1 = state.params.find(item => item.id === action.payload.id);
+      const paramItem2 = state.params.find(item => item.id === replaceWithParamId);
+
+      return Object.assign({}, state, {
+        params: state.params.map(item => {
+          if (paramItem1.id === item.id) {
+            return Object.assign({}, paramItem2);
+          } else if (paramItem2.id === item.id) {
+            return Object.assign({}, paramItem1);
+          }
+          return item;
+        })
+      });
 
     default:
       return state;
@@ -630,6 +661,21 @@ export function loadPrices(productId) {
         type: GET_PRICES + _FAILURE,
         error
       });
+    });
+  }
+}
+
+export function moveParam(paramId, direction) {
+  return dispatch => {
+
+    paramService.move(paramId, direction);
+
+    dispatch({
+      type: MOVE_PARAM,
+      payload: {
+        id: paramId,
+        direction
+      }
     });
   }
 }

@@ -24,7 +24,8 @@ class ParamsSection extends Component {
           <ParamForm model={null} onCancel={this.onFormCancel.bind(this)} onSave={this.onFormSave.bind(this)} />}
 
           <div className="section-content">
-            {params.map(model => <ParamContainer id={model.id} />)}
+            {params.map((model, ind) => <ParamContainer isFirst={ind === 0} isLast={ind === params.length - 1}
+                                                        id={model.id} />)}
           </div>
         </div>
     );

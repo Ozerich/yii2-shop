@@ -86,6 +86,6 @@ class ProductModule extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        return parent::find()->addOrderBy('priority ASC');
+        return parent::find()->addOrderBy('product_modules.priority ASC');
     }
 }

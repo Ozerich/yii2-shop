@@ -6,6 +6,7 @@ use ozerich\admin\actions\MoveAction;
 use ozerich\api\controllers\Controller;
 use ozerich\api\filters\AccessControl;
 use ozerich\api\request\InvalidRequestException;
+use ozerich\api\request\RequestError;
 use ozerich\api\response\CollectionResponse;
 use ozerich\api\response\ModelResponse;
 use ozerich\shop\constants\ProductType;
@@ -84,6 +85,10 @@ class PricesController extends Controller
                     'verbs' => ['POST', 'DELETE']
                 ],
                 [
+                    'action' => 'param-move',
+                    'verbs' => ['POST']
+                ],
+                [
                     'action' => 'param-items',
                     'verbs' => ['GET']
                 ],
@@ -124,6 +129,11 @@ class PricesController extends Controller
                 'class' => MoveAction::class,
                 'modelClass' => ProductPriceParamValue::class,
                 'conditionAttribute' => 'product_price_param_id'
+            ],
+            'param-move' => [
+                'class' => MoveAction::class,
+                'modelClass' => ProductPriceParam::class,
+                'conditionAttribute' => 'product_id'
             ]
         ];
     }

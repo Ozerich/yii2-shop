@@ -6,6 +6,7 @@ import {
   createParamItem,
   deleteParam,
   deleteParamItem,
+  moveParam,
   moveParamItem,
   openUpdateForm,
   saveParam,
@@ -17,13 +18,17 @@ import ParamItem from "./ParamItem";
 
 class ParamContainer extends Component {
   render() {
-    const { model, items } = this.props;
+    const { model, items, isFirst, isLast } = this.props;
 
     return (
         <div className="param">
           <div className="param-title">
             <span className="param-title__value">{model.name}</span>
             <div className="param-title__actions">
+              {isFirst ? null :
+                  <a href="#" className="param-edit" onClick={e => this.onMoveClick(e, -1)}>Поднять выше</a>}
+              {isLast ? null :
+                  <a href="#" className="param-edit" onClick={e => this.onMoveClick(e, 1)}>Опустить ниже</a>}
               <a href="#" className="param-edit" onClick={e => this.onUpdateClick(e)}>Изменить</a>
               <a href="#" className="param-delete" onClick={e => this.onDeleteClick(e)}>Удалить</a>
             </div>
@@ -57,6 +62,13 @@ class ParamContainer extends Component {
           </div>
         </div>
     );
+  }
+
+  onMoveClick(e, direction) {
+    e.preventDefault();
+    const { moveParam, model } = this.props;
+
+    moveParam(model.id, direction);
   }
 
   onUpdateParamItem(id, itemModel) {
@@ -131,5 +143,6 @@ export default connect(mapStateToProps, {
   createParamItem,
   updateParamItem,
   deleteParamItem,
-  moveParamItem
+  moveParamItem,
+  moveParam
 })(ParamContainer);
