@@ -133,6 +133,9 @@ class BlogService
             return [];
         }
 
-        return BlogPost::findByStatus(PostStatus::PUBLISHED)->andWhere('id IN (' . implode(',', $result) . ')')->all();
+        return BlogPost::findByStatus(PostStatus::PUBLISHED)
+            ->andWhere('id IN (' . implode(',', $result) . ')')
+            ->orderBy(new \yii\db\Expression('FIELD(id, ' . implode(',', $result) . ')'))
+            ->all();
     }
 }
