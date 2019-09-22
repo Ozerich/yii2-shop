@@ -70,6 +70,12 @@ foreach ($tree as $id => $item) {
       <?= $form->field($formModel, 'meta_description')->textarea(); ?>
   </div>
 
+  <div class="col-xs-12">
+      <?= $form->field($formModel, 'category_ids')->widget(\ozerich\shop\modules\admin\widgets\CategoryWidget::class, [
+          'multiple' => true
+      ]); ?>
+  </div>
+
 <?php
 ozerich\admin\widgets\FormPage::end();
 \yii\widgets\ActiveForm::end();

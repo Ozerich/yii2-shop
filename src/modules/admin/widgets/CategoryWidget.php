@@ -74,7 +74,7 @@ class CategoryWidget extends InputWidget
                 continue;
             }
 
-            if ($item['model']['type'] != CategoryType::CATALOG) {
+            if ($this->onlyCatalog && $item['model']['type'] != CategoryType::CATALOG) {
                 continue;
             }
 

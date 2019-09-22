@@ -7,6 +7,7 @@ use ozerich\shop\constants\PostStatus;
 use ozerich\shop\constants\SettingOption;
 use ozerich\shop\constants\SettingValueType;
 use ozerich\shop\traits\ServicesTrait;
+use ozerich\tools\behaviors\PriorityBehavior;
 use yii\helpers\Url;
 
 /**
@@ -22,6 +23,7 @@ use yii\helpers\Url;
  * @property string $page_title
  * @property string $meta_description
  * @property string $status
+ * @property integer $priority
  *
  * @property BlogCategory $category
  * @property Image $image
@@ -74,13 +76,15 @@ class BlogPost extends \yii\db\ActiveRecord
     {
         $blogEnabled = $this->settingsService()->get(SettingOption::BLOG_ENABLED, false, SettingValueType::BOOLEAN);
 
-        if (!$blogEnabled) {
-            return [];
-        }
+        $behaviors = [
+            [
+                'class' => PriorityBehavior::class,
+                'conditionAttribute' => 'category_id'
+            ]
+        ];
 
-
-        return [
-            'sitemap' => [
+        if ($blogEnabled) {
+            $behaviors ['sitemap'] = [
                 'class' => SitemapBehavior::class,
                 'dataClosure' => function (self $model) {
                     return [
@@ -90,8 +94,18 @@ class BlogPost extends \yii\db\ActiveRecord
                         'priority' => 0.6
                     ];
                 }
-            ],
-        ];
+            ];
+        }
+
+        return $behaviors;
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public static function find()
+    {
+        return parent::find()->addOrderBy('priority ASC');
     }
 
     /**

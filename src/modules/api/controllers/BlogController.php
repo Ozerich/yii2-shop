@@ -12,6 +12,7 @@ use ozerich\shop\constants\SettingOption;
 use ozerich\shop\models\BlogCategory;
 use ozerich\shop\models\BlogPost;
 use ozerich\shop\models\Image;
+use ozerich\shop\models\Product;
 use ozerich\shop\modules\api\models\BlogCategoryDTO;
 use ozerich\shop\modules\api\models\BlogPostDTO;
 use ozerich\shop\modules\api\models\BlogPostFullDTO;
@@ -54,7 +55,11 @@ class BlogController extends Controller
                 [
                     'action' => 'category',
                     'verbs' => 'GET'
-                ]
+                ],
+                [
+                    'action' => 'product-posts',
+                    'verbs' => 'GET'
+                ],
             ]
         ];
 
@@ -151,5 +156,19 @@ class BlogController extends Controller
         ]);
 
         return new CollectionResponse($dataProvider, BlogPostDTO::class);
+    }
+
+    public function actionProductPosts($id)
+    {
+        /** @var Product $product */
+        $product = Product::findVisibleOnSite()
+            ->andWhere('products.id=:id', [':id' => $id])
+            ->one();
+
+        if (!$product) {
+            throw new NotFoundHttpException();
+        }
+
+        return new ArrayResponse($this->blogService()->getProductPosts($product), BlogPostDTO::class);
     }
 }

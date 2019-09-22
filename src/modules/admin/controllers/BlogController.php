@@ -5,9 +5,13 @@ namespace ozerich\shop\modules\admin\controllers;
 use ozerich\admin\actions\CreateOrUpdateAction;
 use ozerich\admin\actions\DeleteAction;
 use ozerich\admin\actions\ListAction;
+use ozerich\admin\actions\MoveAction;
 use ozerich\admin\controllers\base\AdminController;
 use ozerich\shop\models\BlogCategory;
 use ozerich\shop\models\BlogPost;
+use ozerich\shop\modules\admin\filters\FilterBlogPosts;
+use ozerich\shop\modules\admin\forms\blog\BlogPostForm;
+use ozerich\shop\modules\admin\forms\blog\BlogPostFormConvertor;
 use ozerich\shop\traits\ServicesTrait;
 
 class BlogController extends AdminController
@@ -46,11 +50,14 @@ class BlogController extends AdminController
                 'class' => ListAction::class,
                 'query' => BlogPost::find(),
                 'pageSize' => -1,
-                'view' => 'posts/index'
+                'view' => 'posts/index',
+                'filterModel' => new FilterBlogPosts(),
             ],
             'create' => [
                 'class' => CreateOrUpdateAction::class,
                 'modelClass' => BlogPost::class,
+                'formClass' => BlogPostForm::class,
+                'formConvertor' => BlogPostFormConvertor::class,
                 'isCreate' => true,
                 'view' => 'posts/form',
                 'redirectUrl' => '/admin/blog/posts'
@@ -58,6 +65,8 @@ class BlogController extends AdminController
             'update' => [
                 'class' => CreateOrUpdateAction::class,
                 'modelClass' => BlogPost::class,
+                'formClass' => BlogPostForm::class,
+                'formConvertor' => BlogPostFormConvertor::class,
                 'isCreate' => false,
                 'view' => 'posts/form',
                 'redirectUrl' => '/admin/blog/posts'
@@ -65,7 +74,13 @@ class BlogController extends AdminController
             'delete' => [
                 'class' => DeleteAction::class,
                 'modelClass' => BlogPost::class
-            ]
+            ],
+
+            'move' => [
+                'class' => MoveAction::class,
+                'modelClass' => BlogPost::class,
+                'conditionAttribute' => ['category_id']
+            ],
         ];
     }
 
