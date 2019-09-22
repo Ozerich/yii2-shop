@@ -76,7 +76,7 @@ class BlogService
      */
     public function getSamePostsQuery(BlogPost $post)
     {
-        return BlogPost::findByStatus(PostStatus::PUBLISHED)->andWhere('id <> :id', [':id' => $post->id]);
+        return $post->getSamePosts()->andWhere('blog_posts.status=:status', [':status' => PostStatus::PUBLISHED]);
     }
 
     public function getProductPosts(Product $product, $limit = 4)

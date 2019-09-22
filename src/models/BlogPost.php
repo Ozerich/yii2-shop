@@ -27,6 +27,7 @@ use yii\helpers\Url;
  *
  * @property BlogCategory $category
  * @property Image $image
+ * @property BlogPost $samePosts
  */
 class BlogPost extends \yii\db\ActiveRecord
 {
@@ -122,6 +123,22 @@ class BlogPost extends \yii\db\ActiveRecord
     public function getImage()
     {
         return $this->hasOne(Image::className(), ['id' => 'image_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPostSamePosts()
+    {
+        return $this->hasMany(BlogPostSame::className(), ['post_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSamePosts()
+    {
+        return $this->hasMany(BlogPost::class, ['id' => 'same_post_id'])->via('postSamePosts');
     }
 
     /**

@@ -71,6 +71,12 @@ foreach ($tree as $id => $item) {
   </div>
 
   <div class="col-xs-12">
+      <?= $form->field($formModel, 'same_post_ids')->widget(\ozerich\shop\modules\admin\widgets\PostsSelect2Widget::class, [
+          'excludeId' => $model->id
+      ]); ?>
+  </div>
+
+  <div class="col-xs-12">
       <?= $form->field($formModel, 'category_ids')->widget(\ozerich\shop\modules\admin\widgets\CategoryWidget::class, [
           'multiple' => true
       ]); ?>

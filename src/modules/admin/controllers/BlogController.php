@@ -13,6 +13,7 @@ use ozerich\shop\modules\admin\filters\FilterBlogPosts;
 use ozerich\shop\modules\admin\forms\blog\BlogPostForm;
 use ozerich\shop\modules\admin\forms\blog\BlogPostFormConvertor;
 use ozerich\shop\traits\ServicesTrait;
+use yii\web\Response;
 
 class BlogController extends AdminController
 {
@@ -87,5 +88,32 @@ class BlogController extends AdminController
     public function actionIndex()
     {
         return $this->redirect('/admin/categories');
+    }
+
+
+    public function actionFindAjax($q, $exclude = null)
+    {
+        $query = BlogPost::find()->andWhere('title LIKE :name', [':name' => '%' . $q . '%']);
+
+        if ($exclude) {
+            $query->andWhere('blog_posts.id <> :exclude_id', [':exclude_id' => $exclude]);
+        }
+
+        /** @var BlogPost[] $products */
+        $posts = $query->all();
+
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $results = [];
+        foreach ($posts as $result) {
+            $results[] = [
+                'id' => $result->id,
+                'text' => $result->title
+            ];
+        }
+
+        return [
+            'results' => $results
+        ];
     }
 }
