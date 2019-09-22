@@ -15,7 +15,7 @@ class m190922_110758_param_priorities extends Migration
      */
     public function safeUp()
     {
-        //$this->addColumn('{{%product_price_params}}', 'priority', $this->integer()->notNull());
+        $this->addColumn('{{%product_price_params}}', 'priority', $this->integer()->notNull());
 
         $items = $this->db->createCommand('SELECT * FROM product_price_params')->queryAll();
         $map = [];
