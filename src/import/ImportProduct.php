@@ -6,6 +6,8 @@ class ImportProduct
 {
     private $id;
 
+    private $sku;
+
     private $name;
 
     private $url;
@@ -36,6 +38,16 @@ class ImportProduct
     public function getId()
     {
         return $this->id;
+    }
+
+    public function setSku($value)
+    {
+        $this->sku = $value;
+    }
+
+    public function getSku()
+    {
+        return $this->sku;
     }
 
     public function setName($value)

@@ -4,6 +4,7 @@ namespace ozerich\shop\import;
 
 use ozerich\filestorage\FileStorage;
 use ozerich\shop\constants\DiscountType;
+use ozerich\shop\constants\Stock;
 use ozerich\shop\models\Category;
 use ozerich\shop\models\Field;
 use ozerich\shop\models\Manufacture;
@@ -134,6 +135,7 @@ class ImportProductService
         $model = new Product();
 
         $model->hidden = true;
+        $model->sku = $importProduct->getSku();
         $model->name = $importProduct->getName();
         $model->url_alias = Translit::convert($model->name);
         $model->image_id = $this->getImageIdByUrl($importProduct->getMainImageUrl());
@@ -198,8 +200,8 @@ class ImportProductService
             foreach ($priceParam['options'] as $option) {
                 $priceParamOption = new ProductPriceParamValue();
                 $priceParamOption->product_price_param_id = $priceParamModel->id;
-                $priceParamOption->name = $option['label'];
-                $priceParamOption->description = $option['description'];
+                $priceParamOption->name = is_string($option) ? $option : $option['label'];
+                $priceParamOption->description = is_string($option) ? null : $option['description'];
                 $priceParamOption->save();
             }
         }
@@ -234,6 +236,7 @@ class ImportProductService
             $priceModel->product_id = $model->id;
             $priceModel->param_value_id = $priceParamValue->id;
             $priceModel->value = $price['price'];
+            $priceModel->stock = Stock::WAITING;
 
             if (!empty($price['oldPrice'])) {
                 $priceModel->discount_value = $price['price'] - $price['oldPrice'];
