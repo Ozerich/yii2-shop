@@ -16,7 +16,7 @@ class SearchService
     public function searchProducts($query, $limit = 5)
     {
         return Product::findVisibleOnSite()
-            ->andWhere('name LIKE :name', [':name' => '%' . $query . '%'])
+            ->andWhere('name LIKE :query OR sku LIKE :query', [':query' => '%' . $query . '%'])
             ->addOrderBy('popular_weight DESC')
             ->limit($limit)
             ->all();

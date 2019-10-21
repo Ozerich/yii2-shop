@@ -83,6 +83,7 @@ class ProductFullDTO extends Product implements DTO
             'url_alias' => $this->url_alias,
             'name' => $this->name,
             'label' => $this->label,
+            'sku' => $this->sku,
             'image' => $this->image ? [
                 'small' => $this->image->getUrl('preview'),
                 'big' => $this->image->getUrl('big-preview'),
