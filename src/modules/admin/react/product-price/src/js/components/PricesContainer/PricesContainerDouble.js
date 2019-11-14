@@ -53,9 +53,10 @@ class PricesContainerDouble extends Component {
 
   getModel(valueId, secondValudId) {
     const key = valueId + 'x' + secondValudId;
+    const key2 = secondValudId + 'x' + valueId;
     const { prices } = this.props;
 
-    return key in prices ? prices[key] : null;
+    return key in prices ? prices[key] : (key2 in prices ? prices[key2] : null);
   }
 
   getStockValue(valueId, secondValueId) {

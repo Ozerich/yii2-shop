@@ -14,8 +14,8 @@ class ExtendedMode extends Component {
   render() {
     return (
         <>
-        <ParamsSection />
-        <PricesSection />
+          <ParamsSection />
+          <PricesSection />
         </>
     );
   }
