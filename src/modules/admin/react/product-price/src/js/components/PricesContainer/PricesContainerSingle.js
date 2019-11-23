@@ -89,12 +89,14 @@ class PricesContainerSingle extends Component {
   }
 
   onPriceChange(firstValueId, value) {
-    const { productId, savePrice } = this.props;
+    const { productId, savePrice, onChange } = this.props;
+    onChange();
     savePrice(productId, firstValueId, null, value);
   }
 
   onDiscountEnabledChange(firstValueId, value) {
-    const { productId, toggleDiscount } = this.props;
+    const { productId, toggleDiscount, onChange } = this.props;
+    onChange();
     toggleDiscount(productId, firstValueId, null, value);
   }
 }

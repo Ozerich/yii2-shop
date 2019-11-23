@@ -9,7 +9,7 @@ class ProductPriceAsset extends AssetBundle
     public $sourcePath = '@vendor/ozerich/yii2-shop/src/modules/admin/react/product-price/build';
 
     public $js = [
-        'build.js?v=4',
+        'build.js?v=5',
     ];
 
     public $css = [

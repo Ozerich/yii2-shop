@@ -25,8 +25,8 @@ class App extends Component {
 
     return (
         <>
-        {isExtendedMode ? <CommonSectionExtended /> : <CommonSection />}
-        {isExtendedMode ? <ExtendedMode /> : null}
+          {isExtendedMode ? <CommonSectionExtended /> : <CommonSection />}
+          {isExtendedMode ? <ExtendedMode /> : null}
         </>
     );
   }

@@ -16,7 +16,6 @@ export default class ParamsService extends BaseService {
     });
   }
 
-
   move(paramId, direction) {
     return this.post('/prices/param-move/' + paramId + '?mode=' + (direction === -1 ? 'up' : 'down'));
   }
@@ -26,5 +25,9 @@ export default class ParamsService extends BaseService {
       product_id: productId,
       name
     });
+  }
+
+  saveBatch(productId, data) {
+    return this.post('/prices/save-batch/' + productId, { prices: data });
   }
 }

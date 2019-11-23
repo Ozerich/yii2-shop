@@ -302,10 +302,14 @@ export default function reducer(state = initialState, action = {}) {
       });
 
     case SAVE_PRICE + _START:
+      let priceKey = getPriceKey(action.payload.firstParamId, action.payload.secondParamId);
+      if(priceKey in state.prices === false && action.payload.secondParamId){
+          priceKey = getPriceKey(action.payload.secondParamId, action.payload.firstParamId);
+      }
+
       return Object.assign({}, state, {
         prices: Object.assign({}, state.prices, {
-          [getPriceKey(action.payload.firstParamId, action.payload.secondParamId)]:
-              Object.assign({}, state.prices[getPriceKey(action.payload.firstParamId, action.payload.secondParamId)], action.payload.value)
+          [priceKey]: Object.assign({}, state.prices[priceKey], action.payload.value)
         })
       });
 
@@ -313,7 +317,7 @@ export default function reducer(state = initialState, action = {}) {
       return Object.assign({}, state, {
         prices: Object.assign({}, state.prices, {
           [getPriceKey(action.payload.firstParamId, action.payload.secondParamId)]:
-              Object.assign({}, state.prices[getPriceKey(action.payload.firstParamId, action.payload.secondParamId)], { has_discount: action.payload.enabled })
+            Object.assign({}, state.prices[getPriceKey(action.payload.firstParamId, action.payload.secondParamId)], { has_discount: action.payload.enabled })
         })
       });
 
@@ -613,7 +617,7 @@ export function savePrice(productId, firstParamId, secondParamId, value) {
       payload: { firstParamId, secondParamId, value }
     });
 
-    paramItemsService.price(productId, firstParamId, secondParamId, value).then(data => {
+    /*paramItemsService.price(productId, firstParamId, secondParamId, value).then(data => {
       dispatch({
         type: SAVE_PRICE + _SUCCESS,
         payload: { firstParamId, secondParamId }
@@ -624,7 +628,7 @@ export function savePrice(productId, firstParamId, secondParamId, value) {
         payload: { firstParamId, secondParamId },
         error
       });
-    });
+    });*/
   };
 }
 
@@ -636,9 +640,9 @@ export function toggleDiscount(productId, firstParamId, secondParamId, enabled) 
     });
 
     if (enabled) {
-      dispatch(savePrice(productId, firstParamId, secondParamId, { discount_mode: 'FIXED' }))
+      //  dispatch(savePrice(productId, firstParamId, secondParamId, { discount_mode: 'FIXED' }))
     } else {
-      dispatch(savePrice(productId, firstParamId, secondParamId, { discount_mode: null, discount_value: null }))
+      // dispatch(savePrice(productId, firstParamId, secondParamId, { discount_mode: null, discount_value: null }))
     }
   };
 }

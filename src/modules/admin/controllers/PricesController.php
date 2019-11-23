@@ -6,7 +6,6 @@ use ozerich\admin\actions\MoveAction;
 use ozerich\api\controllers\Controller;
 use ozerich\api\filters\AccessControl;
 use ozerich\api\request\InvalidRequestException;
-use ozerich\api\request\RequestError;
 use ozerich\api\response\CollectionResponse;
 use ozerich\api\response\ModelResponse;
 use ozerich\shop\constants\ProductType;
@@ -114,6 +113,10 @@ class PricesController extends Controller
                 ],
                 [
                     'action' => 'toggle-extended',
+                    'verbs' => ['POST']
+                ],
+                [
+                    'action' => 'save-batch',
                     'verbs' => ['POST']
                 ],
             ]
@@ -572,5 +575,37 @@ class PricesController extends Controller
         return array_map(function (Currency $currency) {
             return (new CurrencyDTO($currency))->toJSON();
         }, $currencies);
+    }
+
+    public function actionSaveBatch($id)
+    {
+        $product = Product::findOne($id);
+
+        if (!$product) {
+            throw new NotFoundHttpException('Product not found');
+        }
+
+        ProductPrice::deleteAll([
+            'product_id' => $product->id
+        ]);
+
+        $prices = \Yii::$app->request->post('prices');
+        foreach ($prices as $price) {
+            $model = new ProductPrice();
+            $model->product_id = $product->id;
+            $model->param_value_id = $price['value_id'];
+            $model->param_value_second_id = $price['second_value_id'];
+            $model->value = $price['value'];
+            $model->discount_mode = $price['discount_mode'];
+            $model->discount_value = $price['discount_value'];
+            $model->stock = $price['stock'];
+            $model->stock_waiting_days = $price['stock_waiting_days'];
+            $model->save();
+        }
+
+        $this->productPricesService()->updateProductPrice($product);
+
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        return [];
     }
 }
