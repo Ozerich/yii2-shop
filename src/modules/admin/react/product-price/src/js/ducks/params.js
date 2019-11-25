@@ -314,10 +314,14 @@ export default function reducer(state = initialState, action = {}) {
       });
 
     case TOGGLE_DISCOUNT:
+      let priceKey2 = getPriceKey(action.payload.firstParamId, action.payload.secondParamId);
+      if(priceKey2 in state.prices === false && action.payload.secondParamId){
+        priceKey2 = getPriceKey(action.payload.secondParamId, action.payload.firstParamId);
+      }
       return Object.assign({}, state, {
         prices: Object.assign({}, state.prices, {
-          [getPriceKey(action.payload.firstParamId, action.payload.secondParamId)]:
-            Object.assign({}, state.prices[getPriceKey(action.payload.firstParamId, action.payload.secondParamId)], { has_discount: action.payload.enabled })
+          [priceKey2]:
+            Object.assign({}, state.prices[priceKey2], { has_discount: action.payload.enabled })
         })
       });
 
