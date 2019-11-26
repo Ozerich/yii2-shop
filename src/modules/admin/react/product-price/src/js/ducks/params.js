@@ -303,25 +303,47 @@ export default function reducer(state = initialState, action = {}) {
 
     case SAVE_PRICE + _START:
       let priceKey = getPriceKey(action.payload.firstParamId, action.payload.secondParamId);
-      if(priceKey in state.prices === false && action.payload.secondParamId){
-          priceKey = getPriceKey(action.payload.secondParamId, action.payload.firstParamId);
+      if (priceKey in state.prices === false && action.payload.secondParamId) {
+        priceKey = getPriceKey(action.payload.secondParamId, action.payload.firstParamId);
+      }
+
+      let savePayload = action.payload.value;
+      if (priceKey in state.prices === false) {
+        savePayload = {
+          ...savePayload,
+          value_id: action.payload.firstParamId,
+          second_value_id: action.payload.secondParamId
+        };
       }
 
       return Object.assign({}, state, {
         prices: Object.assign({}, state.prices, {
-          [priceKey]: Object.assign({}, state.prices[priceKey], action.payload.value)
+          [priceKey]: Object.assign({}, state.prices[priceKey], savePayload)
         })
       });
 
     case TOGGLE_DISCOUNT:
       let priceKey2 = getPriceKey(action.payload.firstParamId, action.payload.secondParamId);
-      if(priceKey2 in state.prices === false && action.payload.secondParamId){
+      if (priceKey2 in state.prices === false && action.payload.secondParamId) {
         priceKey2 = getPriceKey(action.payload.secondParamId, action.payload.firstParamId);
       }
+
+      let savePayload2 = {
+        has_discount: action.payload.enabled
+      };
+
+      if (priceKey2 in state.prices === false || state.prices[priceKey2].discount_mode === null) {
+        savePayload2 = {
+          ...savePayload2,
+          discount_mode: "AMOUNT",
+          value_id: action.payload.firstParamId,
+          second_value_id: action.payload.secondParamId
+        };
+      }
+
       return Object.assign({}, state, {
         prices: Object.assign({}, state.prices, {
-          [priceKey2]:
-            Object.assign({}, state.prices[priceKey2], { has_discount: action.payload.enabled })
+          [priceKey2]: Object.assign({}, state.prices[priceKey2], savePayload2)
         })
       });
 

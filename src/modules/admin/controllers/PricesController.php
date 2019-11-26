@@ -595,11 +595,11 @@ class PricesController extends Controller
             $model->product_id = $product->id;
             $model->param_value_id = $price['value_id'];
             $model->param_value_second_id = $price['second_value_id'];
-            $model->value = $price['value'];
-            $model->discount_mode = $price['discount_mode'];
-            $model->discount_value = $price['discount_value'];
-            $model->stock = $price['stock'];
-            $model->stock_waiting_days = $price['stock_waiting_days'];
+            $model->value = isset($price['value']) ? $price['value'] : null;
+            $model->discount_mode = isset($price['discount_mode']) ? $price['discount_mode'] : null;
+            $model->discount_value = isset($price['discount_value']) ? $price['discount_value'] : null;
+            $model->stock = isset($price['stock']) ? $price['stock'] : null;
+            $model->stock_waiting_days = isset($price['stock_waiting_days']) ? $price['stock_waiting_days'] : null;
             $model->save();
         }
 
