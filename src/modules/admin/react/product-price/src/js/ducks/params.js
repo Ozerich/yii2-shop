@@ -329,13 +329,13 @@ export default function reducer(state = initialState, action = {}) {
       }
 
       let savePayload2 = {
-        has_discount: action.payload.enabled
+        has_discount: action.payload.enabled,
+        discount_mode: "FIXED",
       };
 
       if (priceKey2 in state.prices === false || state.prices[priceKey2].discount_mode === null) {
         savePayload2 = {
           ...savePayload2,
-          discount_mode: "AMOUNT",
           value_id: action.payload.firstParamId,
           second_value_id: action.payload.secondParamId
         };
