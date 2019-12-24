@@ -14,18 +14,29 @@ use yii\web\View;
 $this->title = 'Баннеры';
 ?>
 
-<?php echo ListPage::widget([
+<?php
+$actions = ['edit' => 'update', 'delete' => 'delete'];
+echo ListPage::widget([
     'dataProvider' => $dataProvider,
     'filterModel' => $searchModel,
     'headerButtons' => [
         [
             'label' => 'Добавить баннер',
-            'action' => 'banner/create',
+            'action' => "banner/create?area=$area",
             'icon' => 'plus',
             'additionalClass' => 'success'
         ]
     ],
     'columns' => [
+        'photo_id' => [
+            'attribute' => 'Баннер',
+            'format' => 'raw',
+            'attribute' => 'photo_id',
+            'value' => function (Banners $model) {
+                $image = $model->photo->getUrl();
+                return "<img src='$image' width='60px'/>";
+            },
+        ],
         'area_id' => [
             'attribute' => 'Зона размещения',
             'format' => 'raw',
@@ -40,9 +51,14 @@ $this->title = 'Баннеры';
             'attribute' => 'Ссылка',
             'format' => 'raw',
             'value' => function(Banners $banner) {
-                return "<a href='". $banner->url . "' target='_blank'>Открыть ссылку</a>";
+                return "<a data-toggle='tooltip' title='". $banner->url ."' href='". $banner->url . "' target='_blank'>Открыть ссылку</a>";
             }
         ]
     ],
-    'actions' => ['move' => 'move', 'edit' => 'update', 'delete' => 'delete']
+    'actions' => $showSort ? array_merge(['move' => 'move'], $actions) : $actions
 ]); ?>
+<script>
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  })
+</script>

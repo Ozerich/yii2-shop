@@ -44,11 +44,15 @@ class BannerController extends AdminController
     public function actionIndex(){
         $search = new BannerSearch();
         $queryParams =\Yii::$app->request->getQueryParams();
-        $dataProvider = $search->search($queryParams);
+        $area = \Yii::$app->request->get('BannerSearch');
+        $area = is_array($area) && array_key_exists('area_id', $area) ? $area['area_id'] : false;
+        $dataProvider = $search->search($queryParams, $area);
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'searchModel' => $search,
+            'area' => $area,
+            'showSort' => $area
         ]);
     }
 }

@@ -19,9 +19,12 @@ class BannerSearch extends Banners
             [['title'], 'string', 'max' => 255],
         ];
     }
-    public function search($params)
+    public function search($params, $sort = false)
     {
-        $query = Banners::find()->orderBy(['area_id' => SORT_ASC, 'priority' => SORT_ASC, ]);
+        $query = Banners::find();
+        if($sort){
+            $query->orderBy(['area_id' => SORT_ASC, 'priority' => SORT_ASC]);
+        }
         $dataProvider = new ActiveDataProvider([
             'query' => $query
         ]);

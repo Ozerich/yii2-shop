@@ -11,9 +11,11 @@ class BannerDTO extends Banners implements DTO
     {
         return [
             'id' => $this->id,
-            'photo' => $this->photo ? $this->photo->getUrl() : null,
+            'image' => $this->photo ? $this->photo->getUrl() : null,
             'url' => $this->url,
-            'area' => $this->area->alias
+            'area' => $this->area->alias,
+            'title' => $this->title,
+            'text' => $this->text,
         ];
     }
 }

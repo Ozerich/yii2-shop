@@ -9,7 +9,12 @@ $this->title = $model->isNewRecord ? 'Добавить баннер' : 'Реда
 
 use ozerich\shop\models\BannerAreas;
 use yii\helpers\ArrayHelper;
-use yii\widgets\ActiveForm; ?>
+use yii\widgets\ActiveForm;
+
+if($model->isNewRecord){
+    $model->area_id = Yii::$app->request->get('area');
+}
+?>
 
 <?php $form = ActiveForm::begin([
     'enableClientValidation' => false,
@@ -23,13 +28,13 @@ use yii\widgets\ActiveForm; ?>
 ]); ?>
 
   <div class="col-xs-12">
-      <?= $form->field($formModel, 'area_id')->dropDownList(ArrayHelper::map(BannerAreas::find()->all(), 'id', 'name')) ?>
+      <?= $form->field($formModel, 'area_id')->dropDownList(
+              ArrayHelper::map(BannerAreas::find()->all(), 'id', 'name'), []
+      ) ?>
   </div>
 
   <div class="col-xs-12">
-      <?= $form->field($formModel, 'photo_id')->widget(ozerich\shop\modules\admin\widgets\ImageWidget::class, [
-          'scenario' => 'banner'
-      ]); ?>
+      <?= $form->field($formModel, 'photo_id')->widget(ozerich\shop\modules\admin\widgets\ImageWidget::class) ?>
   </div>
   <div class="col-xs-12">
       <?= $form->field($formModel, 'title')->textInput() ?>
