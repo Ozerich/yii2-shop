@@ -250,6 +250,26 @@ class Bootstrap implements BootstrapInterface
                         ],
                     ],
                 ],
+                'banner' => [
+                    'storage' => [
+                        'type' => 'file',
+                        'uploadDirPath' => __DIR__ . '/../../../../web/uploads/banners',
+                        'uploadDirUrl' => '/uploads/banners',
+                    ],
+                    'validator' => [
+                        'maxSize' => 16 * 1024 * 1024,
+                        'checkExtensionByMimeType' => true,
+                        'extensions' => ['jpg', 'jpeg', 'bmp', 'gif', 'png']
+                    ],
+                    'thumbnails' => [
+                        [
+                            'width' => 540,
+                            'height' => 300,
+                            'crop' => true,
+                            'alias' => 'mobile'
+                        ]
+                    ],
+                ],
             ]
         ];
 

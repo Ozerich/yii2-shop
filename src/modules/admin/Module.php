@@ -148,6 +148,24 @@ class Module extends \ozerich\admin\Module
                     'icon' => 'book'
                 ],
                 [
+                    'id' => 'banner',
+                    'label' => 'Баннеры',
+                    'link' => '/banner/',
+                    'icon' => 'book',
+                    'submenu' => [
+                        [
+                            'id' => 'banners',
+                            'label' => 'Баннеры',
+                            'link' => '/banner/',
+                        ],
+                        [
+                            'id' => 'banner-areas',
+                            'label' => 'Зоны',
+                            'link' => '/banner-areas/',
+                        ]
+                    ]
+                ],
+                [
                     'id' => 'blog',
                     'link' => '/blog',
                     'label' => 'Блог',
