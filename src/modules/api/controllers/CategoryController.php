@@ -34,7 +34,7 @@ class CategoryController extends Controller
         if ($id) {
             $category = Category::findOne(['id' => $id, 'type' => CategoryType::CATALOG]);
             if ($category) {
-                return $this->categoriesService()->exportToExel($category);
+                return $this->categoriesService()->exportToExcel($category);
             }
         }
     }

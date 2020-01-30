@@ -215,7 +215,7 @@ class CategoriesService
             ->exists();
     }
 
-    public function exportToExel(Category $category){
+    public function exportToExcel(Category $category){
         $products = Product::findAll([
             'category_id' => $this->getAllChildCategories([], $category->id)
         ]);
