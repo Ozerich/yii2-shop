@@ -13,6 +13,7 @@ namespace ozerich\shop\models;
  * @property string $discount_mode
  * @property integer $discount_value
  * @property string $stock
+ * @property string $comment
  * @property integer $stock_waiting_days
  *
  * @property ProductPriceParamValue $paramValue

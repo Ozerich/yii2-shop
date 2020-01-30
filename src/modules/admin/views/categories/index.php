@@ -43,6 +43,14 @@ $this->title = 'Товарные категории';
                 return '<a href="/admin/products?FilterProduct[category_id]=' . $category['model']->id . '" class="">Товары (' . $category['model']->getProductsCount() . ')</a>';
             }
         ],
+        'export' => [
+            'header' => 'Экспорт',
+            'value' => function ($category) {
+                $id = $category['model']->id;
+                return "<a href='/api/category/export/$id' target='_blank'>Экспорт</a>";
+            },
+            'format' => 'raw'
+        ]
     ],
     'actions' => ['edit' => 'update', 'delete' => 'delete'],
 

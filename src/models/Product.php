@@ -24,6 +24,7 @@ use yii\helpers\Url;
  * @property string $discount_mode
  * @property float $discount_value
  * @property string $text
+ * @property string $price_comment
  * @property string $video
  * @property boolean $popular
  * @property boolean $is_prices_extended
@@ -87,7 +88,7 @@ class Product extends \yii\db\ActiveRecord
             [['sku', 'price_hidden_text', 'sale_disabled_text'], 'string'],
             [['price_hidden', 'sale_disabled'], 'boolean'],
 
-            [['discount_mode'], 'string'],
+            [['discount_mode', 'price_comment'], 'string'],
             [['discount_value'], 'safe'],
 
             [['price_note'], 'string'],
@@ -110,6 +111,7 @@ class Product extends \yii\db\ActiveRecord
             'image_id' => 'Картинка',
             'schema_image_id' => 'Картинка - схема',
             'price' => 'Цена',
+            'price_comment' => 'Комментарий',
             'text' => 'Текстовое описание',
             'popular' => 'Популярный товар',
             'is_prices_extended' => 'Расширенный режим цен',
@@ -218,7 +220,7 @@ class Product extends \yii\db\ActiveRecord
      */
     public function getPrices()
     {
-        return $this->hasMany(ProductPrice::className(), ['product_id' => 'id']);
+        return $this->hasMany(ProductPrice::className(), ['product_id' => 'id'])->orderBy('param_value_second_id');
     }
 
     /**

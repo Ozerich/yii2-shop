@@ -89,6 +89,11 @@ class Module extends \ozerich\admin\Module
                             'label' => 'SEO теги',
                             'link' => '/categories/seo',
                         ],
+                        [
+                            'id' => 'export',
+                            'label' => 'Экспорт',
+                            'link' => '/categories/export',
+                        ],
                     ]
                 ],
                 [

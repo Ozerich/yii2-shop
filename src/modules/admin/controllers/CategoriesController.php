@@ -161,4 +161,9 @@ class CategoriesController extends AdminController
 
         $model->save(false, ['seo_title', 'seo_description']);
     }
+
+    public function actionExport(){
+        $model = new \yii\base\DynamicModel(['category_id']);
+        return $this->render('export', compact('model'));
+    }
 }
