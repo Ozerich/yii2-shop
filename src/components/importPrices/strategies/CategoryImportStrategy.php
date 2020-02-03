@@ -15,6 +15,9 @@ class CategoryImportStrategy implements ImportPricesStrategyInterface
 {
     private $_file;
 
+    private $lines = 0;
+    private $products = [];
+
     // columns //
     const ID = 'A';
     const ID_PRICE = 'M';
@@ -49,7 +52,7 @@ class CategoryImportStrategy implements ImportPricesStrategyInterface
                     }
                 }
             }
-            return true;
+            return "Импортировано ". count($this->products) . " товаров (" . $this->lines . " позиций)";
         }
         return false;
     }
@@ -58,6 +61,8 @@ class CategoryImportStrategy implements ImportPricesStrategyInterface
         if(!$this->validateRow($row)) return false;
         $product = Product::findOne($row[self::ID]);
         if($product) {
+            $this->lines++;
+            $this->products[$product->id] = true;
             if($row[self::ID_PRICE]) {
                 $productPrice = ProductPrice::findOne($row[self::ID_PRICE]);
                 if($productPrice) {

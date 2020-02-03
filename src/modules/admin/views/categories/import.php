@@ -9,7 +9,6 @@ use yii\widgets\ActiveForm;
             <div class="col-md-12">
                 <div class="alert alert-dismissiblex" style="display:none;">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                    <h4><i class="icon fa fa-ban"></i> Ошибка!</h4>
                     <span></span>
                 </div>
             </div>
@@ -59,9 +58,9 @@ use yii\widgets\ActiveForm;
           $('.alert').fadeIn();
           $('.alert').removeClass('alert-success');
           $('.alert').removeClass('alert-danger');
-          if(res == 'true'){
+          if(res != 'false'){
             $('.alert').addClass('alert-success');
-            $('.alert span').html('Цены успешно импортированы')
+            $('.alert span').html(res)
           } else {
             $('.alert').addClass('alert-danger');
             $('.alert span').html('Во время импорта произошла ошибка')
