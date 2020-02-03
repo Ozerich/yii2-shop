@@ -94,6 +94,11 @@ class Module extends \ozerich\admin\Module
                             'label' => 'Экспорт',
                             'link' => '/categories/export',
                         ],
+                        [
+                            'id' => 'import',
+                            'label' => 'Импорт',
+                            'link' => '/categories/import',
+                        ],
                     ]
                 ],
                 [

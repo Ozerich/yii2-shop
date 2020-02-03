@@ -15,6 +15,7 @@ use ozerich\shop\modules\admin\forms\CategoryChangeTypeToConditionalForm;
 use ozerich\shop\modules\admin\forms\CategorySeoForm;
 use ozerich\shop\modules\admin\forms\CategorySeoFormConvertor;
 use ozerich\shop\traits\ServicesTrait;
+use yii\base\DynamicModel;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
@@ -163,7 +164,12 @@ class CategoriesController extends AdminController
     }
 
     public function actionExport(){
-        $model = new \yii\base\DynamicModel(['category_id']);
+        $model = new DynamicModel(['category_id']);
         return $this->render('export', compact('model'));
+    }
+
+    public function actionImport(){
+        $model = new DynamicModel(['file']);
+        return $this->render('import', compact('model'));
     }
 }

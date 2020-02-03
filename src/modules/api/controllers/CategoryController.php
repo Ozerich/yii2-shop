@@ -6,6 +6,7 @@ use ozerich\api\controllers\Controller;
 use ozerich\api\filters\AccessControl;
 use ozerich\shop\constants\CategoryType;
 use ozerich\shop\models\Category;
+use ozerich\shop\modules\api\requests\category\ImportRequest;
 use ozerich\shop\traits\ServicesTrait;
 
 class CategoryController extends Controller
@@ -23,6 +24,10 @@ class CategoryController extends Controller
                     'action' => 'export',
                     'verbs' => 'GET'
                 ],
+                [
+                    'action' => 'import',
+                    'verbs' => 'POST'
+                ],
             ]
         ];
 
@@ -37,6 +42,13 @@ class CategoryController extends Controller
                 return $this->categoriesService()->exportToExcel($category);
             }
         }
+    }
+
+    public function actionImport()
+    {
+        $request = new ImportRequest();
+        $request->load($_FILES);
+        return $this->categoriesService()->importFromExcel($request->file);
     }
 
 }

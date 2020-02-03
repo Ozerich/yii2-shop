@@ -37,4 +37,18 @@ class Stock extends Enum
                 return 'Нет в наличии';
         }
     }
+
+    public static function toValue($label)
+    {
+        switch ($label) {
+            case 'В магазине':
+                return self::SHOP;
+            case 'Под заказ':
+                return self::WAITING;
+            case 'На складе':
+                return self::STOCK;
+            default:
+                return self::NO;
+        }
+    }
 }
