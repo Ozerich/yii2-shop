@@ -147,11 +147,10 @@ class CategoryExportStrategy implements ExportPricesStrategyInterface
     }
 
     private function setExcelMetaData() {
-        $this->_spreadsheet->getProperties()->setCreator('miraimedia.co.th')
-            ->setLastModifiedBy('Cholcool')
-            ->setTitle('how to export data to excel use phpspreadsheet in codeigniter')
-            ->setSubject('Generate Excel use PhpSpreadsheet in CodeIgniter')
-            ->setDescription('Export data to Excel Work for me!');
+        $this->_spreadsheet->getProperties()->setCreator('BelMebel.by')
+            ->setLastModifiedBy('BelMebel')
+            ->setTitle('Экспорт цен из категории')
+            ->setSubject('Экспорт цен из категории');
         return $this;
     }
 
