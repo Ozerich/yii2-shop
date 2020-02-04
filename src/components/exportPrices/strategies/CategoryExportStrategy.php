@@ -43,7 +43,7 @@ class CategoryExportStrategy implements ExportPricesStrategyInterface
         'K' => 'Кол-во дней',
         'L' => 'Комментарий',
         'M' => '--',
-        'N' => '--',
+        'N' => '--'
     ];
 
     public function init($category){
@@ -111,6 +111,7 @@ class CategoryExportStrategy implements ExportPricesStrategyInterface
             }
         }
         array_multisort(array_column($array, 14),  SORT_DESC,
+            array_column($array, 0),  SORT_DESC,
             array_column($array, 2), SORT_ASC,
             array_column($array, 8), SORT_ASC,
             $array);

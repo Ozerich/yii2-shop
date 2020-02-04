@@ -10,6 +10,7 @@ use ozerich\shop\models\Product;
 use ozerich\shop\models\ProductPrice;
 use ozerich\shop\models\ProductPriceParam;
 use ozerich\shop\models\ProductPriceParamValue;
+use PhpOffice\PhpSpreadsheet\Reader\Exception;
 
 class CategoryImportStrategy implements ImportPricesStrategyInterface
 {
@@ -40,7 +41,7 @@ class CategoryImportStrategy implements ImportPricesStrategyInterface
             $data = Excel::import($this->_file['tmp_name'], [
                 'setFirstRecordAsKeys' => false
             ]);
-        } catch (\PhpOffice\PhpSpreadsheet\Reader\Exception $exception){
+        } catch (Exception $exception){
             return false;
         }
         if($data && is_array($data)){
