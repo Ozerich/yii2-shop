@@ -27,7 +27,7 @@ class CategoryImportStrategy implements ImportPricesStrategyInterface
     const PERCENT = 'G';
     const PROMO_AMOUNT = 'H';
     const STOCK = 'J';
-    const STOCK_DAYS = 'J';
+    const STOCK_DAYS = 'K';
     const PARAM_FIRST = 'D';
     const PARAM_SECOND = 'C';
 
