@@ -164,7 +164,7 @@ class CategoriesController extends AdminController
     }
 
     public function actionExport(){
-        $model = new DynamicModel(['category_id']);
+        $model = new DynamicModel(['category_id', 'manufacture_id', 'without_price']);
         return $this->render('export', compact('model'));
     }
 

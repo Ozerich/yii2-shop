@@ -14,8 +14,13 @@ use PhpOffice\PhpSpreadsheet\Reader\Exception;
 
 class CategoryImportStrategy implements ImportPricesStrategyInterface
 {
-    private $_file;
+    private $offset = 0;
+    private $price_param;
+    private $price_param_second;
 
+    private $load_params = false;
+
+    private $_file;
     private $lines = 0;
     private $products = [];
 
@@ -46,6 +51,10 @@ class CategoryImportStrategy implements ImportPricesStrategyInterface
         }
         if($data && is_array($data)){
             foreach ($data as $sheet) {
+                if(!$this->load_params) {
+                    $this->getCategoryParams($sheet);
+                    $this->load_params = true;
+                }
                 if($sheet && is_array($sheet)) {
                     if($sheet[self::ID] !== 'ID') {
                         $result = $this->load($sheet);
@@ -64,8 +73,8 @@ class CategoryImportStrategy implements ImportPricesStrategyInterface
         if($product) {
             $this->lines++;
             $this->products[$product->id] = true;
-            if($row[self::ID_PRICE]) {
-                $productPrice = ProductPrice::findOne($row[self::ID_PRICE]);
+            if($row[$this->offsetLeter(self::ID_PRICE)]) {
+                $productPrice = ProductPrice::findOne($row[$this->offsetLeter(self::ID_PRICE)]);
                 if($productPrice) {
                     return $this->updateModel($productPrice, $row);
                 } else {
@@ -74,56 +83,56 @@ class CategoryImportStrategy implements ImportPricesStrategyInterface
             } else {
                 return $this->updateModel($product, $row);
             }
-        } elseif(!$row[self::ID]) return true;
+        } elseif(!$row[$this->offsetLeter(self::ID)]) return true;
         return false;
     }
 
     private function validateRow($row){
-        if($row[self::ID] && !$row[self::ID_PRICE]){
+        if($row[$this->offsetLeter(self::ID)] && !$row[$this->offsetLeter(self::ID_PRICE)]){
             return true;
         }
-        elseif(($row[self::ID] * ($row[self::ID_PRICE] + 3)) == $row[self::VALID]) {
+        elseif(($row[$this->offsetLeter(self::ID)] * ($row[$this->offsetLeter(self::ID_PRICE)] + 3)) == $row[$this->offsetLeter(self::VALID)]) {
             return true;
         }
         return false;
     }
 
     private function updateModel($model, $row){
-        if($row[self::PRICE_WITH_PROMO]){
+        if($row[$this->offsetLeter(self::PRICE_WITH_PROMO)]){
             $model->discount_mode = DiscountType::FIXED;
-            $model->discount_value = $row[self::PRICE_WITH_PROMO];
-        } elseif($row[self::PERCENT]) {
+            $model->discount_value = $row[$this->offsetLeter(self::PRICE_WITH_PROMO)];
+        } elseif($row[$this->offsetLeter(self::PERCENT)]) {
             $model->discount_mode = DiscountType::PERCENT;
-            $model->discount_value = $row[self::PERCENT];
-        } elseif($row[self::PROMO_AMOUNT]) {
+            $model->discount_value = $row[$this->offsetLeter(self::PERCENT)];
+        } elseif($row[$this->offsetLeter(self::PROMO_AMOUNT)]) {
             $model->discount_mode = DiscountType::AMOUNT;
-            $model->discount_value = $row[self::PROMO_AMOUNT];
+            $model->discount_value = $row[$this->offsetLeter(self::PROMO_AMOUNT)];
         } else {
             $model->discount_mode = null;
             $model->discount_value = null;
         }
 
         if($model INSTANCEOF Product){
-            $model->price = $row[self::PRICE];
+            $model->price = $row[$this->offsetLeter(self::PRICE)];
         } else {
-            $model->value = $row[self::PRICE];
+            $model->value = $row[$this->offsetLeter(self::PRICE)];
         }
-        $model->stock = Stock::toValue($row[self::STOCK]);
-        $model->stock_waiting_days = (int)$row[self::STOCK_DAYS];
+        $model->stock = Stock::toValue($row[$this->offsetLeter(self::STOCK)]);
+        $model->stock_waiting_days = (int)$row[$this->offsetLeter(self::STOCK_DAYS)];
 
         return $model->save();
     }
 
     private function updateModelByParamsNames($row){
-        $secondParam = $row[self::PARAM_SECOND];
-        $firstParam = $row[self::PARAM_FIRST];
+        $secondParam = $row[$this->offsetLeter(self::PARAM_SECOND)];
+        $firstParam = $row[$this->offsetLeter(self::PARAM_FIRST)];
         $productPriceParam = ProductPriceParam::findOne([
-            'product_id' => $row[self::ID],
-            'name' => 'Обивка',
+            'product_id' => $row[$this->offsetLeter(self::ID)],
+            'name' => $this->price_param,
         ]);
         $productPriceParamSecond = ProductPriceParam::findOne([
-            'product_id' => $row[self::ID],
-            'name' => 'Комплектация',
+            'product_id' => $row[$this->offsetLeter(self::ID)],
+            'name' => $this->price_param_second,
         ]);
         if($productPriceParam && !$productPriceParamSecond) {
             $needId = ProductPriceParamValue::findOne([
@@ -165,5 +174,36 @@ class CategoryImportStrategy implements ImportPricesStrategyInterface
             }
         }
         return true;
+    }
+
+    private function getCategoryParams($titles){
+        if(count($titles) == 15) {
+            $this->offset = 0;
+            $this->price_param = $titles['C'];
+            $this->price_param_second = $titles['D'];
+        } elseif (count($titles) == 14) {
+            $this->offset = 1;
+            $this->price_param = $titles['C'];
+        } else {
+            $this->offset = 2;
+        }
+    }
+
+    private function offsetLeter($leter){
+        $alphabet = $this->getAlphabet();
+        $index = array_search($leter, $alphabet);
+        if($index > 3) {
+            return $alphabet[$index-$this->getOffset()];
+        } return $leter;
+    }
+
+    private function getAlphabet(){
+        return [
+            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'
+        ];
+    }
+
+    private function getOffset(){
+        return $this->offset;
     }
 }

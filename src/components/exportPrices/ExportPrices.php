@@ -18,9 +18,9 @@ class ExportPrices
         $this->strategy = $strategy;
     }
 
-    public function run($model)
+    public function run($model, $manufacture, $without_price)
     {
-        $this->strategy->init($model);
+        $this->strategy->init($model, $manufacture, $without_price);
         return $this->strategy->export();
     }
 }

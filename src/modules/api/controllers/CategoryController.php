@@ -6,6 +6,7 @@ use ozerich\api\controllers\Controller;
 use ozerich\api\filters\AccessControl;
 use ozerich\shop\constants\CategoryType;
 use ozerich\shop\models\Category;
+use ozerich\shop\models\Manufacture;
 use ozerich\shop\modules\api\requests\category\ImportRequest;
 use ozerich\shop\traits\ServicesTrait;
 
@@ -34,12 +35,18 @@ class CategoryController extends Controller
         return $behaviors;
     }
 
-    public function actionExport($id)
+    public function actionExport($id, $manufacture_id = 'all', $without_price)
     {
-        if ($id) {
+        if ($id && $manufacture_id) {
             $category = Category::findOne(['id' => $id, 'type' => CategoryType::CATALOG]);
+            if($manufacture_id == 'ALL') {
+                $manufacture = null;
+            } else {
+                $manufacture = Manufacture::findOne($manufacture_id);
+                $manufacture = $manufacture ? $manufacture->id : null;
+            }
             if ($category) {
-                return $this->categoriesService()->exportToExcel($category);
+                return $this->categoriesService()->exportToExcel($category, $manufacture, $without_price);
             }
         }
     }

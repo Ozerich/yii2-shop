@@ -9,6 +9,7 @@ use ozerich\shop\components\importPrices\strategies\CategoryImportStrategy;
 use ozerich\shop\constants\CategoryType;
 use ozerich\shop\models\Category;
 use ozerich\shop\models\CategoryCondition;
+use ozerich\shop\models\Manufacture;
 use yii\db\ActiveQuery;
 
 class CategoriesService
@@ -214,9 +215,14 @@ class CategoriesService
             ->exists();
     }
 
-    public function exportToExcel(Category $category){
+    /**
+     * @param Category $category
+     * @param $without_price
+     * @return mixed
+     */
+    public function exportToExcel(Category $category, $manufacture, $without_price){
         $export = new ExportPrices(new CategoryExportStrategy());
-        return $export->run($category);
+        return $export->run($category, $manufacture, $without_price);
     }
 
     public function importFromExcel($file){
