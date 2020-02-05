@@ -314,7 +314,7 @@ class CategoryExportStrategy implements ExportPricesStrategyInterface
     }
 
     private function send($writer){
-        $filename = date('Y-m-d H:i') . '_export.xlsx';
+        $filename = 'belmebel_export.xlsx';
         header('Content-Type: application/vnd.ms-excel');
         header('Content-Disposition: attachment; filename="'.$filename.'"');
         $writer->save("php://output");
