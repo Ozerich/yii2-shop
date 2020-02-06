@@ -6,14 +6,18 @@ use moonland\phpexcel\Excel;
 use ozerich\shop\components\importPrices\ImportPricesStrategyInterface;
 use ozerich\shop\constants\DiscountType;
 use ozerich\shop\constants\Stock;
+use ozerich\shop\models\Category;
 use ozerich\shop\models\Product;
 use ozerich\shop\models\ProductPrice;
 use ozerich\shop\models\ProductPriceParam;
 use ozerich\shop\models\ProductPriceParamValue;
+use ozerich\shop\traits\ServicesTrait;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
 
 class CategoryImportStrategy implements ImportPricesStrategyInterface
 {
+    use ServicesTrait;
+
     private $offset = 0;
     private $price_param;
     private $price_param_second;
@@ -23,6 +27,8 @@ class CategoryImportStrategy implements ImportPricesStrategyInterface
     private $_file;
     private $lines = 0;
     private $products = [];
+
+    private $categories = [];
 
     // columns //
     const ID = 'A';
@@ -38,6 +44,7 @@ class CategoryImportStrategy implements ImportPricesStrategyInterface
     const PARAM_SECOND = 'C';
 
     public function init($file){
+        ini_set('max_execution_time', 100);
         $this->_file = $file;
     }
 
@@ -62,6 +69,7 @@ class CategoryImportStrategy implements ImportPricesStrategyInterface
                     }
                 }
             }
+            $this->afterSave();
             return "Импортировано ". count($this->products) . " товаров (" . $this->lines . " позиций)";
         }
         return false;
@@ -71,20 +79,48 @@ class CategoryImportStrategy implements ImportPricesStrategyInterface
         if(!$this->validateRow($row)) return false;
         $product = Product::findOne($row[self::ID]);
         if($product) {
+            if($product->category) {
+                $this->categories[$product->category_id] = true;
+            }
             $this->lines++;
             $this->products[$product->id] = true;
             if($row[$this->offsetLeter(self::ID_PRICE)]) {
                 $productPrice = ProductPrice::findOne($row[$this->offsetLeter(self::ID_PRICE)]);
                 if($productPrice) {
-                    return $this->updateModel($productPrice, $row);
+                    $result = $this->updateModel($productPrice, $row);
+                    if($result) {
+                        if($product->is_prices_extended) {
+                            $this->updatePrices($product->id);
+                        }
+                    }
+                    return $result;
                 } else {
-                    return $this->updateModelByParamsNames($row);
+                    $result = $this->updateModelByParamsNames($row);
+                    if($result) {
+                        if($product->is_prices_extended) {
+                            $this->updatePrices($product->id);
+                        }
+                    }
+                    return $result;
                 }
             } else {
-                return $this->updateModel($product, $row);
+                $result = $this->updateModel($product, $row);
+                if($result) {
+                    if($product->is_prices_extended) {
+                        $this->updatePrices($product->id);
+                    }
+                }
+                return $result;
             }
         } elseif(!$row[$this->offsetLeter(self::ID)]) return true;
         return false;
+    }
+
+
+    private function afterSave() {
+        foreach ($this->categories as $key => $v) {
+            $this->categoryProductsService()->updateCategoryStats(Category::findOne($key));
+        }
     }
 
     private function validateRow($row){
@@ -113,7 +149,7 @@ class CategoryImportStrategy implements ImportPricesStrategyInterface
         }
 
         if($model INSTANCEOF Product){
-            $model->price = $row[$this->offsetLeter(self::PRICE)];
+            $model->price = $row[$this->offsetLeter(self::PRICE)] ? $row[$this->offsetLeter(self::PRICE)] : null;
         } else {
             $model->value = $row[$this->offsetLeter(self::PRICE)];
         }
@@ -205,5 +241,60 @@ class CategoryImportStrategy implements ImportPricesStrategyInterface
 
     private function getOffset(){
         return $this->offset;
+    }
+
+    private function updatePrices($item) {
+        $resultPrice = \Yii::$app->db->createCommand("
+                select * from product_prices where `value` = (
+                    select min(value) from product_prices where product_id = '$item' AND `value` IS NOT NULL 
+                ) AND product_id = '$item'
+            ")->queryOne();
+        $resultStock = \Yii::$app->db->createCommand("
+                select MAX(case when stock = 'IN_SHOP' then 3 when stock = 'WAITING' then 1 when stock = 'STOCK' then 2 else 0 END) as weight
+                 from product_prices where product_id = '$item'
+            ")->queryOne();
+
+        $bestStock = $this->getStockByWeigh($resultStock['weight']);
+        $price = $resultPrice['value'] ? $resultPrice['value'] : 'NULL';
+        $disckount_mode = $resultPrice['discount_mode'];
+        $discount_value = $resultPrice['discount_value'];
+        $price_with_discount = $this->getPriceWithDiscount($price, $discount_value, $disckount_mode);
+
+        \Yii::$app->db->createCommand("
+                UPDATE products SET 
+                    price = $price,
+                    discount_mode = '$disckount_mode',
+                    discount_value = '$discount_value',
+                    price_with_discount = '$price_with_discount',
+                    stock = '$bestStock'
+                WHERE id = '$item'
+            ")->execute();
+    }
+
+
+    private function getStockByWeigh($weight) {
+        switch ($weight) {
+            case 3:
+                return 'SHOP';
+            case 2:
+                return 'STOCK';
+            case 1:
+                return 'WAITING';
+            default:
+                return 'NO';
+        }
+    }
+
+    private function getPriceWithDiscount($price, $discount_value, $discountType) {
+        switch ($discountType) {
+            case null:
+                return $price;
+            case 'PERCENT':
+                return $price - floor($price / 100 * $discount_value);
+            case 'FIXED':
+                return $discount_value;
+            case 'AMOUNT':
+                return $price - $discount_value;
+        }
     }
 }

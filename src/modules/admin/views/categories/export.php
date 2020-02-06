@@ -30,6 +30,9 @@ use yii\widgets\ActiveForm; ?>
     <div class="box-footer">
         <button type="submit" class="btn btn-primary">Экспорт</button>
     </div>
+    <div class="progress progress-sm active" style="display: none; height: 13px">
+        <div style="width: 100%" class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
 </div>
 <script>
     $('label[for=dynamicmodel-category_id]').html('Категория');
@@ -37,9 +40,25 @@ use yii\widgets\ActiveForm; ?>
     $('label[for=dynamicmodel-category_id]').html('Категория');
     $('button').on('click', e => {
       e.preventDefault;
+      $('button').attr('disabled', '')
+      $('.progress').fadeIn(300)
       let id = $('#dynamicmodel-category_id').val();
       let mid = $('#dynamicmodel-manufacture_id').val();
       let price = $('input[name="without_price"]').prop('checked') ? true : false;
-      window.open(`/api/category/export?id=${id}&manufacture_id=${mid}&without_price=${price}`, '_blank');
+      $.ajax({
+        url: `/api/category/export?id=${id}&manufacture_id=${mid}&without_price=${price}`,
+        type: 'get',
+        success: res => {
+          $('button').removeAttr('disabled')
+          $('.progress').fadeOut(300)
+          location.href = res;
+        },
+        error: res => {
+          $('button').removeAttr('disabled')
+          $('.progress').fadeOut(300)
+          console.log(res)
+          alert('Ошибка');
+        }
+      });
     })
 </script>

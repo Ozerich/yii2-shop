@@ -53,6 +53,7 @@ class CategoryExportStrategy implements ExportPricesStrategyInterface
     ];
 
     public function init($category, $manufacture, $without_price){
+        ini_set('max_execution_time', 100);
         $this->_category = $category;
         $this->_manufacture = $manufacture;
         $this->_without_price = $without_price;
@@ -163,7 +164,6 @@ class CategoryExportStrategy implements ExportPricesStrategyInterface
             $array[$key][8] = "= IF(ISBLANK(" . $this->offsetLeter('F'). "$num), IF(ISBLANK(" . $this->offsetLeter('G'). "$num),  " . $this->offsetLeter('E'). "$num-" . $this->offsetLeter('H'). "$num, " . $this->offsetLeter('E'). "$num * ((100-" . $this->offsetLeter('G'). "$num)/100)), " . $this->offsetLeter('F'). "$num)";
 //                        "= ЕСЛИ(ЕПУСТО(F$num); ЕСЛИ(ЕПУСТО(G$num);  E$num-H$num; E117 * ((100-G$num)/100)); F$num)"
         }
-        $this->createExelFile($array);
         return $this->createExelFile($array);
     }
 
@@ -314,10 +314,11 @@ class CategoryExportStrategy implements ExportPricesStrategyInterface
     }
 
     private function send($writer){
-        $filename = 'belmebel_export.xlsx';
-        header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment; filename="'.$filename.'"');
-        $writer->save("php://output");
+        $filename = date('Y-m-d') . "_" . rand(99, 879) . '_belmebel_export.xlsx';
+//        header('Content-Type: application/vnd.ms-excel');
+//        header('Content-Disposition: attachment; filename="'.$filename.'"');
+        $writer->save("uploads/$filename");
+        return "/uploads/$filename";
     }
 
     private function offsetLeter($leter){
