@@ -261,11 +261,15 @@ class CategoryImportStrategy implements ImportPricesStrategyInterface
 
         $tmp = $this->getStockByWeigh($resultStock['weight']);
         $bestStock = $tmp ? "'". $tmp . "'" : 'NULL';
-        $price = $resultPrice['value'] ? $resultPrice['value'] : 'NULL';
-        $disckount_mode = $resultPrice['discount_mode'] ? "'". $resultPrice['discount_mode'] . "'" : 'NULL';
-        $discount_value = $resultPrice['discount_value'] ? "'". $resultPrice['discount_value'] . "'" : 'NULL';
-        $tmp = $this->getPriceWithDiscount($price, $discount_value, $disckount_mode);
-        $price_with_discount = $tmp ? "'". $tmp . "'" : 'NULL';
+        $price = $resultPrice['value'] ?? 'NULL';
+
+
+        $disckount_mode = $resultPrice['discount_mode'] ?? 'NULL';
+        $disckount_mode = $disckount_mode != 'NULL' ? "'" . $disckount_mode . "'" : 'NULL';
+        $discount_value = $resultPrice['discount_value'] ?? 'NULL';
+        $discount_value = $discount_value != 'NULL' ? "'" . $discount_value . "'" : 'NULL';
+        $tmp = $this->getPriceWithDiscount($price, isset($resultPrice['discount_value']) ?? null, $disckount_mode);
+        $price_with_discount = $tmp ?? 'NULL';
 
         \Yii::$app->db->createCommand("
                 UPDATE products SET 
@@ -293,13 +297,15 @@ class CategoryImportStrategy implements ImportPricesStrategyInterface
     }
 
     private function getPriceWithDiscount($price, $discount_value, $discountType) {
+        if(!is_numeric($price)) {
+            return null;
+        }
         switch ($discountType) {
             case "NULL":
                 return $price;
             case "'PERCENT'":
                 return $price - floor($price / 100 * $discount_value);
             case "'FIXED'":
-                echo 1;
                 return $discount_value;
             case "'AMOUNT'":
                 return $price - $discount_value;
