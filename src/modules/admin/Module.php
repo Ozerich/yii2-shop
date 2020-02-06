@@ -125,10 +125,27 @@ class Module extends \ozerich\admin\Module
                     ]
                 ],
                 [
-                    'id' => 'product-prices',
-                    'link' => '/products/prices',
+                    'id' => 'price_and_sock',
                     'label' => 'Цены и наличие',
-                    'icon' => 'book'
+                    'link' => '#',
+                    'icon' => 'book',
+                    'submenu' => [
+                        [
+                            'id' => 'product-prices',
+                            'link' => '/products/prices',
+                            'label' => 'Цены и наличие',
+                        ],
+                        [
+                            'id' => 'export',
+                            'label' => 'Экспорт',
+                            'link' => '/export/category',
+                        ],
+                        [
+                            'id' => 'import',
+                            'label' => 'Импорт',
+                            'link' => '/import/category',
+                        ],
+                    ]
                 ],
                 [
                     'id' => 'collections',
@@ -201,18 +218,6 @@ class Module extends \ozerich\admin\Module
                             'link' => '/menu/2',
                         ],
                     ]
-                ],
-                [
-                    'id' => 'export',
-                    'label' => 'Экспорт',
-                    'link' => '/export/category',
-                    'icon' => 'book',
-                ],
-                [
-                    'id' => 'import',
-                    'label' => 'Импорт',
-                    'link' => '/import/category',
-                    'icon' => 'book',
                 ],
                 [
                     'id' => 'settings',
