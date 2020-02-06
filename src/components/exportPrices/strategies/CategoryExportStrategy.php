@@ -158,10 +158,10 @@ class CategoryExportStrategy implements ExportPricesStrategyInterface
                 ];
             }
         }
-        array_multisort(array_column($array, 15),  SORT_DESC,
+        array_multisort(array_column($array, 16),  SORT_DESC,
             array_column($array, 0),  SORT_DESC,
-            array_column($array, 2), SORT_ASC,
-            array_column($array, 8), SORT_ASC,
+            array_column($array, 3), SORT_ASC,
+            array_column($array, 9), SORT_ASC,
             $array);
         foreach ($array as $key => $value) {
             $num = $key + 2;
