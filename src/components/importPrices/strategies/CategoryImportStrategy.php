@@ -32,16 +32,16 @@ class CategoryImportStrategy implements ImportPricesStrategyInterface
 
     // columns //
     const ID = 'A';
-    const ID_PRICE = 'M';
-    const VALID = 'N';
-    const PRICE = 'E';
-    const PRICE_WITH_PROMO = 'F';
-    const PERCENT = 'G';
-    const PROMO_AMOUNT = 'H';
-    const STOCK = 'J';
-    const STOCK_DAYS = 'K';
-    const PARAM_FIRST = 'D';
-    const PARAM_SECOND = 'C';
+    const ID_PRICE = 'N';
+    const VALID = 'O';
+    const PRICE = 'F';
+    const PRICE_WITH_PROMO = 'G';
+    const PERCENT = 'H';
+    const PROMO_AMOUNT = 'I';
+    const STOCK = 'K';
+    const STOCK_DAYS = 'L';
+    const PARAM_FIRST = 'E';
+    const PARAM_SECOND = 'D';
 
     public function init($file){
         ini_set('max_execution_time', 100);
@@ -150,6 +150,11 @@ class CategoryImportStrategy implements ImportPricesStrategyInterface
 
         if($model INSTANCEOF Product){
             $model->price = $row[$this->offsetLeter(self::PRICE)] ? $row[$this->offsetLeter(self::PRICE)] : null;
+            $model->price_with_discount = $this->getPriceWithDiscount(
+                $row[$this->offsetLeter(self::PRICE)],
+                $model->discount_value,
+                $model->discount_mode
+            );
         } else {
             $model->value = $row[$this->offsetLeter(self::PRICE)];
         }
@@ -213,13 +218,13 @@ class CategoryImportStrategy implements ImportPricesStrategyInterface
     }
 
     private function getCategoryParams($titles){
-        if(count($titles) == 15) {
+        if(count($titles) == 16) {
             $this->offset = 0;
-            $this->price_param = $titles['C'];
-            $this->price_param_second = $titles['D'];
-        } elseif (count($titles) == 14) {
+            $this->price_param = $titles[self::PARAM_FIRST];
+            $this->price_param_second = $titles[self::PARAM_SECOND];
+        } elseif (count($titles) == 15) {
             $this->offset = 1;
-            $this->price_param = $titles['C'];
+            $this->price_param = $titles[self::PARAM_FIRST];
         } else {
             $this->offset = 2;
         }
@@ -235,7 +240,7 @@ class CategoryImportStrategy implements ImportPricesStrategyInterface
 
     private function getAlphabet(){
         return [
-            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'
+            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P'
         ];
     }
 

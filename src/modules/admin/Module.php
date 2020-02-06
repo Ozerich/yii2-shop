@@ -88,17 +88,7 @@ class Module extends \ozerich\admin\Module
                             'id' => 'posts',
                             'label' => 'SEO теги',
                             'link' => '/categories/seo',
-                        ],
-                        [
-                            'id' => 'export',
-                            'label' => 'Экспорт',
-                            'link' => '/categories/export',
-                        ],
-                        [
-                            'id' => 'import',
-                            'label' => 'Импорт',
-                            'link' => '/categories/import',
-                        ],
+                        ]
                     ]
                 ],
                 [
@@ -118,11 +108,6 @@ class Module extends \ozerich\admin\Module
                             'link' => '/products/?FilterProduct[hidden]=1',
                         ],
                         [
-                            'id' => 'product-prices',
-                            'link' => '/products/prices',
-                            'label' => 'Цены и наличие'
-                        ],
-                        [
                             'id' => 'product-params',
                             'label' => 'Характеристики',
                             'link' => '/products/params',
@@ -138,6 +123,12 @@ class Module extends \ozerich\admin\Module
                             'link' => '/products/import-by-url'
                         ],
                     ]
+                ],
+                [
+                    'id' => 'product-prices',
+                    'link' => '/products/prices',
+                    'label' => 'Цены и наличие',
+                    'icon' => 'book'
                 ],
                 [
                     'id' => 'collections',
@@ -210,6 +201,18 @@ class Module extends \ozerich\admin\Module
                             'link' => '/menu/2',
                         ],
                     ]
+                ],
+                [
+                    'id' => 'export',
+                    'label' => 'Экспорт',
+                    'link' => '/export/category',
+                    'icon' => 'book',
+                ],
+                [
+                    'id' => 'import',
+                    'label' => 'Импорт',
+                    'link' => '/import/category',
+                    'icon' => 'book',
                 ],
                 [
                     'id' => 'settings',

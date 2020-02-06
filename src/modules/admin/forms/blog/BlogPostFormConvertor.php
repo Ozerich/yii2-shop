@@ -33,12 +33,15 @@ class BlogPostFormConvertor extends Model
 
         BlogPostsToProductCategories::deleteAll(['post_id' => $model->id]);
 
-        foreach ($form->category_ids as $category_id) {
-            $item = new BlogPostsToProductCategories();
-            $item->post_id = $model->id;
-            $item->category_id = $category_id;
-            $item->save();
+        if(is_array($form->category_ids)) {
+            foreach ($form->category_ids as $category_id) {
+                $item = new BlogPostsToProductCategories();
+                $item->post_id = $model->id;
+                $item->category_id = $category_id;
+                $item->save();
+            }
         }
+
 
         $model->save();
 
