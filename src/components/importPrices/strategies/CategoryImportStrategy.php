@@ -261,15 +261,15 @@ class CategoryImportStrategy implements ImportPricesStrategyInterface
 
         $bestStock = $this->getStockByWeigh($resultStock['weight']);
         $price = $resultPrice['value'] ? $resultPrice['value'] : 'NULL';
-        $disckount_mode = $resultPrice['discount_mode'];
-        $discount_value = $resultPrice['discount_value'];
+        $disckount_mode = $resultPrice['discount_mode'] ? "'". $resultPrice['discount_mode'] . "'" : 'NULL';
+        $discount_value = $resultPrice['discount_value'] ? "'". $resultPrice['discount_value'] . "'" : 'NULL';
         $price_with_discount = $this->getPriceWithDiscount($price, $discount_value, $disckount_mode);
 
         \Yii::$app->db->createCommand("
                 UPDATE products SET 
                     price = $price,
-                    discount_mode = '$disckount_mode',
-                    discount_value = '$discount_value',
+                    discount_mode = $disckount_mode,
+                    discount_value = $discount_value,
                     price_with_discount = '$price_with_discount',
                     stock = '$bestStock'
                 WHERE id = '$item'
