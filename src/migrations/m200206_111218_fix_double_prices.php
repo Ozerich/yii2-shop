@@ -67,15 +67,15 @@ class m200206_111218_fix_double_prices extends Migration
 
             $bestStock = $this->getStockByWeigh($resultStock['weight']);
             $price = $resultPrice['value'];
-            $disckount_mode = $resultPrice['discount_mode'];
-            $discount_value = $resultPrice['discount_value'];
+            $disckount_mode = $resultPrice['discount_mode'] ? "'". $resultPrice['discount_mode'] . "'" : 'NULL';
+            $discount_value = $resultPrice['discount_value'] ? "'". $resultPrice['discount_value'] . "'" : 'NULL';
             $price_with_discount = $this->getPriceWithDiscount($price, $discount_value, $disckount_mode);
 
             $this->db->createCommand("
                 UPDATE products SET 
                     price = '$price',
-                    discount_mode = '$disckount_mode',
-                    discount_value = '$discount_value',
+                    discount_mode = $disckount_mode,
+                    discount_value = $discount_value,
                     price_with_discount = '$price_with_discount',
                     stock = '$bestStock'
                 WHERE id = '$item'
