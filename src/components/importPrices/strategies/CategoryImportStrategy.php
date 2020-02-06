@@ -259,19 +259,21 @@ class CategoryImportStrategy implements ImportPricesStrategyInterface
                  from product_prices where product_id = '$item'
             ")->queryOne();
 
-        $bestStock = $this->getStockByWeigh($resultStock['weight']);
+        $tmp = $this->getStockByWeigh($resultStock['weight']);
+        $bestStock = $tmp ? "'". $tmp . "'" : 'NULL';
         $price = $resultPrice['value'] ? $resultPrice['value'] : 'NULL';
         $disckount_mode = $resultPrice['discount_mode'] ? "'". $resultPrice['discount_mode'] . "'" : 'NULL';
         $discount_value = $resultPrice['discount_value'] ? "'". $resultPrice['discount_value'] . "'" : 'NULL';
-        $price_with_discount = $this->getPriceWithDiscount($price, $discount_value, $disckount_mode);
+        $tmp = $this->getPriceWithDiscount($price, $discount_value, $disckount_mode);
+        $price_with_discount = $tmp ? "'". $tmp . "'" : 'NULL';
 
         \Yii::$app->db->createCommand("
                 UPDATE products SET 
                     price = $price,
                     discount_mode = $disckount_mode,
                     discount_value = $discount_value,
-                    price_with_discount = '$price_with_discount',
-                    stock = '$bestStock'
+                    price_with_discount = $price_with_discount,
+                    stock = $bestStock
                 WHERE id = '$item'
             ")->execute();
     }
@@ -292,13 +294,14 @@ class CategoryImportStrategy implements ImportPricesStrategyInterface
 
     private function getPriceWithDiscount($price, $discount_value, $discountType) {
         switch ($discountType) {
-            case null:
+            case "NULL":
                 return $price;
-            case 'PERCENT':
+            case "'PERCENT'":
                 return $price - floor($price / 100 * $discount_value);
-            case 'FIXED':
+            case "'FIXED'":
+                echo 1;
                 return $discount_value;
-            case 'AMOUNT':
+            case "'AMOUNT'":
                 return $price - $discount_value;
         }
     }
