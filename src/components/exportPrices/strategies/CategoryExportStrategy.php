@@ -132,7 +132,7 @@ class CategoryExportStrategy implements ExportPricesStrategyInterface
                         $product->name,
                         $product->label,
                         $modify,
-                        $priorityNew . "|" . $weight,
+                        $weight,
                         $_productPrice->value,
                         $_productPrice->discount_mode == DiscountType::FIXED ? $_productPrice->discount_value : null,
                         $_productPrice->discount_mode == DiscountType::PERCENT ? $_productPrice->discount_value : null,
