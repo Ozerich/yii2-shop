@@ -268,7 +268,7 @@ class CategoryImportStrategy implements ImportPricesStrategyInterface
         $disckount_mode = $disckount_mode != 'NULL' ? "'" . $disckount_mode . "'" : 'NULL';
         $discount_value = $resultPrice['discount_value'] ?? 'NULL';
         $discount_value = $discount_value != 'NULL' ? "'" . $discount_value . "'" : 'NULL';
-        $tmp = $this->getPriceWithDiscount($price, isset($resultPrice['discount_value']) ?? null, $disckount_mode);
+        $tmp = $this->getPriceWithDiscount($price, $resultPrice['discount_value'] ?? null, $disckount_mode);
         $price_with_discount = $tmp ?? 'NULL';
 
         \Yii::$app->db->createCommand("
