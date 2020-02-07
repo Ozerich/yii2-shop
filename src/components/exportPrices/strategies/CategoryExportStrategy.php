@@ -116,24 +116,36 @@ class CategoryExportStrategy implements ExportPricesStrategyInterface
                     if(($this->_without_price == 'true') && $_productPrice->value > 0) {
                         continue;
                     }
+                    $first = false;
+                    if($param && $paramSecond) {
+                        if($param->productPriceParam->priority > $paramSecond->productPriceParam->priority){
+                            $first = true;
+                            $priorityNew = $param->productPriceParam->priority;
+                        } else {
+                            $priorityNew = $paramSecond->productPriceParam->priority;
+                        }
+                    } else {
+                        $priorityNew = $param->productPriceParam->priority;
+                    }
                     $array[] = [
                         $product->id,
                         $product->name,
                         $product->label,
                         $modify,
-                        $weight,
+                        $priorityNew . "|" . $weight,
                         $_productPrice->value,
                         $_productPrice->discount_mode == DiscountType::FIXED ? $_productPrice->discount_value : null,
                         $_productPrice->discount_mode == DiscountType::PERCENT ? $_productPrice->discount_value : null,
                         $_productPrice->discount_mode == DiscountType::AMOUNT ? $_productPrice->discount_value : null,
-                        $priority = $param->priority,
+                        $priority = !$first ? $param->priority : $paramSecond->priority,
                         Stock::toLabel($_productPrice->stock), // J
                         $_productPrice->stock_waiting_days, // K
                         $_productPrice->comment, // L
                         $_productPrice->id, // M
                         ($product->id * ($_productPrice->id + 3) ), // N
                         $product->manufacture ? $product->manufacture->name : '',
-                        $product->popular_weight
+                        $product->popular_weight,
+                        $priorityNew
                     ];
                 }
             } else {
@@ -154,14 +166,16 @@ class CategoryExportStrategy implements ExportPricesStrategyInterface
                     null, //M
                     null, // N,
                     $product->manufacture ? $product->manufacture->name : '',
-                    $product->popular_weight
+                    $product->popular_weight,
+                    1
                 ];
             }
         }
         array_multisort(array_column($array, 16),  SORT_DESC,
             array_column($array, 0),  SORT_DESC,
-            array_column($array, 3), SORT_ASC,
             array_column($array, 9), SORT_ASC,
+            array_column($array, 17), SORT_ASC,
+            array_column($array, 3), SORT_ASC,
             $array);
         foreach ($array as $key => $value) {
             $num = $key + 2;
