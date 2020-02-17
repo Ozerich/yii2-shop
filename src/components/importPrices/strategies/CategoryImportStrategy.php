@@ -3,6 +3,7 @@ namespace ozerich\shop\components\importPrices\strategies;
 
 
 use moonland\phpexcel\Excel;
+use ozerich\shop\components\exportPrices\strategies\CategoryExportStrategy;
 use ozerich\shop\components\importPrices\ImportPricesStrategyInterface;
 use ozerich\shop\constants\DiscountType;
 use ozerich\shop\constants\Stock;
@@ -32,16 +33,16 @@ class CategoryImportStrategy implements ImportPricesStrategyInterface
 
     // columns //
     const ID = 'A';
-    const ID_PRICE = 'N';
-    const VALID = 'O';
-    const PRICE = 'F';
-    const PRICE_WITH_PROMO = 'G';
-    const PERCENT = 'H';
-    const PROMO_AMOUNT = 'I';
-    const STOCK = 'K';
-    const STOCK_DAYS = 'L';
-    const PARAM_FIRST = 'E';
-    const PARAM_SECOND = 'D';
+    const ID_PRICE = 'O';
+    const VALID = 'P';
+    const PRICE = 'G';
+    const PRICE_WITH_PROMO = 'H';
+    const PERCENT = 'I';
+    const PROMO_AMOUNT = 'J';
+    const STOCK = 'L';
+    const STOCK_DAYS = 'M';
+    const PARAM_FIRST = 'F';
+    const PARAM_SECOND = 'E';
 
     public function init($file){
         ini_set('max_execution_time', 100);
@@ -237,7 +238,7 @@ class CategoryImportStrategy implements ImportPricesStrategyInterface
     private function offsetLeter($leter){
         $alphabet = $this->getAlphabet();
         $index = array_search($leter, $alphabet);
-        if($index > 4) {
+        if($index > CategoryExportStrategy::NO_MOVE_OFFSET) {
             return $alphabet[$index-$this->getOffset()];
         } return $leter;
     }

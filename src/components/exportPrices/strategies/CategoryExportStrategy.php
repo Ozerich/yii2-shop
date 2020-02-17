@@ -19,7 +19,6 @@ class CategoryExportStrategy implements ExportPricesStrategyInterface
 {
     private $param_name;
     private $param_name_second;
-
     /**
      * @var Spreadsheet
      */
@@ -29,29 +28,30 @@ class CategoryExportStrategy implements ExportPricesStrategyInterface
      */
     private $_sheet;
 
-    const STOCK = 'K';
-    const FORMULA = 9;
+    const STOCK = 'L';
+    const FORMULA = 10;
+    const NO_MOVE_OFFSET = 5; // Кол-во столбцов, которые не сдвигаются +1
 
     private $_category;
     private $_manufacture;
     private $_without_price;
     private $titles = [
-        'A' => 'ID',
-        'B' => 'Название',
-        'C' => 'Маркировка',
-        'D' => 'Комплектация',
-        'E' => 'Обивка',
-        'F' => 'Цена',
-        'G' => 'Цена со скидкой',
-        'H' => 'Процент скидки',
-        'I' => 'Сумма скидки',
-        'J' => 'ИТОГ',
-        'K' => 'Наличие',
-        'L' => 'Кол-во дней',
-        'M' => 'Комментарий',
-        'N' => '--',
+        'A' => 'ID',                //      /\
+        'B' => 'Производитель',     //     /||\
+        'C' => 'Название',          //    //||\\
+        'D' => 'Маркировка',        //      ||
+        'E' => 'Комплектация',      //      ||
+        'F' => 'Обивка',            //      ||
+        'G' => 'Цена',
+        'H' => 'Цена со скидкой',
+        'I' => 'Процент скидки',
+        'J' => 'Сумма скидки',
+        'K' => 'ИТОГ',
+        'L' => 'Наличие',
+        'M' => 'Кол-во дней',
+        'N' => 'Комментарий',
         'O' => '--',
-        'P' => 'Производитель',
+        'P' => '--',
     ];
 
     public function init($category, $manufacture, $without_price){
@@ -129,6 +129,7 @@ class CategoryExportStrategy implements ExportPricesStrategyInterface
                     }
                     $array[] = [
                         $product->id,
+                        $product->manufacture ? $product->manufacture->name : '',
                         $product->name,
                         $product->label,
                         $modify,
@@ -143,7 +144,6 @@ class CategoryExportStrategy implements ExportPricesStrategyInterface
                         $_productPrice->comment, // L
                         $_productPrice->id, // M
                         ($product->id * ($_productPrice->id + 3) ), // N
-                        $product->manufacture ? $product->manufacture->name : '',
                         $product->popular_weight,
                         $priorityNew
                     ];
@@ -151,6 +151,7 @@ class CategoryExportStrategy implements ExportPricesStrategyInterface
             } else {
                 $array[] = [
                     $product->id,
+                    $product->manufacture ? $product->manufacture->name : '',
                     $product->name,
                     $product->label,
                     null,
@@ -165,7 +166,6 @@ class CategoryExportStrategy implements ExportPricesStrategyInterface
                     $product->price_comment, // L
                     null, //M
                     null, // N,
-                    $product->manufacture ? $product->manufacture->name : '',
                     $product->popular_weight,
                     1
                 ];
@@ -173,19 +173,19 @@ class CategoryExportStrategy implements ExportPricesStrategyInterface
         }
         array_multisort(array_column($array, 16),  SORT_DESC,
             array_column($array, 0),  SORT_DESC,
-            array_column($array, 9), SORT_ASC,
+            array_column($array, 10), SORT_ASC,
             array_column($array, 17), SORT_ASC,
-            array_column($array, 3), SORT_ASC,
+            array_column($array, 4), SORT_ASC,
             $array);
         foreach ($array as $key => $value) {
             $num = $key + 2;
-            $array[$key][self::FORMULA] = "= IF(ISBLANK(" . $this->offsetLeter('G'). "$num), IF(ISBLANK("
-                . $this->offsetLeter('H'). "$num),  "
-                . $this->offsetLeter('F'). "$num-"
-                . $this->offsetLeter('I'). "$num, "
-                . $this->offsetLeter('F'). "$num * ((100-"
-                . $this->offsetLeter('H'). "$num)/100)), "
-                . $this->offsetLeter('G'). "$num)";
+            $array[$key][self::FORMULA] = "= IF(ISBLANK(" . $this->offsetLeter('H'). "$num), IF(ISBLANK("
+                . $this->offsetLeter('I'). "$num),  "
+                . $this->offsetLeter('G'). "$num-"
+                . $this->offsetLeter('J'). "$num, "
+                . $this->offsetLeter('G'). "$num * ((100-"
+                . $this->offsetLeter('I'). "$num)/100)), "
+                . $this->offsetLeter('H'). "$num)";
         }
         return $this->createExelFile($array);
     }
@@ -250,30 +250,31 @@ class CategoryExportStrategy implements ExportPricesStrategyInterface
             ]
         ];
         $this->_sheet->getStyle($this->offsetLeter('A') . '1:' . $this->offsetLeter('A') . '9999')->applyFromArray($A);
-        $this->_sheet->getStyle($this->offsetLeter('F') . '1:' . $this->offsetLeter('F') . '9999')->applyFromArray($E);
-        $this->_sheet->getStyle($this->offsetLeter('J') . '1:' . $this->offsetLeter('J') . '9999')->applyFromArray($I);
-        $this->_sheet->getStyle($this->offsetLeter('G') . '1:' . $this->offsetLeter('I') . '9999')->applyFromArray($F);
-        $this->_sheet->getStyle($this->offsetLeter('N') . '1:' . $this->offsetLeter('O') . '9999')->applyFromArray($M);
+        $this->_sheet->getStyle($this->offsetLeter('G') . '1:' . $this->offsetLeter('G') . '9999')->applyFromArray($E);
+        $this->_sheet->getStyle($this->offsetLeter('K') . '1:' . $this->offsetLeter('K') . '9999')->applyFromArray($I);
+        $this->_sheet->getStyle($this->offsetLeter('H') . '1:' . $this->offsetLeter('J') . '9999')->applyFromArray($F);
+        $this->_sheet->getStyle($this->offsetLeter('O') . '1:' . $this->offsetLeter('P') . '9999')->applyFromArray($M);
         return $this;
     }
 
     private function setExcelColumnSizes(){
         $sizes = [
             'A' => 5,
-            'B' => 25,
-            'C' => 15,
-            'D' => 20,
+            'B' => 20,
+            'C' => 25,
+            'D' => 15,
             'E' => 20,
-            'F' => 15,
+            'F' => 20,
             'G' => 15,
             'H' => 15,
-            'J' => 13,
-            'K' => 12,
+            'I' => 15,
+            'J' => 15,
+            'K' => 13,
             'L' => 12,
-            'M' => 50,
-            'N' => 0.01,
+            'M' => 12,
+            'N' => 50,
             'O' => 0.01,
-            'P' => 20,
+            'P' => 0.01
         ];
         foreach ($sizes as $key => $size) {
             $this->_sheet->getColumnDimension($this->offsetLeter($key))->setWidth($size);
@@ -289,14 +290,14 @@ class CategoryExportStrategy implements ExportPricesStrategyInterface
         $this->_sheet->getProtection()->setFormatCells(true);
 
         $this->_sheet->getProtection()->setPassword('AaH4nv*j4j');
-        $this->_sheet->getStyle($this->offsetLeter('F') . '2:' . $this->offsetLeter('I') . '9999')->getProtection()->setLocked(Protection::PROTECTION_UNPROTECTED);
-        $this->_sheet->getStyle($this->offsetLeter('K') . '2:'. $this->offsetLeter('O') . '9999')->getProtection()->setLocked(Protection::PROTECTION_UNPROTECTED);
+        $this->_sheet->getStyle($this->offsetLeter('G') . '2:' . $this->offsetLeter('J') . '9999')->getProtection()->setLocked(Protection::PROTECTION_UNPROTECTED);
+        $this->_sheet->getStyle($this->offsetLeter('K') . '2:'. $this->offsetLeter('N') . '9999')->getProtection()->setLocked(Protection::PROTECTION_UNPROTECTED);
         return $this;
     }
 
     private function setExcelColumnTitles(){
-        $this->titles['D'] = $this->param_name;
-        $this->titles['E'] = $this->param_name_second;
+        $this->titles['E'] = $this->param_name;
+        $this->titles['F'] = $this->param_name_second;
         foreach ($this->titles as $key => $title) {
             $this->_sheet->setCellValue($this->offsetLeter($key)."1", $title);
         }
@@ -349,7 +350,7 @@ class CategoryExportStrategy implements ExportPricesStrategyInterface
     private function offsetLeter($leter){
         $alphabet = $this->getAlphabet();
         $index = array_search($leter, $alphabet);
-        if($index > 4) {
+        if($index > self::NO_MOVE_OFFSET) {
             return $alphabet[$index-$this->getOffset()];
         } return $leter;
     }
