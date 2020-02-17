@@ -35,7 +35,7 @@ class CategoryExportStrategy implements ExportPricesStrategyInterface
     private $_category;
     private $_manufacture;
     private $_without_price;
-    private $_titles = [
+    private $titles = [
         'A' => 'ID',
         'B' => 'Название',
         'C' => 'Маркировка',
@@ -295,9 +295,9 @@ class CategoryExportStrategy implements ExportPricesStrategyInterface
     }
 
     private function setExcelColumnTitles(){
-        $this->_titles[$this->offsetLeter('D')] = $this->param_name;
-        $this->_titles[$this->offsetLeter('E')] = $this->param_name_second;
-        foreach ($this->_titles as $key => $title) {
+        $this->titles['D'] = $this->param_name;
+        $this->titles['E'] = $this->param_name_second;
+        foreach ($this->titles as $key => $title) {
             $this->_sheet->setCellValue($this->offsetLeter($key)."1", $title);
         }
         return $this;
@@ -349,7 +349,7 @@ class CategoryExportStrategy implements ExportPricesStrategyInterface
     private function offsetLeter($leter){
         $alphabet = $this->getAlphabet();
         $index = array_search($leter, $alphabet);
-        if($index > 3) {
+        if($index > 4) {
             return $alphabet[$index-$this->getOffset()];
         } return $leter;
     }

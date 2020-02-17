@@ -57,7 +57,7 @@ class CategoryImportStrategy implements ImportPricesStrategyInterface
             return false;
         }
         if($data && is_array($data)){
-            foreach ($data as $sheet) {
+            foreach ($data as $key => $sheet) {
                 if(!$this->load_params) {
                     $this->getCategoryParams($sheet);
                     $this->load_params = true;
@@ -113,7 +113,7 @@ class CategoryImportStrategy implements ImportPricesStrategyInterface
                 return $result;
             }
         } elseif(!$row[$this->offsetLeter(self::ID)]) return true;
-        return false;
+        return true;
     }
 
 
@@ -161,7 +161,11 @@ class CategoryImportStrategy implements ImportPricesStrategyInterface
         $model->stock = Stock::toValue($row[$this->offsetLeter(self::STOCK)]);
         $model->stock_waiting_days = (int)$row[$this->offsetLeter(self::STOCK_DAYS)];
 
-        return $model->save();
+        if(! $model->save()){
+            echo print_r($model);
+            exit;
+        }
+        return true;
     }
 
     private function updateModelByParamsNames($row){
@@ -233,7 +237,7 @@ class CategoryImportStrategy implements ImportPricesStrategyInterface
     private function offsetLeter($leter){
         $alphabet = $this->getAlphabet();
         $index = array_search($leter, $alphabet);
-        if($index > 3) {
+        if($index > 4) {
             return $alphabet[$index-$this->getOffset()];
         } return $leter;
     }
