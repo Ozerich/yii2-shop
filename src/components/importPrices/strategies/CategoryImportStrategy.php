@@ -23,7 +23,10 @@ class CategoryImportStrategy implements ImportPricesStrategyInterface
     private $price_param;
     private $price_param_second;
 
-    private $load_params = false;
+    private $price_param_id;
+    private $price_param_second_id;
+
+    private $titles;
 
     private $_file;
     private $lines = 0;
@@ -33,16 +36,21 @@ class CategoryImportStrategy implements ImportPricesStrategyInterface
 
     // columns //
     const ID = 'A';
-    const ID_PRICE = 'O';
-    const VALID = 'P';
-    const PRICE = 'G';
-    const PRICE_WITH_PROMO = 'H';
-    const PERCENT = 'I';
-    const PROMO_AMOUNT = 'J';
-    const STOCK = 'L';
-    const STOCK_DAYS = 'M';
-    const PARAM_FIRST = 'F';
-    const PARAM_SECOND = 'E';
+    const ID_PRICE = 'S';
+    const VALID = 'T';
+    const PRICE = 'K';
+    const PRICE_WITH_PROMO = 'L';
+    const PERCENT = 'M';
+    const PROMO_AMOUNT = 'N';
+    const STOCK = 'P';
+    const STOCK_DAYS = 'Q';
+
+    const PARAM_1 = 'E';
+    const PARAM_2 = 'F';
+    const PARAM_3 = 'G';
+    const PARAM_4 = 'H';
+    const PARAM_5 = 'I';
+    const PARAM_6 = 'J';
 
     public function init($file){
         ini_set('max_execution_time', 100);
@@ -59,14 +67,13 @@ class CategoryImportStrategy implements ImportPricesStrategyInterface
         }
         if($data && is_array($data)){
             foreach ($data as $key => $sheet) {
-                if(!$this->load_params) {
-                    $this->getCategoryParams($sheet);
-                    $this->load_params = true;
-                }
                 if($sheet && is_array($sheet)) {
                     if($sheet[self::ID] !== 'ID') {
+                        $this->getCategoryParams($this->titles, $sheet);
                         $result = $this->load($sheet);
                         if(!$result) return false;
+                    } else {
+                        $this->titles = $sheet;
                     }
                 }
             }
@@ -170,8 +177,8 @@ class CategoryImportStrategy implements ImportPricesStrategyInterface
     }
 
     private function updateModelByParamsNames($row){
-        $secondParam = $row[$this->offsetLeter(self::PARAM_SECOND)];
-        $firstParam = $row[$this->offsetLeter(self::PARAM_FIRST)];
+        $secondParam = $row[$this->offsetLeter($this->price_param_second_id)];
+        $firstParam = $row[$this->offsetLeter($this->price_param_id)];
         $productPriceParam = ProductPriceParam::findOne([
             'product_id' => $row[$this->offsetLeter(self::ID)],
             'name' => $this->price_param,
@@ -222,16 +229,32 @@ class CategoryImportStrategy implements ImportPricesStrategyInterface
         return true;
     }
 
-    private function getCategoryParams($titles){
-        if(count($titles) == 16) {
-            $this->offset = 0;
-            $this->price_param = $titles[self::PARAM_FIRST];
-            $this->price_param_second = $titles[self::PARAM_SECOND];
-        } elseif (count($titles) == 15) {
-            $this->offset = 1;
-            $this->price_param = $titles[self::PARAM_FIRST];
-        } else {
-            $this->offset = 2;
+    private function getCategoryParams($titles, $row){
+        $this->offset = 20 - count($titles);
+        $this->price_param = $this->getFirstParam($titles, $row);
+        $this->price_param_second = $this->getSecondParam($titles, $row, $this->price_param);
+
+    }
+
+    private function getFirstParam($titles, $row){
+        if(count($titles) < 15) return null;
+        $array = [self::PARAM_1, self::PARAM_2, self::PARAM_3, self::PARAM_4, self::PARAM_5, self::PARAM_6];
+        for($i = 0; $i <= count($titles) - 15; $i++) {
+            if($row[$array[$i]]) {
+                $this->price_param_id = $array[$i];
+                return $titles[$array[$i]];
+            }
+        }
+    }
+
+    private function getSecondParam($titles, $row, $first){
+        if(count($titles) < 15) return null;
+        $array = [self::PARAM_1, self::PARAM_2, self::PARAM_3, self::PARAM_4, self::PARAM_5, self::PARAM_6];
+        for($i = 0; $i <= count($titles) - 15; $i++) {
+            if($row[$array[$i]] && $titles[$array[$i]] !== $first) {
+                $this->price_param_second_id = $array[$i];
+                return $titles[$array[$i]];
+            }
         }
     }
 
@@ -245,7 +268,7 @@ class CategoryImportStrategy implements ImportPricesStrategyInterface
 
     private function getAlphabet(){
         return [
-            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P'
+            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T'
         ];
     }
 

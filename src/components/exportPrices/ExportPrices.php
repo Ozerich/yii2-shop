@@ -18,9 +18,17 @@ class ExportPrices
         $this->strategy = $strategy;
     }
 
-    public function run($model, $manufacture, $without_price)
+    /**
+     * @param $params
+     * @param $filename
+     * @param $category
+     * @param $manufacture
+     * @param $without_price
+     * @return mixed
+     */
+    public function run($params, $filename, $category, $manufacture, $without_price)
     {
-        $this->strategy->init($model, $manufacture, $without_price);
+        $this->strategy->init($params, $filename, $category, $manufacture, $without_price);
         return $this->strategy->export();
     }
 }

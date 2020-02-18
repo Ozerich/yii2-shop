@@ -7,6 +7,7 @@ use ozerich\api\filters\AccessControl;
 use ozerich\shop\constants\CategoryType;
 use ozerich\shop\models\Category;
 use ozerich\shop\models\Manufacture;
+use ozerich\shop\modules\api\requests\category\ExportRequest;
 use ozerich\shop\modules\api\requests\category\ImportRequest;
 use ozerich\shop\traits\ServicesTrait;
 
@@ -22,8 +23,12 @@ class CategoryController extends Controller
             'class' => AccessControl::class,
             'rules' => [
                 [
-                    'action' => 'export',
+                    'action' => 'export-preview',
                     'verbs' => 'GET'
+                ],
+                [
+                    'action' => 'export',
+                    'verbs' => 'POST'
                 ],
                 [
                     'action' => 'import',
@@ -35,7 +40,7 @@ class CategoryController extends Controller
         return $behaviors;
     }
 
-    public function actionExport($id, $manufacture_id = 'all', $without_price)
+    public function actionExportPreview($id, $manufacture_id = 'all', $without_price)
     {
         if ($id && $manufacture_id) {
             $category = Category::findOne(['id' => $id, 'type' => CategoryType::CATALOG]);
@@ -46,7 +51,26 @@ class CategoryController extends Controller
                 $manufacture = $manufacture ? $manufacture->id : null;
             }
             if ($category) {
-                return $this->categoriesService()->exportToExcel($category, $manufacture, $without_price);
+                $products = $this->categoriesService()->exportToExcelPreview($category, $manufacture, $without_price);
+                return $this->renderPartial('export-preview', compact('products', 'without_price', 'category'));
+            }
+        }
+        return '';
+    }
+
+    public function actionExport($id, $manufacture_id = 'all', $without_price){
+        $request = new ExportRequest();
+        $request->load();
+        if ($id && $manufacture_id) {
+            $category = Category::findOne(['id' => $id, 'type' => CategoryType::CATALOG]);
+            if($manufacture_id == 'ALL') {
+                $manufacture = null;
+            } else {
+                $manufacture = Manufacture::findOne($manufacture_id);
+                $manufacture = $manufacture ? $manufacture->id : null;
+            }
+            if ($category) {
+                return $this->categoriesService()->exportToExcel($request->params, $request->filename, $category, $manufacture, $without_price);
             }
         }
     }

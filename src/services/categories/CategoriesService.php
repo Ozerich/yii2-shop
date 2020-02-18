@@ -10,6 +10,7 @@ use ozerich\shop\constants\CategoryType;
 use ozerich\shop\models\Category;
 use ozerich\shop\models\CategoryCondition;
 use ozerich\shop\models\Manufacture;
+use ozerich\shop\models\Product;
 use yii\db\ActiveQuery;
 
 class CategoriesService
@@ -215,18 +216,53 @@ class CategoriesService
             ->exists();
     }
 
+
+    public function importFromExcel($file){
+        $import = new ImportPrices(new CategoryImportStrategy());
+        return $import->run($file);
+    }
+
+    /**
+     * @param $params
+     * @param $filename
+     * @param $category
+     * @param $manufacture
+     * @param $without_price
+     * @return mixed
+     */
+    public function exportToExcel( $params, $filename, $category, $manufacture, $without_price){
+        $export = new ExportPrices(new CategoryExportStrategy());
+        return $export->run( $params, $filename, $category, $manufacture, $without_price);
+    }
+
     /**
      * @param Category $category
      * @param $without_price
      * @return mixed
      */
-    public function exportToExcel(Category $category, $manufacture, $without_price){
-        $export = new ExportPrices(new CategoryExportStrategy());
-        return $export->run($category, $manufacture, $without_price);
+    public function exportToExcelPreview(Category $category, $manufacture, $without_price){
+        $products = Product::find()->where([
+            'category_id' => $this->getAllChildCategories([], $category->id),
+        ]);
+        if($manufacture) {
+            $products->andWhere([
+                'manufacture_id' => $manufacture,
+            ]);
+        }
+        if($without_price == 'true') {
+            $products->andWhere([
+                'price' => null
+            ]);
+        }
+        $products = $products->all();
+        return $products;
     }
 
-    public function importFromExcel($file){
-        $import = new ImportPrices(new CategoryImportStrategy());
-        return $import->run($file);
+    private function getAllChildCategories($array, $id){
+        $new_array = [$id];
+        foreach (Category::findAll(['parent_id' => $id, 'type' => CategoryType::CATALOG]) as $item) {
+            $new_array = array_merge($this->getAllChildCategories($array, $item->id), $new_array);
+        }
+        return $new_array;
     }
 }
