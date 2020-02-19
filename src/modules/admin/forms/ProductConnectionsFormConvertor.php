@@ -26,6 +26,9 @@ class ProductConnectionsFormConvertor
 
     public function saveModelFromForm(Product $product, ProductConnectionsForm $form)
     {
+        $form->two_side = explode(',', $form->two_side);
+        $form->priority = explode(',', $form->priority);
+
         $product->collection_id = $form->collection_id;
         $product->save(false, ['collection_id', 'manufacture_id']);
 
@@ -39,12 +42,15 @@ class ProductConnectionsFormConvertor
                 $sameModel = new ProductSame();
                 $sameModel->product_id = $product->id;
                 $sameModel->product_same_id = $productId;
+                $sameModel->priority = array_search($productId, $form->priority) !== false ? ((int)array_search($productId, $form->priority) + 1) :  count($form->priority) + 1;
                 $sameModel->save();
 
-                $sameModel = new ProductSame();
-                $sameModel->product_id = $productId;
-                $sameModel->product_same_id = $product->id;
-                $sameModel->save();
+                if(array_search($productId, $form->two_side) !== false) {
+                    $sameModel = new ProductSame();
+                    $sameModel->product_id = $productId;
+                    $sameModel->product_same_id = $product->id;
+                    $sameModel->save();
+                }
             }
         }
 

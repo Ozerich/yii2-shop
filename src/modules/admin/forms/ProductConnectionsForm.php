@@ -14,13 +14,19 @@ class ProductConnectionsForm extends Model
 
     public $same;
 
+    public $priority = [];
+
+    public $two_side = [];
+
     public function attributeLabels()
     {
         return [
             'collection_id' => 'Коллекция',
             'manufacture_id' => 'Производитель',
             'category_id' => 'Категория',
-            'same' => 'Похожие товары'
+            'same' => 'Похожие товары',
+            'priority' => 'Приоритет похожих товаров',
+            'two_side' => 'Связь',
         ];
     }
 
@@ -28,7 +34,7 @@ class ProductConnectionsForm extends Model
     {
         return [
             [['collection_id', 'manufacture_id', 'category_id'], 'integer'],
-            [['same'], 'safe']
+            [['same', 'priority', 'two_side'], 'safe']
         ];
     }
 }

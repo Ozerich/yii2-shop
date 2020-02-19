@@ -277,7 +277,14 @@ class Product extends \yii\db\ActiveRecord
      */
     public function getSameProducts()
     {
-        return $this->hasMany(Product::class, ['id' => 'product_same_id'])->via('productSameProducts');
+        $priority =  ProductSame::find()->where(['product_id' => $this->id])->orderBy('priority')
+            ->select('product_same_id')->column();
+        $query =  $this->hasMany(Product::class, ['id' => 'product_same_id'])
+            ->via('productSameProducts');
+
+        return $priority ? $query
+            ->orderBy([new \yii\db\Expression('FIELD (id, ' . implode(',', $priority) . ')')])
+            : $query;
     }
 
 
@@ -295,5 +302,13 @@ class Product extends \yii\db\ActiveRecord
     public function getNameWithManufacture()
     {
         return $this->name . ($this->manufacture ? ' (' . $this->manufacture->name . ')' : '');
+    }
+
+    /**
+     * @param Product $product
+     * @return ProductSame|null
+     */
+    public function isSameProduct(Product $product) {
+        return ProductSame::findOne(['product_id' => $this->id, 'product_same_id' => $product->id]);
     }
 }
