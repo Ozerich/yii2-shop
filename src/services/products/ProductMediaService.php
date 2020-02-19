@@ -9,9 +9,24 @@ class ProductMediaService
 {
     public function setProductImages(Product $product, $imageIds, $imageTexts = [])
     {
-        ProductImage::deleteAll([
-            'product_id' => $product->id
-        ]);
+        $saveProductImageIds = [];
+        foreach ($imageIds as $key => $imageId) {
+            $productImage = ProductImage::find()
+                ->where(['product_id' => $product->id])
+                ->andWhere(['image_id' => $imageId])->one();
+            if($productImage) {
+                $saveProductImageIds [] = $productImage->id;
+                $productImage->text = isset($imageTexts[$imageId]) ? $imageTexts[$imageId] : null;
+                $productImage->save();
+                unset($imageIds[$key]);
+            }
+        }
+
+        $delete = ProductImage::find()
+            ->where(['not in', 'id', $saveProductImageIds])
+            ->andWhere([ 'product_id' => $product->id,])
+            ->select('id')->column();
+        ProductImage::deleteAll(['id' => $delete]);
 
 
         foreach ($imageIds as $id) {
