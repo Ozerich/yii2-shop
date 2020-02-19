@@ -9,6 +9,7 @@ class ProductMediaService
 {
     public function setProductImages(Product $product, $imageIds, $imageTexts = [])
     {
+        $priority = $imageIds;
         $saveProductImageIds = [];
         foreach ($imageIds as $key => $imageId) {
             $productImage = ProductImage::find()
@@ -17,6 +18,7 @@ class ProductMediaService
             if($productImage) {
                 $saveProductImageIds [] = $productImage->id;
                 $productImage->text = isset($imageTexts[$imageId]) ? $imageTexts[$imageId] : null;
+                $productImage->priority = array_search($imageId, $priority) + 1;
                 $productImage->save();
                 unset($imageIds[$key]);
             }
@@ -34,6 +36,7 @@ class ProductMediaService
             $item->product_id = $product->id;
             $item->image_id = $id;
             $item->text = isset($imageTexts[$id]) ? $imageTexts[$id] : null;
+            $item->priority = array_search($id, $priority) + 1;
             $item->save();
         }
     }
