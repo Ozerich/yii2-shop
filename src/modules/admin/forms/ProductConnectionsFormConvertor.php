@@ -35,7 +35,7 @@ class ProductConnectionsFormConvertor
         $this->categoryProductsService()->setProductCategory($product, Category::findOne($form->category_id));
         $this->categoryManufacturesService()->setProductManufacture($product, Manufacture::findOne($form->manufacture_id));
 
-        ProductSame::deleteAll('product_id=:product_id OR product_same_id=:product_id', [':product_id' => $product->id]);
+        ProductSame::deleteAll('product_id=:product_id', [':product_id' => $product->id]);
 
         if ($form->same) {
             foreach ($form->same as $productId) {
@@ -45,11 +45,17 @@ class ProductConnectionsFormConvertor
                 $sameModel->priority = array_search($productId, $form->priority) !== false ? ((int)array_search($productId, $form->priority) + 1) :  count($form->priority) + 1;
                 $sameModel->save();
 
-                if(array_search($productId, $form->two_side) !== false) {
+                $productSame = ProductSame::findOne([
+                    'product_id' => $productId,
+                    'product_same_id' => $product->id
+                ]);
+                if((array_search($productId, $form->two_side) !== false) && !$productSame) {
                     $sameModel = new ProductSame();
                     $sameModel->product_id = $productId;
                     $sameModel->product_same_id = $product->id;
                     $sameModel->save();
+                } elseif((array_search($productId, $form->two_side) === false) && $productSame){
+                    $productSame->delete();
                 }
             }
         }
