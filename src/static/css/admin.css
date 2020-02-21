@@ -1,0 +1,34 @@
+.content-header {
+    overflow: hidden;
+}
+
+.content-header h1 {
+    float: left;
+}
+
+.content-header .page-buttons {
+    float: right;
+}
+
+.grid-view img {
+    max-height: 150px;
+    max-width: 150px;
+}
+
+.grid-view .grid-icon {
+    margin-left: 10px;
+}
+
+.grid-view .grid-icon:first-child {
+    margin-left: 0;
+}
+
+.muted {
+    position: absolute;
+    bottom: 0px;
+    color: #5b5b5b;
+    padding: 6px 15px;
+}
+.muted h5{
+    margin-bottom: 0px;
+}

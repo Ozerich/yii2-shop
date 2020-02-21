@@ -13,6 +13,8 @@ class Module extends \ozerich\admin\Module
 
     public $userIdentityClass = 'ozerich\shop\modules\admin\models\AdminUser';
 
+    public $layoutPath = '@vendor/ozerich/yii2-shop/src/views/layouts';
+
     public $shortName = 'YS';
 
     public $fullName = 'Yii2 Shop';
