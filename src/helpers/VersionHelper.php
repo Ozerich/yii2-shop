@@ -15,7 +15,7 @@ class VersionHelper
             });
             $package = array_shift($package);
             if(is_array($package)){
-                $version = array_key_exists('version', $package) ? $package['version'] : null;
+                $version = array_key_exists('version', $package) ? 'v' . $package['version'] : null;
                 $time = array_key_exists('time', $package) ? $package['time'] : null;
                 $time = $time ? date('d.m.Y H:i', strtotime($time)) : null;
                 return $version . ' ' . $time;
