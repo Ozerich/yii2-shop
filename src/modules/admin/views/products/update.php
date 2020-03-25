@@ -25,6 +25,7 @@ $this->title = 'Редактировать товар - ' . $model->name . ' <sp
   .btn-preview-container {
     float: right;
     margin-top: -40px;
+    position: relative;
   }
 </style>
 
