@@ -261,7 +261,12 @@ class PricesController extends Controller
             }
 
             if (\Yii::$app->request->isDelete) {
+                ProductPrice::deleteAll([
+                    'product_id' => $model->product_id
+                ]);
+                $product = $model->product;
                 $model->delete();
+                $this->productPricesService()->bindNewProductPrices($product);
                 return [];
             }
         }
@@ -283,6 +288,10 @@ class PricesController extends Controller
         if (!$model->save()) {
             throw new InvalidRequestException('Ошибка сохранения продукта');
         }
+        ProductPrice::deleteAll([
+            'product_id' => $model->product_id
+        ]);
+        $this->productPricesService()->bindNewProductPrices($product);
 
         return new ModelResponse($model, ProductPriceParamDTO::class);
     }
@@ -315,7 +324,15 @@ class PricesController extends Controller
             }
 
             if (\Yii::$app->request->isDelete) {
+                $prices = ProductPrice::find()->where([
+                    'param_value_id' => $model->id
+                ])->orWhere([
+                    'param_value_second_id' => $model->id
+                ])->all();
                 $model->delete();
+                foreach ($prices as $price) {
+                    $price->delete();
+                }
                 return [];
             }
         }
@@ -338,6 +355,7 @@ class PricesController extends Controller
         if (!$model->save()) {
             throw new InvalidRequestException('Ошибка сохранения значения');
         }
+        $this->productPricesService()->bindNewProductPrices($param->product);
 
         return new ModelResponse($model, ProductPriceParamValueDTO::class);
     }

@@ -66,14 +66,6 @@
   </div>
 </div>
 
-<div class="row">
-  <div class="col-xs-12">
-      <?= $form->field($formModel, 'schema_image_id')->widget(ozerich\shop\modules\admin\widgets\ImageWidget::class, [
-          'scenario' => 'product'
-      ]); ?>
-  </div>
-</div>
-
 <?= $this->render('_box_footer'); ?>
 
 <?php

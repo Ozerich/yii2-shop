@@ -250,9 +250,23 @@ class CategoriesService
             ]);
         }
         if($without_price == 'true') {
-            $products->andWhere([
-                'price' => null
-            ]);
+            $prs = $products->all();
+            $array = [];
+            foreach ($prs as $product) {
+                $_productPrices = $product->prices;
+                if(count($_productPrices)) {
+                    foreach ($_productPrices as $_productPrice) {
+                        if(!$_productPrice->value) {
+                            $array[] = $product->id;
+                        }
+                    }
+                } else {
+                    if(!$product->price) {
+                        $array[] = $product->id;
+                    }
+                }
+            }
+            $products->andWhere(['id' => $array]);
         }
         $products = $products->all();
         return $products;

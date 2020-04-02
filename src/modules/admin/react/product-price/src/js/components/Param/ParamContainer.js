@@ -10,7 +10,8 @@ import {
   moveParamItem,
   openUpdateForm,
   saveParam,
-  updateParamItem
+  updateParamItem,
+  loadPrices
 } from "../../ducks/params";
 
 import ParamForm from '../../components/Param/ParamForm';
@@ -83,17 +84,19 @@ class ParamContainer extends Component {
   }
 
   onDeleteParamItem(id) {
-    const { model, deleteParamItem } = this.props;
+    const { model, deleteParamItem, loadPrices } = this.props;
 
     if (window.confirm('Вы уверены, что хотите удалить?')) {
       deleteParamItem(model.id, id);
+      loadPrices();
     }
   }
 
   onParamItemCreate() {
-    const { model, createParamItem } = this.props;
+    const { model, createParamItem, loadPrices } = this.props;
 
     createParamItem(model.id);
+            loadPrices();
   }
 
   onFormCancel() {
@@ -113,17 +116,19 @@ class ParamContainer extends Component {
   onUpdateClick(e) {
     e.preventDefault();
 
-    const { model, openUpdateForm } = this.props;
+    const { model, openUpdateForm, loadPrices } = this.props;
 
     openUpdateForm(model.id);
+            loadPrices();
   }
 
   onDeleteClick(e) {
     e.preventDefault();
 
-    const { model, deleteParam } = this.props;
+    const { model, deleteParam, loadPrices } = this.props;
 
     deleteParam(model.id);
+            loadPrices();
   }
 }
 
@@ -144,5 +149,6 @@ export default connect(mapStateToProps, {
   updateParamItem,
   deleteParamItem,
   moveParamItem,
-  moveParam
+  moveParam,
+  loadPrices
 })(ParamContainer);

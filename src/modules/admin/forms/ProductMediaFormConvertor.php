@@ -13,6 +13,7 @@ class ProductMediaFormConvertor extends Model
         $form = new ProductMediaForm();
 
         $form->video = $product->video;
+        $form->schema_image_id = $product->schema_image_id;
 
         /** @var ProductImage[] $images */
         $images = ProductImage::find()

@@ -12,18 +12,22 @@ class ProductMediaForm extends Model
 
     public $image_texts;
 
+    public $schema_image_id;
+
     public function attributeLabels()
     {
         return [
             'video' => 'Видео',
-            'images' => 'Картинки'
+            'images' => 'Картинки',
+            'images' => 'Картинка-схема',
         ];
     }
 
     public function rules()
     {
         return [
-            [['images', 'video', 'image_texts'], 'safe']
+            [['images', 'video', 'image_texts'], 'safe'],
+            [['schema_image_id'], 'integer']
         ];
     }
 

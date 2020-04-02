@@ -160,7 +160,8 @@ class ProductsController extends AdminController
 
         if ($form->load(\Yii::$app->request->post()) && $form->validate()) {
             $model->video = $form->video;
-            $model->save(false, ['video']);
+            $model->schema_image_id = $form->schema_image_id;
+            $model->save(false, ['video', 'schema_image_id']);
 
             $this->productMediaService()->setProductImages($model, $form->getImageIds(), $form->getImageTexts());
         }

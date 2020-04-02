@@ -79,11 +79,6 @@ class CategoryExportStrategy implements ExportPricesStrategyInterface
                 'manufacture_id' => $this->_manufacture,
             ]);
         }
-        if($this->_without_price == 'true') {
-            $products->andWhere([
-                'price' => null
-            ]);
-        }
         $products = $products->all();
         $array = [];
         foreach ($products as $product) {
@@ -106,6 +101,9 @@ class CategoryExportStrategy implements ExportPricesStrategyInterface
                         }
                     } else {
                         $priorityNew = $param->productPriceParam->priority;
+                    }
+                    if($this->_without_price == 'true' && $_productPrice->value > 0) {
+                        continue;
                     }
                     $array[] = [
                         $product->id,
@@ -135,6 +133,9 @@ class CategoryExportStrategy implements ExportPricesStrategyInterface
                     ];
                 }
             } else {
+                if($this->_without_price == 'true' && $product->price > 0) {
+                    continue;
+                }
                 $array[] = [
                     $product->id,
                     $product->manufacture ? $product->manufacture->name : '',

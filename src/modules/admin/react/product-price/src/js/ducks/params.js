@@ -673,8 +673,9 @@ export function toggleDiscount(productId, firstParamId, secondParamId, enabled) 
   };
 }
 
-export function loadPrices(productId) {
-  return dispatch => {
+export function loadPrices(productId = null) {
+  return (dispatch, getState) => {
+    productId = productId ? productId : getState().common.productId
     dispatch({
       type: GET_PRICES + _START
     });

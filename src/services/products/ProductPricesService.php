@@ -8,6 +8,7 @@ use ozerich\shop\models\Currency;
 use ozerich\shop\models\Product;
 use ozerich\shop\models\ProductPrice;
 use ozerich\shop\models\ProductPriceParam;
+use ozerich\shop\models\ProductPriceParamValue;
 use ozerich\shop\traits\ServicesTrait;
 
 class ProductPricesService
@@ -142,5 +143,63 @@ class ProductPricesService
         $rate = $this->getRate($currencyId);
 
         return round($price * $rate, 2);
+    }
+
+    /**
+     * @param Product $product
+     */
+    public function bindNewProductPrices(Product $product){
+        $priceParams = $product->productPriceParams;
+        if(count($priceParams) === 1) {
+            foreach ($priceParams as $priceParam) {
+                foreach ($priceParam->productPriceParamValues as $productPriceParamValue) {
+                    $price = ProductPrice::find()
+                        ->where([
+                            'product_id' => $product->id,
+                            'param_value_id' => $productPriceParamValue->id
+                        ])->andWhere(['is', 'param_value_second_id', null])->one();
+                    if(!$price) {
+                        $price = new ProductPrice();
+                        $price->product_id = $product->id;
+                        $price->param_value_id = $productPriceParamValue->id;
+                        $price->save();
+                    }
+                }
+            }
+        } elseif(count($priceParams) === 2) {
+            foreach ($priceParams as $priceParam) {
+                foreach ($priceParam->productPriceParamValues as $productPriceParamValue) {
+                    foreach ($priceParams as $priceParam2) {
+                        if($priceParam2->id !== $priceParam->id) {
+                            foreach ($priceParam2->productPriceParamValues as $productPriceParamValue2) {
+                                $price = ProductPrice::find()
+                                    ->where([
+                                        'product_id' => $product->id,
+                                        'param_value_id' => $productPriceParamValue->id,
+                                        'param_value_second_id' => $productPriceParamValue2->id,
+                                    ])
+                                    ->orWhere([
+                                        'product_id' => $product->id,
+                                        'param_value_second_id' => $productPriceParamValue->id,
+                                        'param_value_id' => $productPriceParamValue2->id,
+                                    ])
+                                    ->one();
+                                if(!$price) {
+                                    $price = new ProductPrice();
+                                    $price->product_id = $product->id;
+                                    $price->param_value_id = $productPriceParamValue->id;
+                                    $price->param_value_second_id = $productPriceParamValue2->id;
+                                    $price->save();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public function createNewProductPrices($product, $param){
+
     }
 }

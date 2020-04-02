@@ -6,5 +6,5 @@ $this->title = 'Изменение характеристик у товаров'
 
 \ozerich\shop\modules\admin\react\ProductParamsAsset::register($this);
 ?>
-
+<lol></lol>
 <div id="react-app-product-params"></div>

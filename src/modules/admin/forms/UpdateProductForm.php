@@ -10,8 +10,6 @@ class UpdateProductForm extends Product
 
     public $image_id;
 
-    public $schema_image_id;
-
     public $text;
 
     public $url_alias;
@@ -39,7 +37,7 @@ class UpdateProductForm extends Product
             [['sale_disabled'], 'integer'],
             [['text', 'sku', 'sale_disabled_text'], 'string'],
             [['url_alias'], 'string', 'max' => 100],
-            [['image_id', 'schema_image_id'], 'integer'],
+            [['image_id'], 'integer'],
 
             [['label'], 'string', 'max' => 150],
             [['hidden', 'popular', 'is_new'], 'boolean'],
