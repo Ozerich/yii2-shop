@@ -13,7 +13,8 @@
         <?= $form->field($formModel, 'images')->widget(ozerich\shop\modules\admin\widgets\ImageWidget::class, [
             'scenario' => 'product',
             'textInputsAttribute' => 'image_texts',
-            'multiple' => true
+            'multiple' => true,
+            'draggable' => true
         ]) ?>
     </div>
 
